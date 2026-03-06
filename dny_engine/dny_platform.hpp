@@ -1,0 +1,83 @@
+#pragma once
+
+#include "dny_math.hpp"
+#include "dny_display.hpp"
+
+#include <cstdint>
+
+namespace dny{
+	static constexpr std::int32_t screen_width = 1280;
+	static constexpr std::int32_t screen_height = 720;
+
+	class platform{
+	public:
+		platform()
+			:
+			m_display( screen_width, screen_height, *this ) {
+			m_display.show();
+		}
+
+		void process_message_pump(){
+			while( auto msg = win32::peek_message() ){
+				win32::translate_message( *msg );
+				win32::dispatch_message( *msg );
+			}
+		}
+		void update_view( std::int32_t width_, std::int32_t height_, std::span<const dny::Color32> pixels_ )const{
+			m_display.present( width_, height_, pixels_ );
+		}
+		bool is_done()const{
+			return m_done;
+		}
+
+		dny::vector2<float> mouse_pos()const noexcept{
+			auto mp = POINT{};
+			GetCursorPos( &mp );
+			return{
+				static_cast< float >( mp.x ),
+				static_cast< float >( mp.y )
+			};
+		}
+		void hide_mouse(){
+			ShowCursor( FALSE );
+		}
+		void show_mouse(){
+			ShowCursor( TRUE );
+		}
+		void clamp_mouse_to_window(){
+			m_display.clamp_cursor();
+		}
+		void free_mouse(){
+			m_display.unclamp_cursor();
+		}
+		void recenter_mouse(){
+			RECT wrect = {};
+			auto dt = GetDesktopWindow();
+			GetWindowRect( dt, &wrect );
+			auto center_x = ( wrect.left + wrect.right ) / 2;
+			auto center_y = ( wrect.top + wrect.bottom ) / 2;
+			SetCursorPos( center_x, center_y );
+		}
+
+		LRESULT message_proc( UINT msg, WPARAM wparam, LPARAM lparam ){
+			switch( msg ){
+				case WM_CLOSE:  m_done = true; return 0;
+				default: return DefWindowProcW( 
+					reinterpret_cast< HWND >( m_display.handle() ),
+					msg, 
+					wparam, 
+					lparam
+				);
+			}
+		}
+		void set_title( std::wstring title_ ){
+			SetWindowTextW( 
+				reinterpret_cast< HWND >( m_display.handle() ),
+				title_.c_str() 
+			);
+		}
+	private:
+		dny::display m_display;
+		bool m_done = false;
+	};
+}

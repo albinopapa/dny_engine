@@ -127,6 +127,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dny_aabb.hpp" />
+    <ClInclude Include="dny_colors.hpp" />
+    <ClInclude Include="dny_concepts.hpp" />
+    <ClInclude Include="dny_d2dsdk.hpp" />
+    <ClInclude Include="dny_d3d11sdk.hpp" />
+    <ClInclude Include="dny_dims2.hpp" />
+    <ClInclude Include="dny_display.hpp" />
+    <ClInclude Include="dny_dwritesdk.hpp" />
+    <ClInclude Include="dny_font.hpp" />
+    <ClInclude Include="dny_frustum.hpp" />
+    <ClInclude Include="dny_graphics.hpp" />
+    <ClInclude Include="dny_image_loader.hpp" />
+    <ClInclude Include="dny_math.hpp" />
+    <ClInclude Include="dny_math_constants.hpp" />
+    <ClInclude Include="dny_math_v2.hpp" />
+    <ClInclude Include="dny_matrix_3x2.hpp" />
+    <ClInclude Include="dny_matrix_3x3.hpp" />
+    <ClInclude Include="dny_matrix_4x4.hpp" />
+    <ClInclude Include="dny_physics.hpp" />
+    <ClInclude Include="dny_platform.hpp" />
+    <ClInclude Include="dny_qtree.hpp" />
+    <ClInclude Include="dny_rectangle.hpp" />
+    <ClInclude Include="dny_simd.hpp" />
+    <ClInclude Include="dny_soft_renderer.hpp" />
+    <ClInclude Include="dny_soft_renderer_tiled.hpp" />
+    <ClInclude Include="dny_surface.hpp" />
+    <ClInclude Include="dny_text_atlas_builder.hpp" />
+    <ClInclude Include="dny_timer.hpp" />
+    <ClInclude Include="dny_type_traits.hpp" />
+    <ClInclude Include="dny_utilities.hpp" />
+    <ClInclude Include="dny_vector2.hpp" />
+    <ClInclude Include="dny_vector3.hpp" />
+    <ClInclude Include="dny_vector4.hpp" />
+    <ClInclude Include="dny_wicsdk.hpp" />
+    <ClInclude Include="dny_win32sdk.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
