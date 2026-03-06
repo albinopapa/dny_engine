@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dny_concepts.hpp"
+#include "dny_dims2.hpp"
 #include "dny_math_constants.hpp"
 #include "dny_vector2.hpp"
 #include "dny_vector3.hpp"
@@ -326,10 +327,10 @@ namespace dny{
 	auto look_at( const dny::vector3<ElementT>& eye, const dny::vector3<ElementT>& target, const vector3<ElementT>& up ) noexcept{
 		static_assert( handed != dny::handedness_t::invalid, "Handedness not set." );
 		if constexpr( handed == dny::handedness_t::right ){
-			return look_to<ElementT, dny::handedness_t::left>( eye - target );		// Forward (camera -Z)
+			return look_to<ElementT, dny::handedness_t::left>( eye, eye - target, up );		// Forward (camera -Z)
 		}
 		else{
-			return look_to<ElementT, dny::handedness_t::left>( target - eye );		// Forward (camera +Z)
+			return look_to<ElementT, dny::handedness_t::left>( eye, target - eye, up );		// Forward (camera +Z)
 		}
 	}
 

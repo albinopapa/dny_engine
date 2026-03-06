@@ -126,14 +126,17 @@ namespace dny{
 		ColorT color_, 
 		surface<ColorT>& canvas_ ){
 		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+			0,
+			0,
+			static_cast< std::int32_t >( canvas_.width() ),
+			static_cast< std::int32_t >( canvas_.height() )
 		};
 
 		static constexpr auto trans_black = Color32{ 0 };
 		auto draw_char = [ & ]( vector2<std::int32_t> const& char_pos_, Rect<std::int32_t> const& char_rect ){
 			for( std::int32_t y = 0; y < char_rect.height(); ++y ){
 				for( std::int32_t x = 0; x < char_rect.width(); ++x ){
-					auto src = font.pixel( x + char_rect.left, y + char_rect.top );
+					auto src = font_.pixel( x + char_rect.left, y + char_rect.top );
 					if( src != trans_black ){
 						canvas_.pixel( x + char_pos_.x, y + char_pos_.y ) = color_;
 					}
@@ -147,14 +150,15 @@ namespace dny{
 				font_.char_width(),
 				font_.char_height()
 			);
-			position_.x = position_.x + ( i * char_rect.width() );
+			const auto new_x = position_.x + ( i * char_rect.width() );
 			++i;
 
 			const auto rect = Rect<std::int32_t>{
-				position_.x, position_.y,
-				position_.x + char_rect.width(), position_.y + char_rect.height()
+				new_x, position_.y,
+				new_x + char_rect.width(), position_.y + char_rect.height()
 			};
-			const auto clipped = clip_rect( rect, canvas_bounds ) + position_;
+			const auto clipped = clip_rect( rect, canvas_bounds ) +
+				dny::vector2<std::int32_t>{ new_x, position_.y };
 
 			draw_char( { clipped.left, clipped.top }, char_rect );
 		}

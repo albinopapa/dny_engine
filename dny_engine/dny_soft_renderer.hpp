@@ -233,10 +233,10 @@ namespace dny{
 				);
 			}
 		}
-		void update_cbuffer( vshader_cbuffer_type const& cb_ ){
+		void set_cbuffer( vshader_cbuffer_type const& cb_ ){
 			m_effect.vshader.cbuffer = cb_;
 		}
-		void update_cbuffer( pshader_cbuffer_type const& cb_ ){
+		void set_cbuffer( pshader_cbuffer_type const& cb_ ){
 			m_effect.pshader.cbuffer = cb_;
 		}
 		void set_render_target( surface<Color32>& rt_ ){
@@ -459,7 +459,7 @@ namespace dny{
 			const auto area = simd_signed_area( position_va, position_vb, position_vc );
 
 			// Backface culling test (CW front facing)
-			const auto is_backface = area < _mm_setzero_ps();
+			const auto is_backface = area > _mm_setzero_ps();
 			if( simd::any( is_backface ) ) return;
 
 			const auto inv_area = one / area;
@@ -514,10 +514,14 @@ namespace dny{
 						const auto w1 = simd::extract<0>( w1_vec );
 						const auto w2 = simd::extract<0>( w2_vec );
 
-						if( w0 < 0.0f || w1 < 0.0f || w2 < 0.0f )continue;
-						if( ( w0 < epsilon && !tl0 ) ||
-							( w1 < epsilon && !tl1 ) ||
-							( w2 < epsilon && !tl2 ) ) continue;
+						//if( w0 < 0.0f || w1 < 0.0f || w2 < 0.0f )continue;
+						//if( ( w0 < epsilon && !tl0 ) ||
+						//	( w1 < epsilon && !tl1 ) ||
+						//	( w2 < epsilon && !tl2 ) ) continue;
+						if( w0 > 0.0f || w1 > 0.0f || w2 > 0.0f )continue;
+						if( ( w0 > epsilon && !tl0 ) ||
+							( w1 > epsilon && !tl1 ) ||
+							( w2 > epsilon && !tl2 ) ) continue;
 					}
 
 					// ---- Standard interpolation
@@ -533,8 +537,23 @@ namespace dny{
 
 					const auto w = one / inv_w;
 
-					std::array<__m128, num_elements> frag;
+					// ---- Depth test
+					const auto depth = simd::extract<2>(
+						( simd::shuffle<2, 2, 2, 2>( va[ Position_ID ] ) * ( t_vec * inv_wa ) ) +
+						( simd::shuffle<2, 2, 2, 2>( vb[ Position_ID ] ) * ( u_vec * inv_wb ) ) +
+						( simd::shuffle<2, 2, 2, 2>( vc[ Position_ID ] ) * ( v_vec * inv_wc ) )
+						);
+
+					const auto idx = x + y * m_target->width();
+					if( depth >= m_depth_buffer->at( idx ) ) {
+						continue;
+					}
+					else{
+						m_depth_buffer->at( idx ) = depth;
+					}
+
 					// Loop for AoS style
+					std::array<__m128, num_elements> frag;
 					for( std::size_t i = {}; i < num_elements; ++i ){
 						frag[ i ] = (
 							( va[ i ] * ( t_vec * inv_wa ) ) +
@@ -542,12 +561,6 @@ namespace dny{
 							( vc[ i ] * ( v_vec * inv_wc ) )
 							) * w;
 					}
-
-					// ---- Depth test (z already post-divide)
-					const auto depth = simd::extract<2>( frag[ Position_ID ] );
-
-					if( !m_target->depth_test( x, y, depth ) )
-						continue;
 
 					pshader_in frag_pshader;
 					simd_array_to_tuple( frag, frag_pshader );
