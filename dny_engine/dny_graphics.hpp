@@ -57,16 +57,22 @@ namespace dny{
 			}
 		}
 	}
+
 	template<typename ColorT>
 	void draw_rect(
 		Rect<std::int32_t> const& rect_, 
 		ColorT color_,
 		surface<ColorT>& canvas_ ){
-		draw_line( rect_.top_left(), rect_.top_right(), color_, canvas_ );
-		draw_line( rect_.top_right(), rect_.bottom_right(), color_, canvas_ );
-		draw_line( rect_.top_left(), rect_.bottom_left(), color_, canvas_ );
-		draw_line( rect_.bottom_left(), rect_.bottom_right(), color_, canvas_ );
+		const auto canvas_bounds = Rect<std::int32_t>{
+			0, 0, canvas_.width(), canvas_.height()
+		};
+		const auto clippped = clip_rect( rect_, canvas_bounds );
+		draw_line( clippped.top_left(),    clippped.top_right(), color_, canvas_ );
+		draw_line( clippped.top_right(),   clippped.bottom_right(), color_, canvas_ );
+		draw_line( clippped.top_left(),    clippped.bottom_left(), color_, canvas_ );
+		draw_line( clippped.bottom_left(), clippped.bottom_right(), color_, canvas_ );
 	}
+
 	template<typename ColorT>
 	void fill_circle(
 		dny::vector2<std::int32_t> const& center_,
@@ -74,12 +80,14 @@ namespace dny{
 		ColorT const& color_, 
 		surface<ColorT>& canvas_ ){
 		const auto rad_sq = radius_ * radius_;
-		const auto clipped = clip_rect( {
-			center_.x - radius_,
-			center_.y - radius_,
-			center_.x + radius_,
-			center_.y + radius_,
-			} );
+		const auto circle_bounds = {
+			center_.x - radius_, center_.y - radius_,
+			center_.x + radius_, center_.y + radius_,
+		};
+		const auto canvas_bounds = Rect<std::int32_t>{ 
+			0, 0, canvas_.width(), canvas_.height() 
+		};
+		const auto clipped = clip_rect( circle_bounds, canvas_bounds );
 
 		for( auto y = clipped.top - radius_; y < clipped.bottom - radius_; ++y ){
 			for( auto x = clipped.left - radius_; x < clipped.right - radius_; ++x ){
@@ -93,12 +101,16 @@ namespace dny{
 			}
 		}
 	}
+
 	template<typename ColorT>
 	void fill_rect(
 		Rect<std::int32_t> const& rect_, 
 		ColorT color_, 
 		surface<ColorT>& canvas_ ){
-		const auto clipped = clip_rect( rect_ );
+		const auto canvas_bounds = Rect<std::int32_t>{
+			0, 0, canvas_.width(), canvas_.height()
+		};
+		const auto clipped = clip_rect( rect_, canvas_bounds );
 
 		for( auto y = clipped.top; y < clipped.bottom; ++y ){
 			for( auto x = clipped.left; x < clipped.right; ++x ){
@@ -108,37 +120,43 @@ namespace dny{
 	}
 	template<typename ColorT>
 	void draw( 
-		std::string text, 
-		vector2<std::int32_t> position, 
-		Font const& font, 
-		ColorT color, 
+		std::string text_, 
+		vector2<std::int32_t> position_,
+		Font const& font_, 
+		ColorT color_, 
 		surface<ColorT>& canvas_ ){
-		for( std::int32_t i = 0; auto const& ch : text ){
-			const auto char_rect = internal::get_char_rect(
-				ch,
-				font.char_width(),
-				font.char_height()
-			);
-			const auto spx = position.x + ( i * char_rect.width() );
+		const auto canvas_bounds = Rect<std::int32_t>{
+			0, 0, canvas_.width(), canvas_.height()
+		};
 
-			const auto surf_width = static_cast< std::int32_t >( m_width );
-			const auto surf_height = static_cast< std::int32_t >( m_height );
-
-			if( position.x + char_rect.right < 0 || position.x + char_rect.left >= surf_width )
-				continue;
-			if( position.y + char_rect.bottom < 0 || position.y + char_rect.top >= surf_height )
-				continue;
-
+		static constexpr auto trans_black = Color32{ 0 };
+		auto draw_char = [ & ]( vector2<std::int32_t> const& char_pos_, Rect<std::int32_t> const& char_rect ){
 			for( std::int32_t y = 0; y < char_rect.height(); ++y ){
 				for( std::int32_t x = 0; x < char_rect.width(); ++x ){
 					auto src = font.pixel( x + char_rect.left, y + char_rect.top );
-					if( src != Color32{ 0 } ){
-						canvas_.pixel( x + spx, y + position.y ) = color;
+					if( src != trans_black ){
+						canvas_.pixel( x + char_pos_.x, y + char_pos_.y ) = color_;
 					}
 				}
 			}
+		};
 
+		for( std::int32_t i = 0; auto const& ch : text_ ){
+			const auto char_rect = internal::get_char_rect(
+				ch,
+				font_.char_width(),
+				font_.char_height()
+			);
+			position_.x = position_.x + ( i * char_rect.width() );
 			++i;
+
+			const auto rect = Rect<std::int32_t>{
+				position_.x, position_.y,
+				position_.x + char_rect.width(), position_.y + char_rect.height()
+			};
+			const auto clipped = clip_rect( rect, canvas_bounds ) + position_;
+
+			draw_char( { clipped.left, clipped.top }, char_rect );
 		}
 	}
 

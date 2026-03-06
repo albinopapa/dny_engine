@@ -242,6 +242,9 @@ namespace dny{
 		void set_render_target( surface<Color32>& rt_ ){
 			m_target = std::addressof( rt_ );
 		}
+		void set_depth_buffer( std::vector<float>& db_ ){
+			m_depth_buffer = std::addressof( db_ );
+		}
 		void set_pixel_shader_textures( std::size_t slot_, surface<ColorF> const& texture_ ){
 			m_effect.pshader.texture[ slot_ ] = std::addressof( texture_ );
 		}
@@ -557,5 +560,6 @@ namespace dny{
 	private:
 		Effect m_effect;
 		surface<Color32>* m_target = nullptr;
+		std::vector<std::float_t>* m_depth_buffer = nullptr;
 	};
 }
