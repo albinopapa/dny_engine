@@ -151,7 +151,6 @@
     <ClInclude Include="dny_rectangle.hpp" />
     <ClInclude Include="dny_simd.hpp" />
     <ClInclude Include="dny_soft_renderer.hpp" />
-    <ClInclude Include="dny_soft_renderer_tiled.hpp" />
     <ClInclude Include="dny_surface.hpp" />
     <ClInclude Include="dny_text_atlas_builder.hpp" />
     <ClInclude Include="dny_timer.hpp" />

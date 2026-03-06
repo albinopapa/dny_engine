@@ -120,9 +120,6 @@
     <ClInclude Include="dny_win32sdk.hpp">
       <Filter>Header Files\DNY_Lib</Filter>
     </ClInclude>
-    <ClInclude Include="dny_soft_renderer_tiled.hpp">
-      <Filter>Header Files\DNY_Lib</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
