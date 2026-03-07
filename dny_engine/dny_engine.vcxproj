@@ -139,6 +139,7 @@
     <ClInclude Include="dny_frustum.hpp" />
     <ClInclude Include="dny_graphics.hpp" />
     <ClInclude Include="dny_image_loader.hpp" />
+    <ClInclude Include="dny_input.hpp" />
     <ClInclude Include="dny_math.hpp" />
     <ClInclude Include="dny_math_constants.hpp" />
     <ClInclude Include="dny_math_v2.hpp" />
