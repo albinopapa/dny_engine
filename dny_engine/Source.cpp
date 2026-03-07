@@ -1,10 +1,10 @@
+#include "dny_font.hpp"
+#include "dny_graphics.hpp"
+#include "dny_image_loader.hpp"
+#include "dny_math.hpp"
 #include "dny_platform.hpp"
 #include "dny_primitive_generators.hpp"
-#include "dny_math.hpp"
-#include "dny_image_loader.hpp"
-#include "dny_graphics.hpp"
 #include "dny_timer.hpp"
-#include "dny_font.hpp"
 
 #include <array>
 #include <format>
@@ -89,6 +89,8 @@ private:
 
 };
 
+using frame_pack = std::vector<dny::surface<dny::ColorF>>;
+using texture2d = dny::surface<dny::ColorF>;
 class Game{
 public:
 	Game( dny::platform& platform_ )
@@ -213,16 +215,20 @@ private:
 	static constexpr std::int32_t view_height = dny::screen_height / 2;
 	static constexpr float aspect_ratio = static_cast< float >( view_width ) / static_cast< float >( view_height );
 	static constexpr dny::dims2<float> cube_size{ 50.f, 50.f };
+
+	// Reference to the platform for window management and input
+	dny::platform& platform;
+
+	// The software renderer pipeline
+	pnu_pipeline_t renderer;
+	using pnu_vertex_buffer = std::vector<vertex_in>;
+
+	// Render target and depth buffer
 	dny::surface<dny::Color32> render_target = 
 		dny::surface<dny::Color32>{ view_width, view_height };
 	std::vector<float> depth_buffer = 
 		std::vector<float>( render_target.width() * render_target.height(), 1.f );
 
-	dny::platform& platform;
-	pnu_pipeline_t renderer;
-
-	std::vector<dny::surface<dny::ColorF>> girl_walking_frames;
-	dny::surface<dny::ColorF> terrain_texture;
 
 	dny::matrix_4x4<float> view_matrix = dny::matrix_4x4<float>::identity();
 	dny::matrix_4x4<float> projection_matrix = dny::projection<dny::handedness_t::left>(
@@ -232,17 +238,19 @@ private:
 		100.f
 	);
 
-	std::vector<vertex_in> girl_vbuffer = dny::primitives::generate_plane();
-	std::vector<vertex_in> terrain_vbuffer = dny::primitives::generate_cube();
+	pnu_vertex_buffer girl_vbuffer = dny::primitives::generate_plane();
+	frame_pack girl_walking_frames;
+	pnu_vertex_buffer terrain_vbuffer = dny::primitives::generate_cube();
+	texture2d terrain_texture;
 	
 	Player player;
 	dny::vector3<float> camera_position{ 0.f, 0.f, -10.f };
-	std::vector<dny::vector2<float>> terrain_positions{
-		{ -2.f, -2.f },
-		{ -1.f, -2.f },
-		{  0.f, -2.f },
-		{  1.f, -2.f },
-		{  2.f, -2.f }
+	std::vector<dny::vector3<float>> terrain_positions{
+		{ -2.f, -2.f, action_plane_z },
+		{ -1.f, -2.f, action_plane_z },
+		{  0.f, -2.f, action_plane_z },
+		{  1.f, -2.f, action_plane_z },
+		{  2.f, -2.f, action_plane_z }
 	};
 
 	dny::Timer timer;
