@@ -95,8 +95,11 @@ class Game{
 public:
 	Game( dny::platform& platform_ )
 		:
-		platform( platform_ ){
+		platform( platform_ ),
+		editor_controls( platform.keyboard_state(), platform.mouse_state() ),
+		game_input( platform.keyboard_state(), platform.mouse_state() ){
 		platform.set_title( L"DNY Engine - Software Renderer" );
+		configure_input_bindings();
 		init_textures();
 	}
 	void run(){
@@ -123,6 +126,29 @@ private:
 			);
 			frame_rate = static_cast< float >( frame_times.size() ) / sum;
 			frame_count = 0;
+		}
+
+		if( game_input.is_action_down( "MoveCameraLeft" ) ){
+			camera_position.x -= camera_speed * dt;
+		}
+		if( game_input.is_action_down( "MoveCameraRight" ) ){
+			camera_position.x += camera_speed * dt;
+		}
+		if( game_input.is_action_down( "MoveCameraForward" ) ){
+			camera_position.z += camera_speed * dt;
+		}
+		if( game_input.is_action_down( "MoveCameraBackward" ) ){
+			camera_position.z -= camera_speed * dt;
+		}
+
+		if( editor_controls.get_mouse().was_pressed( dny::mouse_button::right ) ){
+			platform.clamp_mouse_to_window();
+		}
+		if( editor_controls.get_mouse().was_released( dny::mouse_button::right ) ){
+			platform.free_mouse();
+		}
+		if( game_input.was_action_pressed( "RecenterMouse" ) ){
+			platform.recenter_mouse();
 		}
 	}
 	void render(){
@@ -172,6 +198,14 @@ private:
 		);
 	}
 
+	void configure_input_bindings(){
+		game_input.bind_action( "MoveCameraLeft", dny::Input::binding::key( static_cast< std::uint32_t >( "A"[ 0 ] ) ) );
+		game_input.bind_action( "MoveCameraRight", dny::Input::binding::key( static_cast< std::uint32_t >( "D"[ 0 ] ) ) );
+		game_input.bind_action( "MoveCameraForward", dny::Input::binding::key( static_cast< std::uint32_t >( "W"[ 0 ] ) ) );
+		game_input.bind_action( "MoveCameraBackward", dny::Input::binding::key( static_cast< std::uint32_t >( "S"[ 0 ] ) ) );
+		game_input.bind_action( "RecenterMouse", dny::Input::binding::key( static_cast< std::uint32_t >( VK_HOME ) ) );
+	}
+
 	void init_textures(){
 		for( auto i = 0; i < 30; ++i ){
 			const auto filename =
@@ -215,9 +249,12 @@ private:
 	static constexpr std::int32_t view_height = dny::screen_height / 2;
 	static constexpr float aspect_ratio = static_cast< float >( view_width ) / static_cast< float >( view_height );
 	static constexpr dny::dims2<float> cube_size{ 50.f, 50.f };
+	static constexpr float camera_speed = 25.f;
 
 	// Reference to the platform for window management and input
 	dny::platform& platform;
+	dny::editor_input editor_controls;
+	dny::Input game_input;
 
 	// The software renderer pipeline
 	pnu_pipeline_t renderer;

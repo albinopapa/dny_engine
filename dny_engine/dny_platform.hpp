@@ -2,6 +2,7 @@
 
 #include "dny_math.hpp"
 #include "dny_display.hpp"
+#include "dny_input.hpp"
 
 #include <cstdint>
 
@@ -18,6 +19,8 @@ namespace dny{
 		}
 
 		void process_message_pump(){
+			m_keyboard.begin_frame();
+			m_mouse.begin_frame();
 			while( auto msg = win32::peek_message() ){
 				win32::translate_message( *msg );
 				win32::dispatch_message( *msg );
@@ -30,14 +33,9 @@ namespace dny{
 			return m_done;
 		}
 
-		dny::vector2<float> mouse_pos()const noexcept{
-			auto mp = POINT{};
-			GetCursorPos( &mp );
-			return{
-				static_cast< float >( mp.x ),
-				static_cast< float >( mp.y )
-			};
-		}
+		keyboard const& keyboard_state()const noexcept{ return m_keyboard; }
+		mouse const& mouse_state()const noexcept{ return m_mouse; }
+
 		void hide_mouse(){
 			ShowCursor( FALSE );
 		}
@@ -61,23 +59,78 @@ namespace dny{
 
 		LRESULT message_proc( UINT msg, WPARAM wparam, LPARAM lparam ){
 			switch( msg ){
-				case WM_CLOSE:  m_done = true; return 0;
-				default: return DefWindowProcW( 
-					reinterpret_cast< HWND >( m_display.handle() ),
-					msg, 
-					wparam, 
-					lparam
-				);
+				case WM_CLOSE:
+					m_done = true;
+					return 0;
+				case WM_KILLFOCUS:
+					m_keyboard.clear();
+					m_mouse.clear();
+					return 0;
+				case WM_KEYDOWN:
+				case WM_SYSKEYDOWN:
+					m_keyboard.on_key_down( static_cast< std::uint32_t >( wparam ) );
+					return 0;
+				case WM_KEYUP:
+				case WM_SYSKEYUP:
+					m_keyboard.on_key_up( static_cast< std::uint32_t >( wparam ) );
+					return 0;
+				case WM_MOUSEMOVE:
+					m_mouse.on_move( GET_X_LPARAM( lparam ), GET_Y_LPARAM( lparam ) );
+					return 0;
+				case WM_LBUTTONDOWN:
+					m_mouse.on_button_down( mouse_button::left );
+					return 0;
+				case WM_LBUTTONUP:
+					m_mouse.on_button_up( mouse_button::left );
+					return 0;
+				case WM_RBUTTONDOWN:
+					m_mouse.on_button_down( mouse_button::right );
+					return 0;
+				case WM_RBUTTONUP:
+					m_mouse.on_button_up( mouse_button::right );
+					return 0;
+				case WM_MBUTTONDOWN:
+					m_mouse.on_button_down( mouse_button::middle );
+					return 0;
+				case WM_MBUTTONUP:
+					m_mouse.on_button_up( mouse_button::middle );
+					return 0;
+				case WM_XBUTTONDOWN:
+					if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON1 ){
+						m_mouse.on_button_down( mouse_button::x1 );
+					}else if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON2 ){
+						m_mouse.on_button_down( mouse_button::x2 );
+					}
+					return TRUE;
+				case WM_XBUTTONUP:
+					if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON1 ){
+						m_mouse.on_button_up( mouse_button::x1 );
+					}else if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON2 ){
+						m_mouse.on_button_up( mouse_button::x2 );
+					}
+					return TRUE;
+				case WM_MOUSEWHEEL:
+					m_mouse.on_wheel( static_cast<float>( GET_WHEEL_DELTA_WPARAM( wparam ) ) / static_cast<float>( WHEEL_DELTA ) );
+					return 0;
+				default:
+					return DefWindowProcW(
+						reinterpret_cast< HWND >( m_display.handle() ),
+						msg,
+						wparam,
+						lparam
+					);
 			}
 		}
 		void set_title( std::wstring title_ ){
-			SetWindowTextW( 
+			SetWindowTextW(
 				reinterpret_cast< HWND >( m_display.handle() ),
-				title_.c_str() 
+				title_.c_str()
 			);
 		}
 	private:
 		dny::display m_display;
+		dny::keyboard m_keyboard;
+		dny::mouse m_mouse;
 		bool m_done = false;
 	};
 }

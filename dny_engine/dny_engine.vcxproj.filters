@@ -54,6 +54,9 @@
     <ClInclude Include="dny_image_loader.hpp">
       <Filter>Header Files\DNY_Lib</Filter>
     </ClInclude>
+    <ClInclude Include="dny_input.hpp">
+      <Filter>Header Files\DNY_Lib</Filter>
+    </ClInclude>
     <ClInclude Include="dny_math.hpp">
       <Filter>Header Files\DNY_Lib</Filter>
     </ClInclude>
