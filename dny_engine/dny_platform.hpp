@@ -19,6 +19,8 @@ namespace dny{
 		}
 
 		void process_message_pump(){
+			m_keyboard.begin_frame();
+			m_mouse.begin_frame();
 			while( auto msg = win32::peek_message() ){
 				win32::translate_message( *msg );
 				win32::dispatch_message( *msg );
@@ -56,11 +58,11 @@ namespace dny{
 			m_display.unclamp_cursor();
 		}
 		void recenter_mouse(){
-			RECT wrect = {};
-			auto dt = GetDesktopWindow();
-			GetWindowRect( dt, &wrect );
-			auto center_x = ( wrect.left + wrect.right ) / 2;
-			auto center_y = ( wrect.top + wrect.bottom ) / 2;
+			RECT rect = {};
+			GetClientRect( reinterpret_cast< HWND >( m_display.handle() ), &rect );
+			MapWindowPoints( reinterpret_cast< HWND >( m_display.handle() ), nullptr, reinterpret_cast< POINT* >( &rect ), 2 );
+			auto center_x = ( rect.left + rect.right ) / 2;
+			auto center_y = ( rect.top + rect.bottom ) / 2;
 			SetCursorPos( center_x, center_y );
 		}
 

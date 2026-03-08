@@ -1,13 +1,11 @@
 ﻿#pragma once
 
-#include "dny_font.hpp"
-#include "dny_colors.hpp"
-#include "dny_soft_renderer.hpp"
 #include "dny_math.hpp"
-#include "dny_simd.hpp"
 #include "dny_surface.hpp"
-#include "dny_utilities.hpp"
 
+#include <algorithm>
+#include <cstdint>
+#include <string>
 #include <utility>
 
 namespace dny{
@@ -118,6 +116,7 @@ namespace dny{
 			}
 		}
 	}
+
 	template<typename ColorT>
 	void draw( 
 		std::string text_, 

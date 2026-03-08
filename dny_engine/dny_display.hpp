@@ -98,6 +98,7 @@ float4 main( float4 pos : SV_Position, float2 uv : TEXCOORD0 ) : SV_Target
 		void clamp_cursor(){
 			RECT rect;
 			GetClientRect( m_handle, &rect );
+			MapWindowPoints( m_handle, nullptr, reinterpret_cast< POINT* >( &rect ), 2 );
 			ClipCursor( &rect );
 		}
 		void unclamp_cursor(){

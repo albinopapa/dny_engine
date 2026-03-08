@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "dny_win32sdk.hpp"
 
 #include <span>
