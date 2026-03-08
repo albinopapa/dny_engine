@@ -10,12 +10,16 @@
 
 namespace dny{
 	Rect<std::int32_t> clip_rect( Rect<std::int32_t>const& src_, Rect<std::int32_t> const& bounds_ ){
-		return Rect<std::int32_t>{
-			std::max( -src_.left, 0 ),
-				std::max( -src_.top, 0 ),
-				std::min<std::int32_t>( bounds_.width() - src_.left, src_.width()),
-				std::min<std::int32_t>( bounds_.height() - src_.top, src_.height())
-		};
+		const auto left = std::max( src_.left, bounds_.left );
+		const auto right = std::min( src_.right, bounds_.right );
+		const auto top = std::min( src_.top, bounds_.top );
+		const auto bottom = std::max( src_.bottom, bounds_.bottom );
+
+		if( left >= right || bottom >= top ){
+			return Rect<std::int32_t>{};
+		}
+
+		return Rect<std::int32_t>{ left, top, right, bottom };
 	}
 
 	template<typename ColorT>
@@ -62,7 +66,7 @@ namespace dny{
 		ColorT color_,
 		surface<ColorT>& canvas_ ){
 		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+			0, canvas_.height(), canvas_.width(), 0
 		};
 		const auto clippped = clip_rect( rect_, canvas_bounds );
 		draw_line( clippped.top_left(),    clippped.top_right(), color_, canvas_ );
@@ -78,23 +82,21 @@ namespace dny{
 		ColorT const& color_, 
 		surface<ColorT>& canvas_ ){
 		const auto rad_sq = radius_ * radius_;
-		const auto circle_bounds = {
-			center_.x - radius_, center_.y - radius_,
-			center_.x + radius_, center_.y + radius_,
+		const auto circle_bounds = Rect<std::int32_t>{
+			center_.x - radius_, center_.y + radius_,
+			center_.x + radius_, center_.y - radius_
 		};
-		const auto canvas_bounds = Rect<std::int32_t>{ 
-			0, 0, canvas_.width(), canvas_.height() 
+		const auto canvas_bounds = Rect<std::int32_t>{
+			0, canvas_.height(), canvas_.width(), 0
 		};
 		const auto clipped = clip_rect( circle_bounds, canvas_bounds );
 
-		for( auto y = clipped.top - radius_; y < clipped.bottom - radius_; ++y ){
-			for( auto x = clipped.left - radius_; x < clipped.right - radius_; ++x ){
-				const auto dist_sq = ( x * x ) + ( y * y );
-				if( dist_sq <= rad_sq ){
-					canvas_.pixel(
-						clipped.left + x + center_.x,
-						clipped.top + y + center_.y
-					) = color_;
+		for( auto y = clipped.bottom; y < clipped.top; ++y ){
+			for( auto x = clipped.left; x < clipped.right; ++x ){
+				const auto dx = x - center_.x;
+				const auto dy = y - center_.y;
+				if( ( dx * dx ) + ( dy * dy ) <= rad_sq ){
+					canvas_.pixel( x, y ) = color_;
 				}
 			}
 		}
@@ -106,11 +108,11 @@ namespace dny{
 		ColorT color_, 
 		surface<ColorT>& canvas_ ){
 		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+			0, canvas_.height(), canvas_.width(), 0
 		};
 		const auto clipped = clip_rect( rect_, canvas_bounds );
 
-		for( auto y = clipped.top; y < clipped.bottom; ++y ){
+		for( auto y = clipped.bottom; y < clipped.top; ++y ){
 			for( auto x = clipped.left; x < clipped.right; ++x ){
 				canvas_.pixel( x, y ) = color_;
 			}
@@ -126,9 +128,9 @@ namespace dny{
 		surface<ColorT>& canvas_ ){
 		const auto canvas_bounds = Rect<std::int32_t>{
 			0,
-			0,
+			static_cast< std::int32_t >( canvas_.height() ),
 			static_cast< std::int32_t >( canvas_.width() ),
-			static_cast< std::int32_t >( canvas_.height() )
+			0
 		};
 
 		static constexpr auto trans_black = Color32{ 0 };
@@ -153,13 +155,13 @@ namespace dny{
 			++i;
 
 			const auto rect = Rect<std::int32_t>{
-				new_x, position_.y,
-				new_x + char_rect.width(), position_.y + char_rect.height()
+				new_x, position_.y + char_rect.height(),
+				new_x + char_rect.width(), position_.y
 			};
-			const auto clipped = clip_rect( rect, canvas_bounds ) +
-				dny::vector2<std::int32_t>{ new_x, position_.y };
-
-			draw_char( { clipped.left, clipped.top }, char_rect );
+			if( rect.right > canvas_bounds.left && rect.left < canvas_bounds.right &&
+				rect.top > canvas_bounds.bottom && rect.bottom < canvas_bounds.top ){
+				draw_char( { rect.left, rect.bottom }, char_rect );
+			}
 		}
 	}
 

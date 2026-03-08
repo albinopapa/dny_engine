@@ -3,6 +3,7 @@
 #include "dny_image_loader.hpp"
 #include "dny_math.hpp"
 #include "dny_platform.hpp"
+#include "dny_physics.hpp"
 #include "dny_primitive_generators.hpp"
 #include "dny_timer.hpp"
 
@@ -75,7 +76,7 @@ public:
 	dny::vector2<float> const& get_position()const{
 		return position;
 	}
-	void update( float dt, dny::input const& input ){
+	void update( float dt, dny::input const& input, dny::polyline_collider<float> const& terrain_ ){
 		const auto move_dir =
 			( input.is_key_down( 'D' ) ? 1.f : 0.f ) -
 			( input.is_key_down( 'A' ) ? 1.f : 0.f );
@@ -90,10 +91,26 @@ public:
 		velocity.y += gravity * dt;
 		position.y += velocity.y * dt;
 
-		if( position.y < ground_height ){
-			position.y = ground_height;
+		auto player_bounds = dny::Rect<float>{
+			position.x - size.width * 0.5f,
+			position.y - size.height * 0.5f,
+			position.x + size.width * 0.5f,
+			position.y + size.height * 0.5f
+		};
+
+		const auto resolution = dny::resolve_aabb_vs_polyline( player_bounds, terrain_, 0.75f );
+		if( resolution.y != 0.f ){
+			position.y += resolution.y;
 			velocity.y = 0.f;
 			is_on_ground = true;
+		}
+		else if( position.y < fallback_ground_height ){
+			position.y = fallback_ground_height;
+			velocity.y = 0.f;
+			is_on_ground = true;
+		}
+		else{
+			is_on_ground = false;
 		}
 	}
 	dny::matrix_4x4<float> get_transform()const{
@@ -106,10 +123,10 @@ private:
 	static constexpr float move_speed = 12.f;
 	static constexpr float jump_velocity = 16.f;
 	static constexpr float gravity = -36.f;
-	static constexpr float ground_height = 0.f;
+	static constexpr float fallback_ground_height = -4.f;
 	static constexpr float dim = 4.f;
 	static constexpr dny::dims2<float> size{ dim, dim };
-	dny::vector2<float> position{ 0.f, ground_height };
+	dny::vector2<float> position{ 0.f, fallback_ground_height };
 	dny::vector2<float> velocity{ 0.f, 0.f };
 	bool is_on_ground = true;
 
@@ -140,7 +157,7 @@ private:
 	}
 	void update(){
 		const auto dt = timer.mark();
-		player.update( dt, platform.get_input() );
+		player.update( dt, platform.get_input(), terrain_collider );
 		camera_position = {
 			player.get_position().x,
 			player.get_position().y,
@@ -206,6 +223,10 @@ private:
 			renderer.render( terrain_vbuffer );
 		}
 
+		if( debug_draw_colliders ){
+			draw_terrain_polyline_debug();
+		}
+
 		dny::draw(
 			std::format( "FPS: {:.2f}", frame_rate ),
 			dny::vector2<std::int32_t>{ 10, 10 },
@@ -213,6 +234,24 @@ private:
 			dny::Color32{ dny::Colors::white },
 			render_target
 		);
+	}
+
+	void draw_terrain_polyline_debug(){
+		auto project = [ this ]( dny::vector2<float> const& point_ ){
+			return dny::vector2<std::int32_t>{
+				static_cast<std::int32_t>( 40.f + ( point_.x + 8.f ) * 18.f ),
+				static_cast<std::int32_t>( static_cast<float>( render_target.height() ) - ( 40.f + ( point_.y + 6.f ) * 18.f ) )
+			};
+		};
+
+		for( std::size_t i = 0; i + 1 < terrain_collider.points.size(); ++i ){
+			dny::draw_line(
+				project( terrain_collider.points[ i ] ),
+				project( terrain_collider.points[ i + 1 ] ),
+				dny::Color32{ dny::Colors::chartreuse },
+				render_target
+			);
+		}
 	}
 	void end_frame(){
 		platform.update_view(
@@ -323,6 +362,15 @@ private:
 		{  1.f, -2.f, action_plane_z },
 		{  2.f, -2.f, action_plane_z }
 	};
+	dny::polyline_collider<float> terrain_collider = dny::generate_polyline_collider<float>( {
+		{ -8.f, -4.f },
+		{ -4.f, -4.f },
+		{ -1.f, -2.5f },
+		{ 2.f, -1.f },
+		{ 5.f, -1.75f },
+		{ 8.f, -1.75f }
+	} );
+	bool debug_draw_colliders = true;
 
 	dny::Timer timer;
 	std::size_t frame_count = 0;
