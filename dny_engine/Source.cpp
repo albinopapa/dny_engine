@@ -75,6 +75,27 @@ public:
 	dny::vector2<float> const& get_position()const{
 		return position;
 	}
+	void update( float dt, dny::input const& input ){
+		const auto move_dir =
+			( input.is_key_down( 'D' ) ? 1.f : 0.f ) -
+			( input.is_key_down( 'A' ) ? 1.f : 0.f );
+
+		position.x += move_dir * move_speed * dt;
+
+		if( input.is_key_down( VK_SPACE ) && is_on_ground ){
+			velocity.y = jump_velocity;
+			is_on_ground = false;
+		}
+
+		velocity.y += gravity * dt;
+		position.y += velocity.y * dt;
+
+		if( position.y < ground_height ){
+			position.y = ground_height;
+			velocity.y = 0.f;
+			is_on_ground = true;
+		}
+	}
 	dny::matrix_4x4<float> get_transform()const{
 		auto rotation = dny::matrix_4x4<float>::rotation_x( dny::to_radians( 90.f ) );
 		auto translation = dny::matrix_4x4<float>::translation( { position.x, position.y, action_plane_z } );
@@ -82,10 +103,15 @@ public:
 		return rotation * scaling * translation;
 	}
 private:
-	static constexpr float speed = 100.f;
+	static constexpr float move_speed = 12.f;
+	static constexpr float jump_velocity = 16.f;
+	static constexpr float gravity = -36.f;
+	static constexpr float ground_height = 0.f;
 	static constexpr float dim = 4.f;
 	static constexpr dny::dims2<float> size{ dim, dim };
-	dny::vector2<float> position;
+	dny::vector2<float> position{ 0.f, ground_height };
+	dny::vector2<float> velocity{ 0.f, 0.f };
+	bool is_on_ground = true;
 
 };
 
@@ -114,6 +140,13 @@ private:
 	}
 	void update(){
 		const auto dt = timer.mark();
+		player.update( dt, platform.get_input() );
+		camera_position = {
+			player.get_position().x,
+			player.get_position().y,
+			camera_distance
+		};
+
 		frame_times[ ( frame_count++ ) % frame_times.size() ] = dt;
 		if(frame_count >= frame_times.size() ){
 			const auto sum = std::accumulate( 
@@ -245,6 +278,7 @@ private:
 	
 	Player player;
 	dny::vector3<float> camera_position{ 0.f, 0.f, -10.f };
+	float camera_distance = -10.f;
 	std::vector<dny::vector3<float>> terrain_positions{
 		{ -2.f, -2.f, action_plane_z },
 		{ -1.f, -2.f, action_plane_z },

@@ -2,6 +2,7 @@
 
 #include "dny_math.hpp"
 #include "dny_display.hpp"
+#include "dny_input.hpp"
 
 #include <cstdint>
 
@@ -28,6 +29,10 @@ namespace dny{
 		}
 		bool is_done()const{
 			return m_done;
+		}
+
+		input const& get_input()const noexcept{
+			return m_input;
 		}
 
 		dny::vector2<float> mouse_pos()const noexcept{
@@ -61,23 +66,38 @@ namespace dny{
 
 		LRESULT message_proc( UINT msg, WPARAM wparam, LPARAM lparam ){
 			switch( msg ){
-				case WM_CLOSE:  m_done = true; return 0;
-				default: return DefWindowProcW( 
-					reinterpret_cast< HWND >( m_display.handle() ),
-					msg, 
-					wparam, 
-					lparam
-				);
+				case WM_CLOSE:
+					m_done = true;
+					return 0;
+				case WM_KEYDOWN:
+				case WM_SYSKEYDOWN:
+					m_input.on_key_down( static_cast<std::uint8_t>( wparam ) );
+					return 0;
+				case WM_KEYUP:
+				case WM_SYSKEYUP:
+					m_input.on_key_up( static_cast<std::uint8_t>( wparam ) );
+					return 0;
+				case WM_KILLFOCUS:
+					m_input.clear();
+					return 0;
+				default:
+					return DefWindowProcW(
+						reinterpret_cast< HWND >( m_display.handle() ),
+						msg,
+						wparam,
+						lparam
+					);
 			}
 		}
 		void set_title( std::wstring title_ ){
-			SetWindowTextW( 
+			SetWindowTextW(
 				reinterpret_cast< HWND >( m_display.handle() ),
-				title_.c_str() 
+				title_.c_str()
 			);
 		}
 	private:
 		dny::display m_display;
+		input m_input;
 		bool m_done = false;
 	};
 }
