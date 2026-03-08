@@ -75,14 +75,14 @@ public:
 	dny::vector2<float> const& get_position()const{
 		return position;
 	}
-	void update( float dt ){
+	void update( float dt, dny::input const& input ){
 		const auto move_dir =
-			( is_key_down( 'D' ) ? 1.f : 0.f ) -
-			( is_key_down( 'A' ) ? 1.f : 0.f );
+			( input.is_key_down( 'D' ) ? 1.f : 0.f ) -
+			( input.is_key_down( 'A' ) ? 1.f : 0.f );
 
 		position.x += move_dir * move_speed * dt;
 
-		if( is_key_down( VK_SPACE ) && is_on_ground ){
+		if( input.is_key_down( VK_SPACE ) && is_on_ground ){
 			velocity.y = jump_velocity;
 			is_on_ground = false;
 		}
@@ -103,10 +103,6 @@ public:
 		return rotation * scaling * translation;
 	}
 private:
-	static bool is_key_down( std::int32_t key_code ){
-		return ( GetAsyncKeyState( key_code ) & 0x8000 ) != 0;
-	}
-
 	static constexpr float move_speed = 12.f;
 	static constexpr float jump_velocity = 16.f;
 	static constexpr float gravity = -36.f;
@@ -147,7 +143,7 @@ private:
 	}
 	void update(){
 		const auto dt = timer.mark();
-		player.update( dt );
+		player.update( dt, platform.get_input() );
 		camera_position = {
 			player.get_position().x,
 			player.get_position().y,

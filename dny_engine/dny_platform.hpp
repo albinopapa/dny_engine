@@ -33,9 +33,18 @@ namespace dny{
 			return m_done;
 		}
 
-		keyboard const& keyboard_state()const noexcept{ return m_keyboard; }
-		mouse const& mouse_state()const noexcept{ return m_mouse; }
+		input const& get_input()const noexcept{
+			return m_input;
+		}
 
+		dny::vector2<float> mouse_pos()const noexcept{
+			auto mp = POINT{};
+			GetCursorPos( &mp );
+			return{
+				static_cast< float >( mp.x ),
+				static_cast< float >( mp.y )
+			};
+		}
 		void hide_mouse(){
 			ShowCursor( FALSE );
 		}
@@ -62,56 +71,16 @@ namespace dny{
 				case WM_CLOSE:
 					m_done = true;
 					return 0;
-				case WM_KILLFOCUS:
-					m_keyboard.clear();
-					m_mouse.clear();
-					m_display.unclamp_cursor();
-					return 0;
 				case WM_KEYDOWN:
 				case WM_SYSKEYDOWN:
-					m_keyboard.on_key_down( static_cast< std::uint32_t >( wparam ) );
+					m_input.on_key_down( static_cast<std::uint8_t>( wparam ) );
 					return 0;
 				case WM_KEYUP:
 				case WM_SYSKEYUP:
-					m_keyboard.on_key_up( static_cast< std::uint32_t >( wparam ) );
+					m_input.on_key_up( static_cast<std::uint8_t>( wparam ) );
 					return 0;
-				case WM_MOUSEMOVE:
-					m_mouse.on_move( GET_X_LPARAM( lparam ), GET_Y_LPARAM( lparam ) );
-					return 0;
-				case WM_LBUTTONDOWN:
-					m_mouse.on_button_down( mouse_button::left );
-					return 0;
-				case WM_LBUTTONUP:
-					m_mouse.on_button_up( mouse_button::left );
-					return 0;
-				case WM_RBUTTONDOWN:
-					m_mouse.on_button_down( mouse_button::right );
-					return 0;
-				case WM_RBUTTONUP:
-					m_mouse.on_button_up( mouse_button::right );
-					return 0;
-				case WM_MBUTTONDOWN:
-					m_mouse.on_button_down( mouse_button::middle );
-					return 0;
-				case WM_MBUTTONUP:
-					m_mouse.on_button_up( mouse_button::middle );
-					return 0;
-				case WM_XBUTTONDOWN:
-					if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON1 ){
-						m_mouse.on_button_down( mouse_button::x1 );
-					}else if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON2 ){
-						m_mouse.on_button_down( mouse_button::x2 );
-					}
-					return TRUE;
-				case WM_XBUTTONUP:
-					if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON1 ){
-						m_mouse.on_button_up( mouse_button::x1 );
-					}else if( GET_XBUTTON_WPARAM( wparam ) == XBUTTON2 ){
-						m_mouse.on_button_up( mouse_button::x2 );
-					}
-					return TRUE;
-				case WM_MOUSEWHEEL:
-					m_mouse.on_wheel( static_cast<float>( GET_WHEEL_DELTA_WPARAM( wparam ) ) / static_cast<float>( WHEEL_DELTA ) );
+				case WM_KILLFOCUS:
+					m_input.clear();
 					return 0;
 				default:
 					return DefWindowProcW(
@@ -130,8 +99,7 @@ namespace dny{
 		}
 	private:
 		dny::display m_display;
-		dny::keyboard m_keyboard;
-		dny::mouse m_mouse;
+		input m_input;
 		bool m_done = false;
 	};
 }
