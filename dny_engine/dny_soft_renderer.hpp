@@ -18,14 +18,6 @@
 #undef far
 #undef near
 
-#if defined( _MSC_VER )
-#include <intrin.h>
-#elif defined( __SSE__ ) || defined( __x86_64__ ) || defined( __i386__ )
-#include <xmmintrin.h>
-#else
-#error "dny::simd headers require SSE-capable x86 architecture"
-#endif
-
 namespace dny{
 	template<typename... Fields>
 	struct basic_vertex{
@@ -102,10 +94,10 @@ namespace dny{
 			const auto tx = static_cast< std::uint32_t >(
 				static_cast< float >( texture->width() - 1 ) * uv.x
 				);
-			const auto ty = static_cast< std::uint32_t >( 
+			const auto ty = static_cast< std::uint32_t >(
 				static_cast< float >( texture->height() - 1 ) * uv.y
 				);
-			
+
 			return texture->pixel(
 				static_cast< std::uint32_t >( tx ),
 				static_cast< std::uint32_t >( ty )
@@ -118,8 +110,8 @@ namespace dny{
 			if( !texture )return Colors::black;
 			const auto f_width = static_cast< float >( texture->width() );
 			const auto f_height = static_cast< float >( texture->height() );
-			const auto tx = f_width * uv.x;  
-			const auto ty = f_height * uv.y; 
+			const auto tx = f_width * uv.x;
+			const auto ty = f_height * uv.y;
 
 			const auto ix = static_cast< std::uint32_t >( std::clamp( tx, 0.f, f_width - 2.f ) );
 			const auto iy = static_cast< std::uint32_t >( std::clamp( ty, 0.f, f_height - 2.f ) );
@@ -135,9 +127,9 @@ namespace dny{
 				const auto mt = mtx - simd::truncate( mtx );
 				const auto mu = mty - simd::truncate( mty );
 
-				const auto l1 =   mc00 + ( mc01 - mc00 ) * mt;
-				const auto l2 =   mc10 + ( mc11 - mc10 ) * mt;
-				const auto result = l1 + ( l2   - l1 )   * mu;
+				const auto l1 = mc00 + ( mc01 - mc00 ) * mt;
+				const auto l2 = mc10 + ( mc11 - mc10 ) * mt;
+				const auto result = l1 + ( l2 - l1 ) * mu;
 
 				ColorF final_color;
 				dny::simd::store( result, final_color );
@@ -420,7 +412,7 @@ namespace dny{
 			};
 
 			// ---- Top-left rule
-			auto simd_is_top_left = [&](
+			auto simd_is_top_left = [ & ](
 				simd::float4 v0,
 				simd::float4 v1 ){
 				// 		const auto dist = v1 - v0;
@@ -428,8 +420,8 @@ namespace dny{
 				const auto dist = v1 - v0;
 				const auto dx = simd::shuffle<0, 0, 0, 0>( dist );
 				const auto dy = simd::shuffle<1, 1, 1, 1>( dist );
-				
-				const auto result = 
+
+				const auto result =
 					( dy < zero ) || ( ( dy <= zero ) && ( dx > zero ) );
 				return simd::all( result );
 			};
@@ -449,11 +441,11 @@ namespace dny{
 			const auto inv_wc =
 				one / simd::shuffle<3, 3, 3, 3>( vc[ Position_ID ] );
 
-			const auto position_va = 
+			const auto position_va =
 				screen_transform( va[ Position_ID ] * inv_wa );
-			const auto position_vb = 
+			const auto position_vb =
 				screen_transform( vb[ Position_ID ] * inv_wb );
-			const auto position_vc = 
+			const auto position_vc =
 				screen_transform( vc[ Position_ID ] * inv_wc );
 
 			const auto area = simd_signed_area( position_va, position_vb, position_vc );
@@ -473,15 +465,15 @@ namespace dny{
 			const auto min_xy = simd::max(
 				_mm_setzero_ps(),
 				simd::floor( simd::min( simd::min(
-					position_va, 
-					position_vb ), 
+					position_va,
+					position_vb ),
 					position_vc ) )
 			);
 			const auto max_xy = _mm_min_ps(
 				limits,
-				simd::ceil( simd::max( simd::max( 
-					position_va, 
-					position_vb ), 
+				simd::ceil( simd::max( simd::max(
+					position_va,
+					position_vb ),
 					position_vc ) )
 			);
 			const auto min_x = static_cast< int >( simd::extract<0>( min_xy ) );
@@ -542,10 +534,10 @@ namespace dny{
 						( simd::shuffle<2, 2, 2, 2>( va[ Position_ID ] ) * ( t_vec * inv_wa ) ) +
 						( simd::shuffle<2, 2, 2, 2>( vb[ Position_ID ] ) * ( u_vec * inv_wb ) ) +
 						( simd::shuffle<2, 2, 2, 2>( vc[ Position_ID ] ) * ( v_vec * inv_wc ) )
-						);
+					);
 
 					const auto idx = x + y * m_target->width();
-					if( depth >= m_depth_buffer->at( idx ) ) {
+					if( depth >= m_depth_buffer->at( idx ) ){
 						continue;
 					}
 					else{

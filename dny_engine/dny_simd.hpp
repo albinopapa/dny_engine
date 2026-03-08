@@ -6,7 +6,14 @@
 #include "dny_colors.hpp"
 #include "dny_math_constants.hpp"
 
+#if defined( _MSC_VER )
 #include <intrin.h>
+#elif defined( __SSE__ ) || defined( __x86_64__ ) || defined( __i386__ )
+#include <xmmintrin.h>
+#else
+#error "dny::simd headers require SSE-capable x86 architecture"
+#endif
+
 #include <span>
 
 namespace dny::simd{
@@ -122,7 +129,7 @@ namespace dny::simd{
 		r3 = shuffle<1, 3, 1, 3>( temp1, temp3 );
 	}
 
-	inline void _vectorcall store( float4 src, std::span<float,4> dst ){
+	inline void _vectorcall store( float4 src, std::span<float, 4> dst ){
 		_mm_storeu_ps( dst.data(), src );
 	}
 	inline void _vectorcall store( float4 src, float& dst )noexcept{

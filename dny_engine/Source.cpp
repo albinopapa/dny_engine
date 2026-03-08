@@ -164,7 +164,8 @@ private:
 			projection_matrix
 		};
 
-		renderer.set_pixel_shader_textures( 0, girl_walking_frames[ 0 ] );
+		//renderer.set_pixel_shader_textures( 0, girl_walking_frames[ 0 ] );
+		renderer.set_pixel_shader_textures( 0, girl_step );
 		renderer.set_render_target( render_target );
 		renderer.set_depth_buffer( depth_buffer );
 
@@ -174,7 +175,7 @@ private:
 		renderer.set_pixel_shader_textures( 0, terrain_texture );
 		for(const auto& pos : terrain_positions ){
 			auto terrain_cb = transform_constant_buffer{
-				dny::matrix_4x4<float>::translation( { pos.x, pos.y, 0.f } ),
+				dny::matrix_4x4<float>::translation( { pos.x, pos.y, action_plane_z } ),
 				view_matrix,
 				projection_matrix
 			};
@@ -207,6 +208,23 @@ private:
 	}
 
 	void init_textures(){
+		{
+			const auto filename = "Assets/Textures/girl_step_ini.png";
+			const auto data = 
+				dny::load_image_data( std::filesystem::path{ filename } );
+			girl_step = dny::surface<dny::ColorF>{ data.width, data.height };
+
+			for( std::size_t j = 0; j < data.width * data.height; ++j ){
+				const auto r = data.pixels[ j * data.channels_per_pixel + 2 ];
+				const auto g = data.pixels[ j * data.channels_per_pixel + 1 ];
+				const auto b = data.pixels[ j * data.channels_per_pixel + 0 ];
+				const auto a = ( data.channels_per_pixel >= 4 ) ?
+					data.pixels[ j * data.channels_per_pixel + 3 ] : 255ui8;
+
+				girl_step.pixels()[ j ] = dny::ColorF{ r, g, b, a };
+			}
+		}
+
 		for( auto i = 0; i < 30; ++i ){
 			const auto filename =
 				std::format( "Assets/Textures/girl_walking{:02}.png", i );
@@ -279,6 +297,7 @@ private:
 	frame_pack girl_walking_frames;
 	pnu_vertex_buffer terrain_vbuffer = dny::primitives::generate_cube();
 	texture2d terrain_texture;
+	texture2d girl_step;
 	
 	Player player;
 	dny::vector3<float> camera_position{ 0.f, 0.f, -10.f };
@@ -300,7 +319,7 @@ private:
 std::int32_t main() {
 	auto platform = dny::platform{};
 	auto game = Game{ platform };
-
+	
 	while( !platform.is_done() ){
 		platform.process_message_pump();
 		game.run();

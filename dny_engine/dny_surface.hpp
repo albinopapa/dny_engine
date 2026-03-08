@@ -2,7 +2,6 @@
 
 #include "dny_concepts.hpp"
 #include "dny_colors.hpp"
-#include "dny_font.hpp"
 #include "dny_math.hpp"
 
 #include <cassert>
