@@ -19,8 +19,6 @@ namespace dny{
 		}
 
 		void process_message_pump(){
-			m_keyboard.begin_frame();
-			m_mouse.begin_frame();
 			while( auto msg = win32::peek_message() ){
 				win32::translate_message( *msg );
 				win32::dispatch_message( *msg );
