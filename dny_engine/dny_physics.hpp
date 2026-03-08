@@ -5,7 +5,99 @@
 #include "dny_rectangle.hpp"
 #include "dny_vector2.hpp"
 
+#include <algorithm>
+#include <cmath>
+#include <optional>
+#include <vector>
+
 namespace dny{
+	template<math_scalar T>
+	struct polyline_collider{
+		std::vector<vector2<T>> points;
+
+		[[nodiscard]] constexpr bool valid() const noexcept{
+			return points.size() >= 2;
+		}
+	};
+
+	template<math_scalar T>
+	inline polyline_collider<T> generate_polyline_collider( std::vector<vector2<T>> points_ ){
+		points_.erase(
+			std::unique( points_.begin(), points_.end(), []( vector2<T> const& lhs_, vector2<T> const& rhs_ ){
+				return lhs_.x == rhs_.x && lhs_.y == rhs_.y;
+			} ),
+			points_.end()
+		);
+
+		return { std::move( points_ ) };
+	}
+
+	template<math_scalar T>
+	inline std::optional<T> sample_polyline_height( polyline_collider<T> const& polyline_, T x_ ){
+		if( !polyline_.valid() ){
+			return std::nullopt;
+		}
+
+		auto sampled_height = std::optional<T>{};
+		for( std::size_t i = 0; i + 1 < polyline_.points.size(); ++i ){
+			const auto p0 = polyline_.points[ i ];
+			const auto p1 = polyline_.points[ i + 1 ];
+
+			const auto min_x = std::min( p0.x, p1.x );
+			const auto max_x = std::max( p0.x, p1.x );
+			if( x_ < min_x || x_ > max_x ){
+				continue;
+			}
+
+			if( p0.x == p1.x ){
+				const auto y = std::max( p0.y, p1.y );
+				sampled_height = sampled_height ? std::max( *sampled_height, y ) : y;
+				continue;
+			}
+
+			const auto t = ( x_ - p0.x ) / ( p1.x - p0.x );
+			const auto y = p0.y + ( p1.y - p0.y ) * t;
+			sampled_height = sampled_height ? std::max( *sampled_height, y ) : y;
+		}
+
+		return sampled_height;
+	}
+
+	template<math_scalar T>
+	inline bool intersects( Rect<T> const& box_, polyline_collider<T> const& polyline_ ){
+		if( !polyline_.valid() ){
+			return false;
+		}
+
+		const auto center_x = ( box_.left + box_.right ) * static_cast<T>( 0.5 );
+		const auto surface = sample_polyline_height( polyline_, center_x );
+		if( !surface ){
+			return false;
+		}
+
+		return box_.bottom > *surface && box_.top < *surface;
+	}
+
+	template<math_scalar T>
+	inline vector2<T> resolve_aabb_vs_polyline( Rect<T>& box_, polyline_collider<T> const& polyline_, T snap_distance_ = static_cast<T>( 1.0 ) ){
+		if( !polyline_.valid() ){
+			return {};
+		}
+
+		const auto center_x = ( box_.left + box_.right ) * static_cast<T>( 0.5 );
+		const auto surface = sample_polyline_height( polyline_, center_x );
+		if( !surface ){
+			return {};
+		}
+
+		const auto penetration = box_.bottom - *surface;
+		if( penetration < -snap_distance_ || penetration <= T{} ){
+			return {};
+		}
+
+		box_.translate( { T{}, -penetration } );
+		return { T{}, -penetration };
+	}
 
 	// ---------------------------------------------
 	// Rect<T> queries
@@ -49,13 +141,12 @@ namespace dny{
 			return { T{}, pen_y };
 	}
 
-
 	template<math_scalar T>
 	constexpr bool intersects( const aabb<T>& a, const aabb<T>& b ) noexcept{
 		return
-			a.max.x > b.min.x && a.min.x < b.max.x &&
-			a.max.y > b.min.y && a.min.y < b.max.y &&
-			a.max.z > b.min.z && a.min.z < b.max.z;
+			a.max_pt.x > b.min_pt.x && a.min_pt.x < b.max_pt.x &&
+			a.max_pt.y > b.min_pt.y && a.min_pt.y < b.max_pt.y &&
+			a.max_pt.z > b.min_pt.z && a.min_pt.z < b.max_pt.z;
 	}
 
 }
