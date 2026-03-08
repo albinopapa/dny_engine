@@ -204,6 +204,7 @@ namespace dny{
 		constexpr ColorF yellow = ColorF{ 1.0f, 1.0f, 0.0f };
 		constexpr ColorF cyan = ColorF{ 0.0f, 1.0f, 1.0f };
 		constexpr ColorF magenta = ColorF{ 1.0f, 0.0f, 1.0f };
+		constexpr ColorF chartreuse = ColorF{ 0.49803922f, 1.0f, 0.0f };
 	}
 	
 	template<> struct is_color<Color32> :std::true_type{};

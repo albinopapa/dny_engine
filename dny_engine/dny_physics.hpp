@@ -75,7 +75,7 @@ namespace dny{
 			return false;
 		}
 
-		return box_.bottom > *surface && box_.top < *surface;
+		return box_.bottom < *surface && box_.top > *surface;
 	}
 
 	template<math_scalar T>
@@ -90,13 +90,13 @@ namespace dny{
 			return {};
 		}
 
-		const auto penetration = box_.bottom - *surface;
-		if( penetration < -snap_distance_ || penetration <= T{} ){
+		const auto penetration = *surface - box_.bottom;
+		if( penetration < -snap_distance_ ){
 			return {};
 		}
 
-		box_.translate( { T{}, -penetration } );
-		return { T{}, -penetration };
+		box_.translate( { T{}, penetration } );
+		return { T{}, penetration };
 	}
 
 	// ---------------------------------------------
@@ -106,39 +106,43 @@ namespace dny{
 	constexpr bool contains( const Rect<T>& r, const vector2<T>& p ) noexcept{
 		return
 			p.x >= r.left && p.x <= r.right &&
-			p.y >= r.top && p.y <= r.bottom;
+			p.y <= r.top && p.y >= r.bottom;
 	}
 
 	template<math_scalar T>
 	constexpr bool contains( Rect<T> const& lhs_, Rect<T> const& rhs_ ) noexcept{
 		return
 			( lhs_.left < rhs_.left && lhs_.right > rhs_.right ) &&
-			( lhs_.top < rhs_.top && lhs_.bottom > rhs_.bottom );
+			( lhs_.top > rhs_.top && lhs_.bottom < rhs_.bottom );
 	}
 
 	template<math_scalar T>
 	constexpr bool intersects( const Rect<T>& a, const Rect<T>& b ) noexcept{
 		return
-			a.right  > b.left  &&
-			a.left   < b.right &&
-			a.bottom > b.top   &&
-			a.top    < b.bottom;
+			a.right > b.left   &&
+			a.left < b.right   &&
+			a.top > b.bottom   &&
+			a.bottom < b.top;
 	}
 
 	template<math_scalar T>
 	constexpr vector2<T> penetration_vector( const Rect<T>& a, const Rect<T>& b ) noexcept{
-		T left   = b.right  - a.left;
-		T right  = a.right  - b.left;
-		T bottom = b.bottom - a.top;
-		T top    = a.bottom - b.top;
+		const auto overlap_x = std::min( a.right, b.right ) - std::max( a.left, b.left );
+		const auto overlap_y = std::min( a.top, b.top ) - std::max( a.bottom, b.bottom );
 
-		T pen_x  = ( left < right ) ? left : -right;
-		T pen_y  = ( bottom < top ) ? bottom : -top;
+		if( overlap_x <= T{} || overlap_y <= T{} ){
+			return {};
+		}
 
-		if( std::abs( pen_x ) < std::abs( pen_y ) )
-			return { pen_x, T{} };
-		else
-			return { T{}, pen_y };
+		if( overlap_x < overlap_y ){
+			const auto a_center_x = ( a.left + a.right ) * static_cast<T>( 0.5 );
+			const auto b_center_x = ( b.left + b.right ) * static_cast<T>( 0.5 );
+			return { a_center_x < b_center_x ? -overlap_x : overlap_x, T{} };
+		}
+
+		const auto a_center_y = ( a.bottom + a.top ) * static_cast<T>( 0.5 );
+		const auto b_center_y = ( b.bottom + b.top ) * static_cast<T>( 0.5 );
+		return { T{}, a_center_y < b_center_y ? -overlap_y : overlap_y };
 	}
 
 	template<math_scalar T>
