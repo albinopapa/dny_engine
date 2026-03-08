@@ -121,11 +121,8 @@ class Game{
 public:
 	Game( dny::platform& platform_ )
 		:
-		platform( platform_ ),
-		editor_controls( platform.keyboard_state(), platform.mouse_state() ),
-		game_input( platform.keyboard_state(), platform.mouse_state() ){
+		platform( platform_ ){
 		platform.set_title( L"DNY Engine - Software Renderer" );
-		configure_input_bindings();
 		init_textures();
 	}
 	void run(){
@@ -161,26 +158,19 @@ private:
 			frame_count = 0;
 		}
 
-		if( game_input.is_action_down( "MoveCameraLeft" ) ){
+		if( platform.get_input().is_key_down( 'A' ) ){
 			camera_position.x -= camera_speed * dt;
 		}
-		if( game_input.is_action_down( "MoveCameraRight" ) ){
+		if( platform.get_input().is_key_down( 'D' ) ){
 			camera_position.x += camera_speed * dt;
 		}
-		if( game_input.is_action_down( "MoveCameraForward" ) ){
+		if( platform.get_input().is_key_down( 'W' ) ){
 			camera_position.z += camera_speed * dt;
 		}
-		if( game_input.is_action_down( "MoveCameraBackward" ) ){
+		if( platform.get_input().is_key_down( 'S' ) ){
 			camera_position.z -= camera_speed * dt;
 		}
-
-		if( editor_controls.get_mouse().was_pressed( dny::mouse_button::right ) ){
-			platform.clamp_mouse_to_window();
-		}
-		if( editor_controls.get_mouse().was_released( dny::mouse_button::right ) ){
-			platform.free_mouse();
-		}
-		if( game_input.was_action_pressed( "RecenterMouse" ) ){
+		if( platform.get_input().is_key_down( VK_HOME ) ){
 			platform.recenter_mouse();
 		}
 	}
@@ -232,13 +222,6 @@ private:
 		);
 	}
 
-	void configure_input_bindings(){
-		game_input.bind_action( "MoveCameraLeft", dny::Input::binding::key( static_cast< std::uint32_t >( "A"[ 0 ] ) ) );
-		game_input.bind_action( "MoveCameraRight", dny::Input::binding::key( static_cast< std::uint32_t >( "D"[ 0 ] ) ) );
-		game_input.bind_action( "MoveCameraForward", dny::Input::binding::key( static_cast< std::uint32_t >( "W"[ 0 ] ) ) );
-		game_input.bind_action( "MoveCameraBackward", dny::Input::binding::key( static_cast< std::uint32_t >( "S"[ 0 ] ) ) );
-		game_input.bind_action( "RecenterMouse", dny::Input::binding::key( static_cast< std::uint32_t >( VK_HOME ) ) );
-	}
 
 	void init_textures(){
 		{
@@ -304,8 +287,6 @@ private:
 
 	// Reference to the platform for window management and input
 	dny::platform& platform;
-	dny::editor_input editor_controls;
-	dny::Input game_input;
 
 	// The software renderer pipeline
 	pnu_pipeline_t renderer;
