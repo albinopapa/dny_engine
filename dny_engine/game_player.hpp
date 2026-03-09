@@ -13,12 +13,12 @@ public:
 	}
 	void update( float dt, dny::input const& input, dny::polyline_collider<float> const& terrain_ ){
 		const auto move_dir =
-			( input.is_key_down( 'D' ) ? 1.f : 0.f ) -
-			( input.is_key_down( 'A' ) ? 1.f : 0.f );
+			( input.is_held( "move_right" ) ? 1.f : 0.f ) -
+			( input.is_held( "move_left" ) ? 1.f : 0.f );
 
 		position.x += move_dir * move_speed * dt;
 
-		if( input.is_key_down( 0x20 ) && is_on_ground ){
+		if( input.is_pressed( "jump" ) && is_on_ground ){
 			velocity.y = jump_velocity;
 			is_on_ground = false;
 		}

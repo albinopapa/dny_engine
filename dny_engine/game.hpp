@@ -24,6 +24,14 @@ public:
 		:
 		platform( platform_ ){
 		platform.set_title( L"DNY Engine - Software Renderer" );
+		auto& input = platform.get_input();
+		input.bind( "move_left", dny::Key::A );
+		input.bind( "move_right", dny::Key::D );
+		input.bind( "jump", dny::Key::Space );
+		input.bind( "zoom_in", dny::Key::Q );
+		input.bind( "zoom_out", dny::Key::E );
+		input.bind( "fire", dny::MouseButton::Left );
+		input.bind( "dash", dny::GamepadButton::A );
 		init_textures();
 		init_debug_vertices();
 	}
@@ -44,10 +52,10 @@ private:
 		const auto dt = timer.mark();
 		player.update( dt, platform.get_input(), terrain_collider );
 
-		if( platform.get_input().is_key_down( 'Q' ) ){
+		if( platform.get_input().is_held( "zoom_in" ) ){
 			camera.zoom_in( zoom_speed * dt );
 		}
-		if( platform.get_input().is_key_down( 'E' ) ){
+		if( platform.get_input().is_held( "zoom_out" ) ){
 			camera.zoom_out( zoom_speed * dt );
 		}
 
