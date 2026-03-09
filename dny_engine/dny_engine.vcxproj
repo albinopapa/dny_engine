@@ -176,6 +176,10 @@
     <ClInclude Include="dny_vector4.hpp" />
     <ClInclude Include="dny_wicsdk.hpp" />
     <ClInclude Include="dny_win32sdk.hpp" />
+    <ClInclude Include="game.hpp" />
+    <ClInclude Include="game_camera.hpp" />
+    <ClInclude Include="game_effects.hpp" />
+    <ClInclude Include="game_player.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
