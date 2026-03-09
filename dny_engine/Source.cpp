@@ -218,21 +218,14 @@ private:
 		}
 
 		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
-
+				
 		dny::draw(
-			"0123456789 ABCDEFGHIJ KLMNOPQRST UVWXYZ",
+			std::format( "FPS: {:.2f}", frame_rate ),
 			text_pos,
 			consolas,
 			dny::Color32{ dny::Colors::white },
 			render_target
 		);
-		//dny::draw(
-		//	std::format( "FPS: {:.2f}", frame_rate ),
-		//	dny::vector2<std::int32_t>{ 10, 10 },
-		//	consolas,
-		//	dny::Color32{ dny::Colors::white },
-		//	render_target
-		//);
 	}
 
 	void draw_terrain_polyline_debug(){
