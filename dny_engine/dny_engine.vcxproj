@@ -137,6 +137,10 @@
   <ItemGroup>
     <ClCompile Include="dny_image_loader.cpp" />
     <ClCompile Include="dny_text_atlas_builder.cpp" />
+    <ClCompile Include="gamepad.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="mouse.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +157,10 @@
     <ClInclude Include="dny_graphics.hpp" />
     <ClInclude Include="dny_image_loader.hpp" />
     <ClInclude Include="dny_input.hpp" />
+    <ClInclude Include="gamepad.hpp" />
+    <ClInclude Include="input.hpp" />
+    <ClInclude Include="keyboard.hpp" />
+    <ClInclude Include="mouse.hpp" />
     <ClInclude Include="dny_math.hpp" />
     <ClInclude Include="dny_math_constants.hpp" />
     <ClInclude Include="dny_math_v2.hpp" />

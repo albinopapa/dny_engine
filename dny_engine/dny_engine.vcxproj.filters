@@ -15,118 +15,58 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="dny_image_loader.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="dny_text_atlas_builder.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="gamepad.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="input.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="keyboard.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="mouse.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="Source.cpp"><Filter>Source Files</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dny_aabb.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_colors.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_concepts.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_d2dsdk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_d3d11sdk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_dims2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_display.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_dwritesdk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_font.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_frustum.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_graphics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_image_loader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_input.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_math.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_math_constants.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_math_v2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_matrix_3x2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_matrix_3x3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_matrix_4x4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_physics.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_platform.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_primitive_generators.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_qtree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_rectangle.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_simd.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_soft_renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_surface.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_text_atlas_builder.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_timer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_type_traits.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_utilities.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_vector2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_vector3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_vector4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_wicsdk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dny_win32sdk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="dny_aabb.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_colors.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_concepts.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_d2dsdk.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_d3d11sdk.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_dims2.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_display.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_dwritesdk.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_font.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_frustum.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_graphics.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_image_loader.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_input.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_math.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_math_constants.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_math_v2.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_matrix_3x2.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_matrix_3x3.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_matrix_4x4.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_physics.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_platform.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_primitive_generators.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_qtree.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_rectangle.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_simd.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_soft_renderer.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_surface.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_text_atlas_builder.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_timer.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_type_traits.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_utilities.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_vector2.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_vector3.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_vector4.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_wicsdk.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="dny_win32sdk.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="gamepad.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="input.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="keyboard.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="mouse.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="game.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="game_camera.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="game_effects.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="game_player.hpp"><Filter>Header Files</Filter></ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,48 @@
+#pragma once
+
+#include "gamepad.hpp"
+#include "keyboard.hpp"
+#include "mouse.hpp"
+
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <unordered_map>
+#include <utility>
+#include <variant>
+
+namespace dny{
+	class Input{
+	public:
+		using Binding = std::variant<Key, MouseButton, GamepadButton>;
+
+		Input( Keyboard const& keyboard, Mouse const& mouse, Gamepad const& gamepad ) noexcept;
+
+		void bind( std::string action, Key key );
+		void bind( std::string action, MouseButton button );
+		void bind( std::string action, GamepadButton button );
+		bool has_binding( std::string_view action ) const;
+
+		bool is_pressed( std::string_view action ) const;
+		bool is_held( std::string_view action ) const;
+		bool is_released( std::string_view action ) const;
+
+		bool is_key_down( std::uint8_t key_code ) const noexcept;
+	private:
+		template<typename Query>
+		bool query_binding( std::string_view action, Query&& query ) const{
+			const auto iter = m_bindings.find( action );
+			if( iter == m_bindings.end() ){
+				return false;
+			}
+			return std::visit( std::forward<Query>( query ), iter->second );
+		}
+
+		Keyboard const* m_keyboard = nullptr;
+		Mouse const* m_mouse = nullptr;
+		Gamepad const* m_gamepad = nullptr;
+		std::unordered_map<std::string, Binding, std::hash<std::string>, std::equal_to<>> m_bindings;
+	};
+
+	using input = Input;
+}
