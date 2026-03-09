@@ -15,8 +15,6 @@ namespace dny{
 		Font( std::wstring const& font_name, std::uint32_t font_height ){
 			const auto img = internal::make_atlas(
 				font_name, 
-				m_max_chars_per_row,
-				m_max_rows,
 				font_height 
 			);
 			m_char_width = img.width / m_max_chars_per_row;
