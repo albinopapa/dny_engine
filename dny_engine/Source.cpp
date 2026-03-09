@@ -70,6 +70,39 @@ public:
 using pnu_effect = dny::basic_effect<pnu_vertex_shader, pnu_pixel_shader>;
 using pnu_pipeline_t = dny::pipeline<pnu_effect>;
 
+using debug_vertex_in = dny::basic_vertex<dny::vector3<float>, dny::ColorF>;
+using debug_vertex_out = dny::basic_vertex<dny::vector4<float>, dny::ColorF>;
+
+class debug_vertex_shader : public dny::basic_vertex_shader<
+	debug_vertex_in,
+	debug_vertex_out,
+	transform_constant_buffer>{
+public:
+	static constexpr std::size_t Position_ID = 0;
+
+	debug_vertex_out operator()( debug_vertex_in const& vin )const noexcept{
+		auto pos = dny::vector4<float>{ std::get<0>( vin.m_fields ), 1.f };
+		pos = pos * cbuffer.world;
+		pos = pos * cbuffer.view;
+		pos = pos * cbuffer.projection;
+		return debug_vertex_out{ { pos, std::get<1>( vin.m_fields ) } };
+	}
+};
+
+class debug_pixel_shader : public dny::basic_pixel_shader<
+	typename debug_vertex_shader::vertex_out,
+	dny::null_ps_constant_buffer>{
+public:
+	static constexpr std::size_t Position_ID = 0;
+
+	dny::ColorF operator()( vertex_in const& vin )const noexcept{
+		return std::get<1>( vin.m_fields );
+	}
+};
+
+using debug_effect = dny::basic_effect<debug_vertex_shader, debug_pixel_shader>;
+using debug_pipeline_t = dny::pipeline<debug_effect>;
+
 static constexpr float action_plane_z = 5.f;
 
 class Player{
@@ -189,6 +222,7 @@ public:
 		platform( platform_ ){
 		platform.set_title( L"DNY Engine - Software Renderer" );
 		init_textures();
+		init_debug_vertices();
 	}
 	void run(){
 		begin_frame();
@@ -260,8 +294,16 @@ private:
 			renderer.render( terrain_vbuffer );
 		}
 
-		if( debug_draw_colliders ){
-			draw_terrain_polyline_debug();
+		if( debug_draw_colliders && !debug_vertices.empty() ){
+			auto debug_cb = transform_constant_buffer{
+				dny::matrix_4x4<float>::identity(),
+				view_matrix,
+				projection_matrix
+			};
+			debug_renderer.set_render_target( render_target );
+			debug_renderer.set_depth_buffer( depth_buffer );
+			debug_renderer.set_cbuffer( debug_cb );
+			debug_renderer.render( debug_vertices );
 		}
 
 		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
@@ -275,21 +317,25 @@ private:
 		);
 	}
 
-	void draw_terrain_polyline_debug(){
-		auto project = [ this ]( dny::vector2<float> const& point_ ){
-			return dny::vector2<std::int32_t>{
-				static_cast<std::int32_t>( 40.f + ( point_.x + 8.f ) * 18.f ),
-				static_cast<std::int32_t>( static_cast<float>( render_target.height() ) - ( 40.f + ( point_.y + 6.f ) * 18.f ) )
-			};
-		};
+	void init_debug_vertices(){
+		debug_vertices.clear();
+		constexpr auto debug_color = dny::ColorF{ dny::Colors::chartreuse };
+		constexpr auto debug_line_thickness = 0.25f;
 
 		for( std::size_t i = 0; i + 1 < terrain_collider.points.size(); ++i ){
-			dny::draw_line(
-				project( terrain_collider.points[ i ] ),
-				project( terrain_collider.points[ i + 1 ] ),
-				dny::Color32{ dny::Colors::chartreuse },
-				render_target
+			const auto start = terrain_collider.points[ i ];
+			const auto end = terrain_collider.points[ i + 1 ];
+
+			auto segment_vertices = dny::primitives::generate_debug_line_segment(
+				dny::vector3<float>{ start.x, start.y, 0.f },
+				dny::vector3<float>{ end.x, end.y, 0.f },
+				debug_line_thickness,
+				debug_color
 			);
+
+			for( auto const& vertex : segment_vertices ){
+				debug_vertices.push_back( debug_vertex_in{ { vertex.position, vertex.color } } );
+			}
 		}
 	}
 	void end_frame(){
@@ -368,6 +414,7 @@ private:
 
 	// The software renderer pipeline
 	pnu_pipeline_t renderer;
+	debug_pipeline_t debug_renderer;
 	using pnu_vertex_buffer = std::vector<vertex_in>;
 
 	// Render target and depth buffer
@@ -388,6 +435,7 @@ private:
 	pnu_vertex_buffer girl_vbuffer = dny::primitives::generate_plane();
 	frame_pack girl_walking_frames;
 	pnu_vertex_buffer terrain_vbuffer = dny::primitives::generate_cube();
+	std::vector<debug_vertex_in> debug_vertices;
 	texture2d terrain_texture;
 	texture2d girl_step;
 	
