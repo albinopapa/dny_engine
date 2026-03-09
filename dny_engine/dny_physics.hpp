@@ -64,56 +64,57 @@ namespace dny{
 	}
 
 	template<math_scalar T>
-	inline bool intersects( Rect<T> const& box_, polyline_collider<T> const& polyline_ ){
+	inline bool intersects( aabb<T> const& box_, polyline_collider<T> const& polyline_ ){
 		if( !polyline_.valid() ){
 			return false;
 		}
 
-		const auto center_x = ( box_.left + box_.right ) * static_cast<T>( 0.5 );
+		const auto center_x = ( box_.min_pt.x + box_.max_pt.x ) * static_cast<T>( 0.5 );
 		const auto surface = sample_polyline_height( polyline_, center_x );
 		if( !surface ){
 			return false;
 		}
 
-		return box_.bottom < *surface && box_.top > *surface;
+		return box_.min_pt.y < *surface && box_.max_pt.y > *surface;
 	}
 
 	template<math_scalar T>
-	inline vector2<T> resolve_aabb_vs_polyline( Rect<T>& box_, polyline_collider<T> const& polyline_, T snap_distance_ = static_cast<T>( 1.0 ) ){
+	inline vector2<T> resolve_aabb_vs_polyline( aabb<T>& box_, polyline_collider<T> const& polyline_, T snap_distance_ = static_cast<T>( 1.0 ) ){
 		if( !polyline_.valid() ){
 			return {};
 		}
 
-		const auto center_x = ( box_.left + box_.right ) * static_cast<T>( 0.5 );
+		const auto center_x = ( box_.min_pt.x + box_.max_pt.x ) * static_cast<T>( 0.5 );
 		const auto surface = sample_polyline_height( polyline_, center_x );
 		if( !surface ){
 			return {};
 		}
 
-		const auto penetration = *surface - box_.bottom;
+		const auto penetration = *surface - box_.min_pt.y;
 		if( penetration < -snap_distance_ ){
 			return {};
 		}
 
-		box_.translate( { T{}, penetration } );
+		box_ = box_.translated( { T{}, penetration, T{} } );
 		return { T{}, penetration };
 	}
 
+
 	// ---------------------------------------------
-	// Rect<T> queries
+	// Rect<T> queries (screen-space: top < bottom)
 	// ---------------------------------------------
 	template<math_scalar T>
 	constexpr bool contains( const Rect<T>& r, const vector2<T>& p ) noexcept{
 		return
 			p.x >= r.left && p.x <= r.right &&
-			p.y <= r.top && p.y >= r.bottom;
+			p.y >= r.top && p.y <= r.bottom;
 	}
 
 	template<math_scalar T>
 	constexpr bool contains( Rect<T> const& lhs_, Rect<T> const& rhs_ ) noexcept{
 		return
 			( lhs_.left < rhs_.left && lhs_.right > rhs_.right ) &&
-			( lhs_.top > rhs_.top && lhs_.bottom < rhs_.bottom );
+			( lhs_.top < rhs_.top && lhs_.bottom > rhs_.bottom );
 	}
 
 	template<math_scalar T>
@@ -121,14 +122,14 @@ namespace dny{
 		return
 			a.right > b.left   &&
 			a.left < b.right   &&
-			a.top > b.bottom   &&
-			a.bottom < b.top;
+			a.bottom > b.top   &&
+			a.top < b.bottom;
 	}
 
 	template<math_scalar T>
 	constexpr vector2<T> penetration_vector( const Rect<T>& a, const Rect<T>& b ) noexcept{
 		const auto overlap_x = std::min( a.right, b.right ) - std::max( a.left, b.left );
-		const auto overlap_y = std::min( a.top, b.top ) - std::max( a.bottom, b.bottom );
+		const auto overlap_y = std::min( a.bottom, b.bottom ) - std::max( a.top, b.top );
 
 		if( overlap_x <= T{} || overlap_y <= T{} ){
 			return {};
@@ -140,8 +141,8 @@ namespace dny{
 			return { a_center_x < b_center_x ? -overlap_x : overlap_x, T{} };
 		}
 
-		const auto a_center_y = ( a.bottom + a.top ) * static_cast<T>( 0.5 );
-		const auto b_center_y = ( b.bottom + b.top ) * static_cast<T>( 0.5 );
+		const auto a_center_y = ( a.top + a.bottom ) * static_cast<T>( 0.5 );
+		const auto b_center_y = ( b.top + b.bottom ) * static_cast<T>( 0.5 );
 		return { T{}, a_center_y < b_center_y ? -overlap_y : overlap_y };
 	}
 

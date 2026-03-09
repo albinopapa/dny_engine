@@ -91,11 +91,17 @@ public:
 		velocity.y += gravity * dt;
 		position.y += velocity.y * dt;
 
-		auto player_bounds = dny::Rect<float>{
-			position.x - size.width * 0.5f,
-			position.y - size.height * 0.5f,
-			position.x + size.width * 0.5f,
-			position.y + size.height * 0.5f
+		auto player_bounds = dny::aabb<float>{
+			{
+				position.x - size.width * 0.5f,
+				position.y - size.height * 0.5f,
+				action_plane_z - 0.5f
+			},
+			{
+				position.x + size.width * 0.5f,
+				position.y + size.height * 0.5f,
+				action_plane_z + 0.5f
+			}
 		};
 
 		const auto resolution = dny::resolve_aabb_vs_polyline( player_bounds, terrain_, 0.75f );
