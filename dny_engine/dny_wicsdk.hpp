@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <span>
 
-#include "wincodec.h"
+#include <wincodec.h>
 
 #pragma comment(lib, "windowscodecs.lib")
 
