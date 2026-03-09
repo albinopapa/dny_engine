@@ -11,11 +11,84 @@
 namespace dny::primitives{
 	using pnu_vertex = dny::basic_vertex<dny::vector3<float>, dny::vector3<float>, dny::vector2<float>>;
 
+	struct debug_vertex{
+		dny::vector3<float> position;
+		ColorF color;
+
+		constexpr debug_vertex& operator+=( debug_vertex const& other )noexcept{
+			position += other.position;
+			color += other.color;
+			return *this;
+		}
+		constexpr debug_vertex& operator-=( debug_vertex const& other )noexcept{
+			position -= other.position;
+			color -= other.color;
+			return *this;
+		}
+		constexpr debug_vertex& operator*=( float factor )noexcept{
+			position *= factor;
+			color *= factor;
+			return *this;
+		}
+		constexpr debug_vertex& operator/=( float factor )noexcept{
+			position /= factor;
+			color /= factor;
+			return *this;
+		}
+	};
+
 	inline auto make_vertex(
 		dny::vector3<float> const& position,
 		dny::vector3<float> const& normal,
 		dny::vector2<float> const& texcoord ) -> pnu_vertex{
 		return pnu_vertex{ { position, normal, texcoord } };
+	}
+
+	inline auto make_debug_vertex(
+		dny::vector3<float> const& position,
+		ColorF const& color ) -> debug_vertex{
+		return debug_vertex{ position, color };
+	}
+
+	inline auto generate_debug_line_segment(
+		dny::vector3<float> const& start,
+		dny::vector3<float> const& end,
+		float thickness,
+		ColorF const& color ) -> std::vector<debug_vertex>{
+		auto start_xy = start;
+		auto end_xy = end;
+		start_xy.z = 0.0f;
+		end_xy.z = 0.0f;
+
+		const auto direction = end_xy - start_xy;
+		const auto length_sq = dny::dot( direction, direction );
+
+		if( length_sq <= 0.0f || thickness <= 0.0f ){
+			return {};
+		}
+
+		const auto half_thickness = thickness * 0.5f;
+		const auto inv_length = 1.0f / std::sqrt( length_sq );
+		const auto unit_direction = direction * inv_length;
+		const auto perpendicular = dny::vector3<float>{ -unit_direction.y, unit_direction.x, 0.0f } * half_thickness;
+
+		const auto p0 = dny::vector3<float>{ start_xy.x + perpendicular.x, start_xy.y + perpendicular.y, 0.0f };
+		const auto p1 = dny::vector3<float>{ start_xy.x - perpendicular.x, start_xy.y - perpendicular.y, 0.0f };
+		const auto p2 = dny::vector3<float>{ end_xy.x + perpendicular.x, end_xy.y + perpendicular.y, 0.0f };
+		const auto p3 = dny::vector3<float>{ end_xy.x - perpendicular.x, end_xy.y - perpendicular.y, 0.0f };
+
+		std::vector<debug_vertex> vertices;
+		vertices.reserve( 6 );
+
+		vertices.push_back( make_debug_vertex( p0, color ) );
+		vertices.push_back( make_debug_vertex( p1, color ) );
+		vertices.push_back( make_debug_vertex( p2, color ) );
+
+		vertices.push_back( make_debug_vertex( p2, color ) );
+		vertices.push_back( make_debug_vertex( p1, color ) );
+		vertices.push_back( make_debug_vertex( p3, color ) );
+
+		return vertices;
 	}
 
 	inline auto generate_plane( float width = 1.0f, float depth = 1.0f ) -> std::vector<pnu_vertex>{
@@ -214,4 +287,10 @@ namespace dny::primitives{
 
 		return vertices;
 	}
+}
+
+
+namespace dny{
+	template<>
+	struct is_vertex<primitives::debug_vertex> : std::true_type{};
 }
