@@ -8,6 +8,7 @@
 #include "dny_timer.hpp"
 
 #include <array>
+#include <algorithm>
 #include <format>
 #include <filesystem>
 #include <numeric>
@@ -138,6 +139,47 @@ private:
 
 };
 
+class lock_on_camera {
+public:
+	void update( dny::vector2<float> const& target_position, dny::aabb<float> const& world_bounds ) noexcept{
+		position.x = std::clamp( target_position.x, world_bounds.min_pt.x, world_bounds.max_pt.x );
+		position.y = std::clamp( target_position.y, world_bounds.min_pt.y, world_bounds.max_pt.y );
+	}
+
+	void zoom_in( float amount_degrees ) noexcept{
+		fov = std::clamp( fov - amount_degrees, min_fov, max_fov );
+	}
+
+	void zoom_out( float amount_degrees ) noexcept{
+		fov = std::clamp( fov + amount_degrees, min_fov, max_fov );
+	}
+
+	dny::matrix_4x4<float> get_view_matrix() const noexcept{
+		return dny::look_to<float, dny::handedness_t::left>(
+			position,
+			forward,
+			up
+		);
+	}
+
+	float get_fov() const noexcept{
+		return dny::to_radians( fov );
+	}
+
+	const dny::vector3<float>& get_position() const noexcept{
+		return position;
+	}
+
+private:
+	static constexpr float min_fov = 30.f;
+	static constexpr float max_fov = 90.f;
+
+	dny::vector3<float> position{ 0.f, 0.f, -10.f };
+	dny::vector3<float> forward{ 0.f, 0.f, 1.f };
+	dny::vector3<float> up{ 0.f, 1.f, 0.f };
+	float fov = 90.f;
+};
+
 using frame_pack = std::vector<dny::surface<dny::ColorF>>;
 using texture2d = dny::surface<dny::ColorF>;
 class Game{
@@ -164,11 +206,21 @@ private:
 	void update(){
 		const auto dt = timer.mark();
 		player.update( dt, platform.get_input(), terrain_collider );
-		camera_position = {
-			player.get_position().x,
-			player.get_position().y,
-			camera_distance
-		};
+
+		if( platform.get_input().is_key_down( 'Q' ) ){
+			camera.zoom_in( zoom_speed * dt );
+		}
+		if( platform.get_input().is_key_down( 'E' ) ){
+			camera.zoom_out( zoom_speed * dt );
+		}
+
+		camera.update( player.get_position(), world_bounds );
+		projection_matrix = dny::projection<dny::handedness_t::left>(
+			camera.get_fov(),
+			aspect_ratio,
+			0.1f,
+			100.f
+		);
 
 		frame_times[ ( frame_count++ ) % frame_times.size() ] = dt;
 		if(frame_count >= frame_times.size() ){
@@ -182,12 +234,7 @@ private:
 		}
 	}
 	void render(){
-		const auto player_pos = dny::vector3<float>( player.get_position(), action_plane_z );
-		view_matrix = dny::look_at<float, dny::handedness_t::left>(
-			camera_position,
-			player_pos,
-			dny::vector3<float>{ 0.f, 1.f, 0.f }
-		);
+		view_matrix = camera.get_view_matrix();
 		auto cb = transform_constant_buffer{
 			player.get_transform(),
 			view_matrix,
@@ -314,7 +361,7 @@ private:
 	static constexpr std::int32_t view_height = dny::screen_height / 2;
 	static constexpr float aspect_ratio = static_cast< float >( view_width ) / static_cast< float >( view_height );
 	static constexpr dny::dims2<float> cube_size{ 50.f, 50.f };
-	static constexpr float camera_speed = 25.f;
+	static constexpr float zoom_speed = 50.f;
 
 	// Reference to the platform for window management and input
 	dny::platform& platform;
@@ -345,8 +392,11 @@ private:
 	texture2d girl_step;
 	
 	Player player;
-	dny::vector3<float> camera_position{ 0.f, 0.f, -10.f };
-	float camera_distance = -10.f;
+	lock_on_camera camera;
+	dny::aabb<float> world_bounds{
+		{ -8.f, -4.f, -10.f },
+		{ 8.f, 8.f, -10.f }
+	};
 	std::vector<dny::vector3<float>> terrain_positions{
 		{ -2.f, -2.f, action_plane_z },
 		{ -1.f, -2.f, action_plane_z },
