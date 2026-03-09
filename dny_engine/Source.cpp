@@ -174,22 +174,6 @@ private:
 			frame_rate = static_cast< float >( frame_times.size() ) / sum;
 			frame_count = 0;
 		}
-
-		if( platform.get_input().is_key_down( 'A' ) ){
-			camera_position.x -= camera_speed * dt;
-		}
-		if( platform.get_input().is_key_down( 'D' ) ){
-			camera_position.x += camera_speed * dt;
-		}
-		if( platform.get_input().is_key_down( 'W' ) ){
-			camera_position.z += camera_speed * dt;
-		}
-		if( platform.get_input().is_key_down( 'S' ) ){
-			camera_position.z -= camera_speed * dt;
-		}
-		if( platform.get_input().is_key_down( VK_HOME ) ){
-			platform.recenter_mouse();
-		}
 	}
 	void render(){
 		const auto player_pos = dny::vector3<float>( player.get_position(), action_plane_z );
@@ -227,13 +211,22 @@ private:
 			draw_terrain_polyline_debug();
 		}
 
+		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
+
 		dny::draw(
-			std::format( "FPS: {:.2f}", frame_rate ),
-			dny::vector2<std::int32_t>{ 10, 10 },
+			"0123456789 ABCDEFGHIJ KLMNOPQRST UVWXYZ",
+			text_pos,
 			consolas,
 			dny::Color32{ dny::Colors::white },
 			render_target
 		);
+		//dny::draw(
+		//	std::format( "FPS: {:.2f}", frame_rate ),
+		//	dny::vector2<std::int32_t>{ 10, 10 },
+		//	consolas,
+		//	dny::Color32{ dny::Colors::white },
+		//	render_target
+		//);
 	}
 
 	void draw_terrain_polyline_debug(){
