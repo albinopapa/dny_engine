@@ -18,9 +18,11 @@ public:
 
 		position.x += move_dir * move_speed * dt;
 
+		bool jumped_this_frame = false;
 		if( input.is_pressed( "jump" ) && is_on_ground ){
 			velocity.y = jump_velocity;
 			is_on_ground = false;
+			jumped_this_frame = true;
 		}
 
 		velocity.y += gravity * dt;
@@ -39,8 +41,14 @@ public:
 			}
 		};
 
+		if( velocity.y > 0.f ){
+			// Moving up, don't resolve collisions with the terrain
+			is_on_ground = false;
+			return;
+		}
+
 		const auto resolution = dny::resolve_aabb_vs_polyline( player_bounds, terrain_, 0.75f );
-		if( resolution.y != 0.f ){
+		if( resolution.y != 0.f && !jumped_this_frame ){
 			position.y += resolution.y;
 			velocity.y = 0.f;
 			is_on_ground = true;
@@ -70,6 +78,5 @@ private:
 	dny::vector2<float> position{ 0.f, fallback_ground_height };
 	dny::vector2<float> velocity{ 0.f, 0.f };
 	bool is_on_ground = true;
-
 };
 

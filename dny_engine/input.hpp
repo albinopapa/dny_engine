@@ -17,6 +17,11 @@ namespace dny{
 		using Binding = std::variant<Key, MouseButton, GamepadButton>;
 
 		Input( Keyboard const& keyboard, Mouse const& mouse, Gamepad const& gamepad ) noexcept;
+		Input( Input const& ) = delete;
+		Input( Input&& ) = default;
+
+		Input& operator=( Input const& ) = delete;
+		Input& operator=( Input&& ) = default;
 
 		void bind( std::string action, Key key );
 		void bind( std::string action, MouseButton button );

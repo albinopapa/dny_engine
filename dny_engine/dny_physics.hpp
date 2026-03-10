@@ -48,8 +48,9 @@ namespace dny{
 			if( x_ < min_x || x_ > max_x ){
 				continue;
 			}
+			constexpr T epsilon = static_cast< T >( 1e-4 );
 
-			if( p0.x == p1.x ){
+			if( std::abs( p0.x - p1.x ) < epsilon ){
 				const auto y = std::max( p0.y, p1.y );
 				sampled_height = sampled_height ? std::max( *sampled_height, y ) : y;
 				continue;
@@ -94,6 +95,9 @@ namespace dny{
 		if( penetration < -snap_distance_ ){
 			return {};
 		}
+		constexpr T epsilon = static_cast< T >( 0.0001 );
+		if( std::abs( penetration ) < epsilon )
+			return {};
 
 		box_ = box_.translated( { T{}, penetration, T{} } );
 		return { T{}, penetration };

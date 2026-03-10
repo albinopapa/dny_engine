@@ -26,6 +26,12 @@ namespace dny{
 			m_gamepad.begin_frame();
 
 			while( auto msg = win32::peek_message() ){
+				if( msg->message == WM_KEYDOWN && msg->wParam == VK_SPACE ){
+					int a = 0;
+				}
+				if( msg->message == WM_KEYUP && msg->wParam == VK_SPACE ){
+					int a = 0;
+				}
 				win32::translate_message( *msg );
 				win32::dispatch_message( *msg );
 			}
@@ -80,11 +86,11 @@ namespace dny{
 				m_done = true;
 				return 0;
 			}
-			if( msg == WM_KILLFOCUS ){
-				m_keyboard.clear();
-				m_mouse.clear();
-				return 0;
-			}
+			//if( msg == WM_KILLFOCUS ){
+			//	m_keyboard.clear();
+			//	m_mouse.clear();
+			//	return 0;
+			//}
 			if( m_keyboard.handle_message( msg, wparam ) ){
 				return 0;
 			}
