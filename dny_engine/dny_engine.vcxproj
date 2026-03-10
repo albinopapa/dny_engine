@@ -214,6 +214,7 @@
   <ItemGroup>
     <None Include="AUDIO_BUILD_FIXES.md" />
     <None Include="dny_audio_README.md" />
+    <None Include="Docs\soft_renderer_raster_state_design.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
