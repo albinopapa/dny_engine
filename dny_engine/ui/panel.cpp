@@ -60,8 +60,8 @@ namespace dny::ui{
 
 		const auto rect = bounds();
 		dny::fill_rect( rect, dny::Color32{ 30, 30, 30 }, canvas );
-		dny::draw_rect( rect, dny::Colors::gray, canvas );
-		dny::draw( std::string{ m_title }, { rect.left + 4, rect.top + 4 }, font, dny::Colors::white, canvas );
+		dny::draw_rect( rect, dny::Color32{ dny::Colors::gray }, canvas );
+		dny::draw_text( std::string{ m_title }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white }, canvas );
 
 		for( auto const& child : m_children ){
 			if( child ){

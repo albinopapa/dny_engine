@@ -65,8 +65,11 @@ namespace dny{
 		Rect<std::int32_t> const& rect_, 
 		ColorT color_,
 		surface<ColorT>& canvas_ ){
-		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+		const auto canvas_bounds = Rect<std::int32_t>{			
+			0, 
+			0, 
+			static_cast<std::int32_t>( canvas_.width() ), 
+			static_cast<std::int32_t>( canvas_.height() )
 		};
 		const auto clippped = clip_rect( rect_, canvas_bounds );
 		draw_line( clippped.top_left(),    clippped.top_right(), color_, canvas_ );
@@ -87,7 +90,10 @@ namespace dny{
 			center_.x + radius_, center_.y + radius_
 		};
 		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+			0,
+			0,
+			static_cast< std::int32_t >( canvas_.width() ),
+			static_cast< std::int32_t >( canvas_.height() )
 		};
 		const auto clipped = clip_rect( circle_bounds, canvas_bounds );
 
@@ -108,7 +114,10 @@ namespace dny{
 		ColorT color_, 
 		surface<ColorT>& canvas_ ){
 		const auto canvas_bounds = Rect<std::int32_t>{
-			0, 0, canvas_.width(), canvas_.height()
+			0,
+			0,
+			static_cast< std::int32_t >( canvas_.width() ),
+			static_cast< std::int32_t >( canvas_.height() )
 		};
 		const auto clipped = clip_rect( rect_, canvas_bounds );
 
@@ -163,16 +172,6 @@ namespace dny{
 				draw_char( { rect.left, rect.top }, char_rect );
 			}
 		}
-	}
-
-	template<typename ColorT>
-	void draw_text(
-		std::string text_,
-		vector2<std::int32_t> position_,
-		Font const& font_,
-		ColorT color_,
-		surface<ColorT>& canvas_ ){
-		draw( std::move( text_ ), position_, font_, color_, canvas_ );
 	}
 
 }

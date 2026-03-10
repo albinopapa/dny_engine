@@ -56,7 +56,7 @@ namespace dny::ui{
 
 		const auto rect = bounds();
 		dny::fill_rect( rect, dny::Color32{ 15, 15, 15 }, canvas );
-		dny::draw_rect( rect, m_focused ? dny::Colors::yellow : dny::Colors::white, canvas );
-		dny::draw( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Colors::white, canvas );
+		dny::draw_rect( rect, dny::Color32{ m_focused ? dny::Colors::yellow : dny::Colors::white }, canvas );
+		dny::draw_text( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white }, canvas );
 	}
 }

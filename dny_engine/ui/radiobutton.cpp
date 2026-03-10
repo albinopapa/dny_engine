@@ -40,8 +40,8 @@ namespace dny::ui{
 		dny::fill_circle( center, radius, dny::Color32{ 20, 20, 20 }, canvas );
 		dny::fill_circle( center, radius - 1, dny::Color32{ 20, 20, 20 }, canvas );
 		if( m_selected ){
-			dny::fill_circle( center, radius / 2, dny::Colors::green, canvas );
+			dny::fill_circle( center, radius / 2, dny::Color32{ dny::Colors::green }, canvas );
 		}
-		dny::draw( std::string{ m_text }, { rect.left + rect.height() + 6, rect.top + 2 }, font, dny::Colors::white, canvas );
+		dny::draw_text( std::string{ m_text }, { rect.left + rect.height() + 6, rect.top + 2 }, font, dny::Color32{ dny::Colors::white }, canvas );
 	}
 }

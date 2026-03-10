@@ -37,11 +37,14 @@ namespace dny::ui{
 			rect.left + rect.height(),
 			rect.bottom
 		};
+
+		static constexpr auto white = dny::Color32{ dny::Colors::white };
+		static constexpr auto green = dny::Color32{ dny::Colors::green };
 		dny::fill_rect( box_rect, dny::Color32{ 20, 20, 20 }, canvas );
-		dny::draw_rect( box_rect, dny::Colors::white, canvas );
+		dny::draw_rect( box_rect, white, canvas );
 		if( m_checked ){
-			dny::fill_rect( dny::Rect<std::int32_t>{ box_rect.left + 4, box_rect.top + 4, box_rect.right - 4, box_rect.bottom - 4 }, dny::Colors::green, canvas );
+			dny::fill_rect( dny::Rect<std::int32_t>{ box_rect.left + 4, box_rect.top + 4, box_rect.right - 4, box_rect.bottom - 4 }, green, canvas );
 		}
-		dny::draw( std::string{ m_text }, { box_rect.right + 6, rect.top + 2 }, font, dny::Colors::white, canvas );
+		dny::draw_text( std::string{ m_text }, { box_rect.right + 6, rect.top + 2 }, font, white, canvas );
 	}
 }

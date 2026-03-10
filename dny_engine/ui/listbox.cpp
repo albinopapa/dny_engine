@@ -67,7 +67,7 @@ namespace dny::ui{
 
 		const auto rect = bounds();
 		dny::fill_rect( rect, dny::Color32{ 15, 15, 15 }, canvas );
-		dny::draw_rect( rect, dny::Colors::white, canvas );
+		dny::draw_rect( rect, dny::Color32{ dny::Colors::white }, canvas );
 
 		for( std::int32_t i = 0; i < static_cast<std::int32_t>( m_items.size() ); ++i ){
 			const auto item_rect = dny::Rect<std::int32_t>{
@@ -82,7 +82,7 @@ namespace dny::ui{
 			if( i == m_selected ){
 				dny::fill_rect( item_rect, dny::Color32{ 45, 70, 120 }, canvas );
 			}
-			dny::draw( m_items[i], { item_rect.left + 4, item_rect.top + 2 }, font, dny::Colors::white, canvas );
+			dny::draw_text( m_items[ i ], { item_rect.left + 4, item_rect.top + 2 }, font, dny::Color32{ dny::Colors::white }, canvas );
 		}
 	}
 }

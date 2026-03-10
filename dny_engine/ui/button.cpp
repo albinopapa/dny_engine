@@ -30,10 +30,11 @@ namespace dny::ui{
 			return;
 		}
 
+		static constexpr auto white = dny::Color32{ dny::Colors::white };
 		const auto rect = bounds();
 		const auto fill = enabled() ? dny::Color32{ 60, 60, 60 } : dny::Color32{ 35, 35, 35 };
 		dny::fill_rect( rect, fill, canvas );
-		dny::draw_rect( rect, dny::Colors::white, canvas );
-		dny::draw( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Colors::white, canvas );
+		dny::draw_rect( rect, white, canvas );
+		dny::draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, white, canvas );
 	}
 }
