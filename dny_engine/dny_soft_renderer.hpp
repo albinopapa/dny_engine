@@ -6,6 +6,7 @@
 #include "dny_utilities.hpp"
 #include "dny_simd.hpp"
 #include "dny_surface.hpp"
+#include "dny_raster_state.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -175,13 +176,16 @@ namespace dny{
 		surface<ColorF> const* texture[ 8 ] = {};
 	};
 
-	template<vertex_shader VShader, pixel_shader PShader>
+	template<vertex_shader VShader, pixel_shader PShader, typename RasterState = default_raster_state>
 		requires std::is_same_v<typename VShader::vertex_out, typename PShader::vertex_in>
 	class basic_effect{
 	public:
 		using vshader_type = VShader;
 		using pshader_type = PShader;
+		using raster_state_type = RasterState;
 		using buffer_type = std::vector<typename VShader::vertex_in>;
+
+		static_assert( raster_state_policy<RasterState>, "RasterState must satisfy raster_state_policy concept" );
 
 		vshader_type vshader;
 		pshader_type pshader;
@@ -191,16 +195,17 @@ namespace dny{
 	template<typename Effect>
 	class pipeline{
 	public:
-		using vshader_type = Effect::vshader_type;
-		using vshader_in = vshader_type::vertex_in;
-		using vshader_out = vshader_type::vertex_out;
+		using vshader_type = typename Effect::vshader_type;
+		using vshader_in = typename vshader_type::vertex_in;
+		using vshader_out = typename vshader_type::vertex_out;
 		using vertex_buffer_type = std::vector<vshader_in>;
-		using vshader_cbuffer_type = vshader_type::constant_buffer_t;
+		using vshader_cbuffer_type = typename vshader_type::constant_buffer_t;
 
-		using pshader_type = Effect::pshader_type;
+		using pshader_type = typename Effect::pshader_type;
 		using pshader_in = vshader_out;
-		using pshader_cbuffer_type = pshader_type::constant_buffer_t;
-		using pshader_sampler_type = pshader_type::sampler_type_t;
+		using pshader_cbuffer_type = typename pshader_type::constant_buffer_t;
+		using pshader_sampler_type = typename pshader_type::sampler_type_t;
+		using raster_state_type = typename Effect::raster_state_type;
 
 		static constexpr std::int32_t Position_ID = vshader_type::Position_ID;
 		static constexpr std::int32_t SV_Position_ID = pshader_type::Position_ID;
@@ -450,9 +455,19 @@ namespace dny{
 
 			const auto area = simd_signed_area( position_va, position_vb, position_vc );
 
-			// Backface culling test (CW front facing)
-			const auto is_backface = area > _mm_setzero_ps();
-			if( simd::any( is_backface ) ) return;
+			// Backface culling test using compile-time policy
+			if constexpr( raster_state_type::culling_mode != cull_mode::none ){
+				constexpr bool front_is_negative = ( raster_state_type::front_face_winding == front_face::cw );
+				const auto area_scalar = simd::extract<0>( area );
+				const bool tri_is_front = front_is_negative ? ( area_scalar < 0.f ) : ( area_scalar > 0.f );
+
+				if constexpr( raster_state_type::culling_mode == cull_mode::back ){
+					if( !tri_is_front ) return;
+				}
+				else if constexpr( raster_state_type::culling_mode == cull_mode::front ){
+					if( tri_is_front ) return;
+				}
+			}
 
 			const auto inv_area = one / area;
 
@@ -537,10 +552,21 @@ namespace dny{
 					);
 
 					const auto idx = x + y * m_target->width();
-					if( depth >= m_depth_buffer->at( idx ) ){
-						continue;
+					
+					// Compile-time depth test policy
+					if constexpr( raster_state_type::depth_test_enabled ){
+						const bool depth_passed = detail::depth_test( 
+							raster_state_type::depth_function, 
+							depth, 
+							m_depth_buffer->at( idx ) 
+						);
+						if( !depth_passed ){
+							continue;
+						}
 					}
-					else{
+					
+					// Compile-time depth write policy
+					if constexpr( raster_state_type::depth_write_enabled ){
 						m_depth_buffer->at( idx ) = depth;
 					}
 
@@ -557,7 +583,37 @@ namespace dny{
 					pshader_in frag_pshader;
 					simd_array_to_tuple( frag, frag_pshader );
 
-					m_target->pixel( x, y ) = m_effect.pshader( frag_pshader );
+					// Run pixel shader
+					const ColorF src_color = to_colorf( m_effect.pshader( frag_pshader ) );
+					
+					// Compile-time blending and color mask policies
+					if constexpr( !raster_state_type::blend_enabled && 
+								  raster_state_type::write_r && 
+								  raster_state_type::write_g && 
+								  raster_state_type::write_b && 
+								  raster_state_type::write_a ){
+						// Fast path: no blending, full color write
+						m_target->pixel( x, y ) = to_color32( src_color );
+					}
+					else{
+						const Color32 dst_color = m_target->pixel( x, y );
+						const ColorF dst_colorf = to_colorf( dst_color );
+						
+						// Apply blending if enabled
+						ColorF blended_color;
+						if constexpr( raster_state_type::blend_enabled ){
+							blended_color = blend<raster_state_type>( src_color, dst_colorf );
+						}
+						else{
+							blended_color = src_color;
+						}
+						
+						// Apply color write mask
+						Color32 final_color = to_color32( blended_color );
+						final_color = apply_color_mask<raster_state_type>( final_color, dst_color );
+						
+						m_target->pixel( x, y ) = final_color;
+					}
 				}
 			}
 		}
@@ -886,7 +942,7 @@ namespace dny{
 
 			out_tri.tile_min_x = out_tri.min_x / static_cast< int >( tile_extent );
 			out_tri.tile_min_y = out_tri.min_y / static_cast< int >( tile_extent );
-			out_tri.tile_max_x = ( out_tri.max_x - 1 ) / static_cast< int >( tile_extent );
+		 out_tri.tile_max_x = ( out_tri.max_x - 1 ) / static_cast< int >( tile_extent );
 			out_tri.tile_max_y = ( out_tri.max_y - 1 ) / static_cast< int >( tile_extent );
 
 			out_tri.va[ Position_ID ] = simd::mask_merge<1, 1, 0, 0>( position_va, out_tri.va[ Position_ID ] );

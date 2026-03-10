@@ -170,6 +170,7 @@
     <ClInclude Include="dny_graphics.hpp" />
     <ClInclude Include="dny_image_loader.hpp" />
     <ClInclude Include="dny_input.hpp" />
+    <ClInclude Include="dny_raster_state.hpp" />
     <ClInclude Include="gamepad.hpp" />
     <ClInclude Include="input.hpp" />
     <ClInclude Include="keyboard.hpp" />
@@ -214,6 +215,7 @@
   <ItemGroup>
     <None Include="AUDIO_BUILD_FIXES.md" />
     <None Include="dny_audio_README.md" />
+    <None Include="Docs\raster_state_implementation_status.md" />
     <None Include="Docs\soft_renderer_raster_state_design.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
