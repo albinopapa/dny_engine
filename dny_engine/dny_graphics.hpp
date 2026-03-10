@@ -9,7 +9,7 @@
 #include <utility>
 
 namespace dny{
-	Rect<std::int32_t> clip_rect( Rect<std::int32_t>const& src_, Rect<std::int32_t> const& bounds_ ){
+	inline Rect<std::int32_t> clip_rect( Rect<std::int32_t>const& src_, Rect<std::int32_t> const& bounds_ ){
 		const auto left = std::max( src_.left, bounds_.left );
 		const auto right = std::min( src_.right, bounds_.right );
 		const auto top = std::max( src_.top, bounds_.top );
@@ -120,7 +120,7 @@ namespace dny{
 	}
 
 	template<typename ColorT>
-	void draw( 
+	void draw_text( 
 		std::string text_, 
 		vector2<std::int32_t> position_,
 		Font const& font_, 

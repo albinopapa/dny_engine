@@ -135,8 +135,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dny_audio.cpp" />
+    <ClCompile Include="dny_audio_test.cpp" />
     <ClCompile Include="dny_image_loader.cpp" />
     <ClCompile Include="dny_text_atlas_builder.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="gamepad.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="keyboard.cpp" />
@@ -145,6 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dny_aabb.hpp" />
+    <ClInclude Include="dny_audio.hpp" />
+    <ClInclude Include="dny_audio_example.hpp" />
     <ClInclude Include="dny_colors.hpp" />
     <ClInclude Include="dny_concepts.hpp" />
     <ClInclude Include="dny_d2dsdk.hpp" />
@@ -188,6 +193,10 @@
     <ClInclude Include="game_camera.hpp" />
     <ClInclude Include="game_effects.hpp" />
     <ClInclude Include="game_player.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AUDIO_BUILD_FIXES.md" />
+    <None Include="dny_audio_README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

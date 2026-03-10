@@ -4,6 +4,7 @@
 #include "game_effects.hpp"
 #include "game_player.hpp"
 
+#include "dny_audio.hpp"
 #include "dny_font.hpp"
 #include "dny_graphics.hpp"
 #include "dny_image_loader.hpp"
@@ -20,21 +21,9 @@ using frame_pack = std::vector<dny::surface<dny::ColorF>>;
 using texture2d = dny::surface<dny::ColorF>;
 class Game{
 public:
-	Game( dny::platform& platform_ )
-		:
-		platform( platform_ ){
-		platform.set_title( L"DNY Engine - Software Renderer" );
-		auto& input = platform.get_input();
-		input.bind( "move_left", dny::Key::A );
-		input.bind( "move_right", dny::Key::D );
-		input.bind( "jump", dny::Key::Space );
-		input.bind( "zoom_in", dny::Key::Q );
-		input.bind( "zoom_out", dny::Key::E );
-		input.bind( "fire", dny::MouseButton::Left );
-		input.bind( "dash", dny::GamepadButton::A );
-		init_textures();
-		init_debug_vertices();
-	}
+	Game( dny::platform& platform_ );
+	~Game();
+	
 	void run(){
 		begin_frame();
 		update();
@@ -119,7 +108,7 @@ private:
 
 		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
 
-		dny::draw(
+		dny::draw_text(
 			std::format( "FPS: {:.2f}", frame_rate ),
 			text_pos,
 			consolas,
@@ -256,4 +245,10 @@ private:
 	std::array<float, 100> frame_times = {};
 	dny::Font consolas{ L"Consolas", 24 };
 	float frame_rate = 0.f;
+
+	// Audio system - currently disabled due to incomplete type issues
+	// To use audio, you must define Game destructor in game.cpp where dny_audio.cpp is visible
+	// dny::audio_engine audio;
+	// dny::audio_clip jump_sound;
+	// dny::audio_clip background_music;
 };
