@@ -1,4 +1,5 @@
 #include "mouse.hpp"
+#include "dny_win32sdk.hpp"
 
 namespace dny{
 	void Mouse::begin_frame() noexcept{
@@ -7,7 +8,7 @@ namespace dny{
 		m_wheel_delta = 0;
 	}
 
-	bool Mouse::handle_message( UINT msg, WPARAM wparam, LPARAM lparam ) noexcept{
+	bool Mouse::handle_message( std::uint32_t msg, std::uintptr_t wparam, std::intptr_t lparam ) noexcept{
 		switch( msg ){
 			case WM_MOUSEMOVE:{
 				const auto x = static_cast< std::int32_t >( GET_X_LPARAM( lparam ) );

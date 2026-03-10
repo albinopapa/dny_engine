@@ -1,25 +1,23 @@
 #pragma once
 
-#include <Windows.h>
-#include <Xinput.h>
-
 #include <array>
 #include <cstdint>
 
+struct _XINPUT_STATE;
 namespace dny{
 	enum class GamepadButton : std::uint16_t{
-		A = XINPUT_GAMEPAD_A,
-		B = XINPUT_GAMEPAD_B,
-		X = XINPUT_GAMEPAD_X,
-		Y = XINPUT_GAMEPAD_Y,
-		LeftShoulder = XINPUT_GAMEPAD_LEFT_SHOULDER,
-		RightShoulder = XINPUT_GAMEPAD_RIGHT_SHOULDER,
-		Back = XINPUT_GAMEPAD_BACK,
-		Start = XINPUT_GAMEPAD_START,
-		DpadUp = XINPUT_GAMEPAD_DPAD_UP,
-		DpadDown = XINPUT_GAMEPAD_DPAD_DOWN,
-		DpadLeft = XINPUT_GAMEPAD_DPAD_LEFT,
-		DpadRight = XINPUT_GAMEPAD_DPAD_RIGHT
+		A,
+		B,
+		X,
+		Y,
+		LeftShoulder,
+		RightShoulder,
+		Back,
+		Start,
+		DpadUp,
+		DpadDown,
+		DpadLeft,
+		DpadRight
 	};
 
 	class Gamepad{
@@ -40,13 +38,22 @@ namespace dny{
 		float right_stick_x() const noexcept;
 		float right_stick_y() const noexcept;
 	private:
-		static float normalize_trigger( BYTE value ) noexcept;
-		static float normalize_stick( SHORT value ) noexcept;
-
+		struct state{
+			std::uint16_t button_mask;
+			std::uint8_t left_trigger_value;
+			std::uint8_t right_trigger_value;
+			std::int16_t left_stick_X;
+			std::int16_t left_stick_Y;
+			std::int16_t right_stick_X;
+			std::int16_t right_stick_Y;
+		};
+		static float normalize_trigger( std::uint8_t value ) noexcept;
+		static float normalize_stick( std::int16_t value ) noexcept;
+		static state to_state( _XINPUT_STATE const& state ) noexcept;
 		std::uint32_t m_user_index = 0;
 		bool m_connected = false;
 		bool m_prev_connected = false;
-		XINPUT_STATE m_current = {};
-		XINPUT_STATE m_previous = {};
+		state m_current = {};
+		state m_previous = {};
 	};
 }

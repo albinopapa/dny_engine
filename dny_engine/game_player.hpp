@@ -4,7 +4,7 @@
 #include "dny_math.hpp"
 #include "dny_physics.hpp"
 
-static constexpr float action_plane_z = 5.f;
+static constexpr float action_plane_z = -1.f;
 
 class Player{
 public:

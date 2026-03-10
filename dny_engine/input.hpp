@@ -31,7 +31,7 @@ namespace dny{
 	private:
 		template<typename Query>
 		bool query_binding( std::string_view action, Query&& query ) const{
-			const auto iter = m_bindings.find( action );
+			const auto iter = m_bindings.find( std::string{ action } );
 			if( iter == m_bindings.end() ){
 				return false;
 			}

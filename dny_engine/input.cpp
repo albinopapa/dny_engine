@@ -18,37 +18,46 @@ namespace dny{
 	}
 
 	bool Input::has_binding( std::string_view action ) const{
-		return m_bindings.contains( action );
+		return m_bindings.contains( std::string{ action } );
 	}
 
 	bool Input::is_pressed( std::string_view action ) const{
 		return query_binding( action, [this]( auto binding ){
 			using T = decltype( binding );
-			if constexpr( std::is_same_v<T, Key> ) return m_keyboard->is_pressed( binding );
-			if constexpr( std::is_same_v<T, MouseButton> ) return m_mouse->is_pressed( binding );
-			return m_gamepad->is_pressed( binding );
+			if constexpr( std::is_same_v<T, Key> ) 
+				return m_keyboard->is_pressed( binding );
+			if constexpr( std::is_same_v<T, MouseButton> ) 
+				return m_mouse->is_pressed( binding );
+			if constexpr( std::is_same_v<T, GamepadButton> ) 
+				return m_gamepad->is_pressed( binding );
 		} );
 	}
 
 	bool Input::is_held( std::string_view action ) const{
 		return query_binding( action, [this]( auto binding ){
 			using T = decltype( binding );
-			if constexpr( std::is_same_v<T, Key> ) return m_keyboard->is_held( binding );
-			if constexpr( std::is_same_v<T, MouseButton> ) return m_mouse->is_held( binding );
-			return m_gamepad->is_held( binding );
+			if constexpr( std::is_same_v<T, Key> ) 
+				return m_keyboard->is_held( binding );
+			if constexpr( std::is_same_v<T, MouseButton> ) 
+				return m_mouse->is_held( binding );
+			if constexpr( std::is_same_v<T, GamepadButton> )
+				return m_gamepad->is_held( binding );
 		} );
 	}
 
 	bool Input::is_released( std::string_view action ) const{
 		return query_binding( action, [this]( auto binding ){
 			using T = decltype( binding );
-			if constexpr( std::is_same_v<T, Key> ) return m_keyboard->is_released( binding );
-			if constexpr( std::is_same_v<T, MouseButton> ) return m_mouse->is_released( binding );
-			return m_gamepad->is_released( binding );
+			if constexpr( std::is_same_v<T, Key> ) 
+				return m_keyboard->is_released( binding );
+			if constexpr( std::is_same_v<T, MouseButton> ) 
+				return m_mouse->is_released( binding );
+			if constexpr( std::is_same_v<T, GamepadButton> )
+				return m_gamepad->is_released( binding );
 		} );
 	}
 
 	bool Input::is_key_down( std::uint8_t key_code ) const noexcept{
-		return m_keyboard->is_held( key_code );
+		return m_keyboard->is_held( m_keyboard->win32_key_code_to_key( key_code ) );
 	}
 }

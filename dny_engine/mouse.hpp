@@ -1,7 +1,6 @@
 #pragma once
 
 #include "dny_math.hpp"
-#include "dny_win32sdk.hpp"
 
 #include <array>
 #include <cstdint>
@@ -17,7 +16,7 @@ namespace dny{
 	class Mouse{
 	public:
 		void begin_frame() noexcept;
-		bool handle_message( UINT msg, WPARAM wparam, LPARAM lparam ) noexcept;
+		bool handle_message( std::uint32_t msg, std::uintptr_t wparam, std::intptr_t lparam ) noexcept;
 		void clear() noexcept;
 
 		dny::vector2<std::int32_t> position() const noexcept;

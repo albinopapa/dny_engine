@@ -1,11 +1,12 @@
 #include "keyboard.hpp"
+#include "dny_win32sdk.hpp"
 
 namespace dny{
 	void Keyboard::begin_frame() noexcept{
 		m_previous = m_current;
 	}
 
-	bool Keyboard::handle_message( UINT msg, WPARAM wparam ) noexcept{
+	bool Keyboard::handle_message( std::uint32_t msg, std::uintptr_t wparam ) noexcept{
 		switch( msg ){
 			case WM_KEYDOWN:
 			case WM_SYSKEYDOWN:
@@ -26,24 +27,48 @@ namespace dny{
 	}
 
 	bool Keyboard::is_pressed( Key key ) const noexcept{
-		const auto idx = to_index( key );
+		const auto idx = key_to_win32_key_code( key );
 		return m_current[ idx ] && !m_previous[ idx ];
 	}
 
 	bool Keyboard::is_held( Key key ) const noexcept{
-		return m_current[ to_index( key ) ];
+		return m_current[ key_to_win32_key_code( key ) ];
 	}
 
 	bool Keyboard::is_released( Key key ) const noexcept{
-		const auto idx = to_index( key );
+		const auto idx = key_to_win32_key_code( key );
 		return !m_current[ idx ] && m_previous[ idx ];
 	}
 
-	bool Keyboard::is_held( std::uint8_t key_code ) const noexcept{
-		return m_current[ key_code ];
-	}
+    std::uint32_t Keyboard::key_to_win32_key_code( Key key ) const noexcept{
+		switch( key ){
+			case Key::Space: return VK_SPACE;
+			case Key::A: return 'A';
+			case Key::D: return 'D';
+			case Key::E: return 'E';
+			case Key::Q: return 'Q';
+			case Key::Escape: return VK_ESCAPE;
+			case Key::Left: return VK_LEFT;
+			case Key::Right: return VK_RIGHT;
+			case Key::Up: return VK_UP;
+			case Key::Down: return VK_DOWN;
+			default: return 0;
+		}
+    }
 
-	std::size_t Keyboard::to_index( Key key ) noexcept{
-		return static_cast< std::size_t >( key );
+	Key Keyboard::win32_key_code_to_key( std::uint32_t key_code ) const noexcept{
+		switch( key_code){
+			case VK_SPACE: return Key::Space;
+			case 'A': return Key::A;
+			case 'D': return Key::D;
+			case 'E': return Key::E;
+			case 'Q': return Key::Q;
+			case VK_ESCAPE: return Key::Escape;
+			case VK_LEFT: return Key::Left;
+			case VK_RIGHT: return Key::Right;
+			case VK_UP: return Key::Up;
+			case VK_DOWN: return Key::Down;
+			default: return static_cast<Key>( 0 );
+		}
 	}
 }
