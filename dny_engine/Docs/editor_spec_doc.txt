@@ -1,0 +1,578 @@
+# In-Engine Level Editor – Technical Specification
+
+This document describes the architecture and behavior of the in‑engine level editor used by the project. The editor runs directly inside the engine and uses the same runtime systems (renderer, input, serialization, and math libraries) as the game. Its purpose is to provide tools for creating, editing, and saving level data while ensuring that what is seen in the editor matches the runtime behavior of the game.
+
+The editor operates as a mode of the engine rather than a separate application. Level data edited through the tools described here is serialized using the engine's level file formats and loaded by the runtime game systems without conversion.
+
+The specification is intended to help contributors and AI development tools understand:
+
+* how levels are structured
+* how editing tools behave
+* how level data is serialized
+* how editor UI and input are organized
+
+The goal is to keep the editor lightweight, deterministic, and tightly aligned with the runtime engine behavior.
+
+## 1. Overview
+
+This document defines the requirements and architecture for the in-engine level editor. The editor is integrated directly into the engine and uses the engine's rendering and input systems.
+
+The purpose of the editor is to create, edit, and save level data used by the game runtime.
+
+## 2. Rendering
+
+### 2.1 3D Rendering
+
+The editor uses the engine's software 3D renderer.
+
+Internal render resolution:
+
+* 640 x 360
+
+3D rendering is used strictly for scene visualization.
+
+### 2.2 2D Rendering
+
+The editor UI must use the engine's 2D drawing API and must not use the 3D renderer.
+
+## 3. Geometry Visualization
+
+### 3.1 Mesh Support
+
+The editor must support loading external mesh and material files.
+
+Supported formats:
+
+* OBJ (mesh)
+* MTL (material)
+
+Meshes are used for visual scene layout only.
+
+### 3.2 Geometry Placement
+
+The editor must allow placement of 3D geometry anywhere within the game world.
+
+Mesh objects must support:
+
+* Position
+* Rotation
+* Scale
+
+Geometry does not participate in collision.
+
+## 4. Collision System
+
+### 4.1 Polyline Colliders
+
+Collision geometry is defined using connected line segments (polylines).
+
+Each polyline consists of ordered points forming segments.
+
+Properties:
+
+* Points are connected sequentially
+* Segments define collision surfaces
+
+### 4.2 Grid Snapping
+
+Polyline points must snap to a tile grid.
+
+Grid resolution:
+
+* 0.5 world units
+
+Mouse placement should automatically snap to the nearest grid coordinate.
+
+## 5. Trigger System
+
+The editor must allow creation of rectangular trigger volumes.
+
+Triggers are defined using rectangle selection.
+
+Trigger properties may include:
+
+* Position
+* Width
+* Height
+* Trigger type
+
+## 6. UI Architecture
+
+### 6.1 Panel-Based Layout
+
+The editor UI must be organized into panels.
+
+Panels provide logical grouping of editor tools and data.
+
+Possible panels include:
+
+* Scene hierarchy
+* Object properties
+* Resource browser
+* Tool palette
+
+### 6.2 UI Controls
+
+The UI system provides a limited set of primitives.
+
+Supported controls:
+
+* ui::Button
+* ui::ListBox
+* ui::TextBox
+* ui::Palette
+
+All editor UI must be constructed using these primitives.
+
+## 7. Object Editing
+
+The editor must support selecting and editing objects in the scene.
+
+Selectable objects include:
+
+* Mesh instances
+* Polylines
+* Trigger rectangles
+* Game objects
+
+Editing operations should include:
+
+* Move
+* Delete
+* Duplicate
+
+## 8. Game Object Placement
+
+The editor must allow placement of gameplay objects such as:
+
+* Spawners
+* Moving platforms
+* Interactive objects
+
+The level file must store the initial state of each object.
+
+Examples:
+
+* Position
+* Configuration values
+* Activation state
+
+## 9. Level Serialization
+
+The editor must be able to save and load level files.
+
+Level data includes:
+
+* Mesh instances
+* Polyline colliders
+* Trigger rectangles
+* Gameplay objects
+
+### 9.1 Resource Referencing
+
+External resources must be stored as file references.
+
+Examples:
+
+* Mesh file path
+* Texture file path
+
+Resources must not be embedded inside the level file.
+
+## 10. Camera Controls
+
+The editor camera must allow navigation of the scene.
+
+Minimum features:
+
+* Pan
+* Zoom
+* Orbit
+
+## 11. Input
+
+The editor uses mouse and keyboard input.
+
+Mouse input is used for:
+
+* Object selection
+* Polyline creation
+* Trigger creation
+
+Keyboard input is used for:
+
+* Tool switching
+* Object manipulation
+
+## 12. Data Integrity
+
+The editor must validate data before saving.
+
+Validation examples:
+
+* Polylines must contain at least two points
+* Resource file paths must exist
+
+## 13. Level Container File (.lvl)
+
+Levels are organized using a top-level container file that references all data files associated with the level.
+
+The container file uses the extension:
+
+* .lvl
+
+The .lvl file does not contain level data directly. Instead, it lists the files that compose the level.
+
+Example structure:
+
+Level{
+map = "level_name.map"
+tile_defs = "level_name.def"
+platforms = "level_name.pfm"
+triggers = "level_name.trg"
+entities = "level_name.ety"
+collisions = "level_name.pln"
+meshes = "level_name.msh"
+}
+
+This design keeps the level format modular and allows individual systems to evolve without rewriting the entire level file.
+
+Advantages:
+
+* Human readable
+* Easy version control diffs
+* Systems can be loaded independently
+* Simplifies editor implementation
+
+The level loader must read the .lvl file first and then load each referenced file.
+
+## 14. Mesh Instances
+
+Visual geometry is stored separately from gameplay collision.
+
+Mesh instances are stored in a mesh definition file referenced by the .lvl container.
+
+Example mesh entry:
+
+MeshInstance{
+mesh = "castle_wall.obj"
+material = "castle_wall.mtl"
+position = (10,3,5)
+rotation = (0,90,0)
+scale = (1,1,1)
+}
+
+Meshes are strictly visual and do not participate in collision.
+
+## 15. File Organization
+
+A level should typically be stored inside its own directory.
+
+Example layout:
+
+level_forest/
+level_forest.lvl
+level_forest.map
+level_forest.def
+level_forest.pfm
+level_forest.trg
+level_forest.ety
+level_forest.pln
+level_forest.msh
+
+This structure keeps all level-related resources grouped together and simplifies loading and saving within the editor.
+
+## 16. Editor Tool Modes
+
+The editor operates using a tool-based interaction model. Only one tool is active at a time. Tools determine how mouse and keyboard input is interpreted.
+
+Minimum required tools:
+
+* **Select Tool**
+
+  * Used to select existing objects in the scene
+  * Supports rectangle selection
+  * Allows moving, deleting, and duplicating selected objects
+
+* **Mesh Placement Tool**
+
+  * Places visual mesh instances in the world
+  * User selects mesh resources from a list
+  * Mesh instances support position, rotation, and scale
+
+* **Polyline Tool**
+
+  * Creates collision geometry
+  * User clicks to place connected points
+  * Points snap to the grid (0.5 unit intervals)
+  * Supports open and closed polylines
+
+* **Trigger Tool**
+
+  * Creates rectangular trigger regions
+  * Region is defined by click-and-drag rectangle selection
+
+* **Entity Placement Tool**
+
+  * Places gameplay entities such as spawners and enemies
+  * Entity type is selected from a list of available definitions
+
+Tools may expose additional configuration options through editor panels.
+
+Tool switching should be accessible via both UI buttons and keyboard shortcuts.
+
+## 17. Coordinate System
+
+The engine and editor use a **left-handed coordinate system**.
+
+Axis orientation:
+
+| Axis | Direction                                                   |
+| ---- | ----------------------------------------------------------- |
+| X    | Horizontal axis, +X is to the right                         |
+| Y    | Vertical axis, +Y is upward                                 |
+| Z    | Depth axis, +Z moves away from the camera (into the screen) |
+
+Additional rules:
+
+* **1 world unit = 1 meter**
+* Tile grid snapping occurs at **0.5 unit increments**
+* Trigger regions operate in the **2D action plane at Z = 0**
+
+Most editor interactions (polyline editing, trigger placement, tile alignment) occur in the X/Y plane.
+
+## 18. Editor Camera
+
+The editor camera is designed for 2D-oriented level editing while still using the 3D renderer.
+
+Supported camera controls:
+
+* **Pan** – moves the camera along the X/Y plane
+* **Zoom** – changes the visible scale of the scene
+
+Zoom may be implemented either by:
+
+* moving the camera along the Z axis, or
+* adjusting the field-of-view (FOV)
+
+Camera rotation and orbiting are intentionally **not supported** in order to keep editing aligned to the 2D gameplay plane.
+
+## 19. Selection Priority
+
+When multiple objects overlap under the mouse cursor, selection priority determines which object receives input.
+
+Recommended selection order (highest priority first):
+
+1. Polyline points
+2. Trigger regions
+3. Entities
+4. Dynamic meshes (interactive objects such as switches or levers)
+5. Static meshes (environmental decoration)
+6. Tile grid
+
+Static meshes are purely aesthetic and therefore have the lowest selection priority.
+
+## 20. Object Identification
+
+Two types of identifiers are used in the editor and runtime systems.
+
+### Category Identifiers
+
+Category identifiers represent the **type** of object. These are typically derived from enumeration values.
+
+Examples:
+
+* Entity category (Skeleton, Hopper, Player)
+* Trigger condition types
+* Trigger action types
+
+### Instance Identifiers
+
+Instance identifiers uniquely identify a specific object instance within a level.
+
+Example representation:
+
+Skeleton #4
+
+In this example:
+
+* **Skeleton** is the entity category
+* **4** is the instance identifier
+
+Instance identifiers are typically implemented as indices or integer IDs and must remain stable during save/load operations.
+
+## 21. Trigger System Integration
+
+The editor must expose the attributes of gameplay triggers so that designers can create and modify trigger behavior.
+
+A trigger consists of three logical parts:
+
+* **Condition** – determines when the trigger fires
+* **Action** – determines what happens when the trigger fires
+* **Target** – identifies the object affected by the action
+
+Editable trigger properties:
+
+* Condition Type
+* Condition Region (rectangle defined by the Trigger Tool)
+* Condition ID
+* Action Type
+* Action Target Type
+* Action Target ID
+* Action ID
+* Fire Once (boolean)
+* Trigger ID
+
+Example serialized trigger:
+
+Trigger{
+condition_type = 1
+condition_region = (x,y,w,h)
+condition_id = 0
+action_type = 2
+action_target_type = 1
+action_target_id = 10
+action_id = 5
+fire_once = true
+id = 3
+}
+
+### Supported Trigger Condition Types
+
+| ID | Name             |
+| -- | ---------------- |
+| 0  | Invalid          |
+| 1  | Entity In Region |
+| 2  | Room Cleared     |
+| 3  | Item Acquired    |
+| 4  | Time Expired     |
+| 5  | Flag Set         |
+
+### Supported Trigger Action Types
+
+| ID | Name           |
+| -- | -------------- |
+| 0  | Invalid        |
+| 1  | Unlock Door    |
+| 2  | Set Tile State |
+| 3  | Play Animation |
+| 4  | Spawn Entity   |
+| 5  | Toggle Light   |
+
+### Supported Trigger Target Types
+
+| ID | Name   |
+| -- | ------ |
+| 0  | None   |
+| 1  | Tile   |
+| 2  | Entity |
+| 3  | Object |
+
+The editor should present these options using dropdown lists in the Trigger properties panel. The region for triggers is created using the **Trigger Tool** via click-and-drag rectangle selection in the scene view.
+
+## 22. Future Extensions
+
+The editor must expose the attributes of gameplay triggers so that designers can create and modify trigger behavior.
+
+A trigger consists of three logical parts:
+
+* **Condition** – determines when the trigger fires
+* **Action** – determines what happens when the trigger fires
+* **Target** – identifies the object affected by the action
+
+Editable trigger properties:
+
+* Condition Type
+* Condition Region (rectangle defined by the Trigger Tool)
+* Condition ID
+* Action Type
+* Action Target Type
+* Action Target ID
+* Action ID
+* Fire Once (boolean)
+* Trigger ID
+
+Example serialized trigger:
+
+Trigger{
+condition_type = 1
+condition_region = (x,y,w,h)
+condition_id = 0
+action_type = 2
+action_target_type = 1
+action_target_id = 10
+action_id = 5
+fire_once = true
+id = 3
+}
+
+### Supported Trigger Condition Types
+
+| ID | Name             |
+| -- | ---------------- |
+| 0  | Invalid          |
+| 1  | Entity In Region |
+| 2  | Room Cleared     |
+| 3  | Item Acquired    |
+| 4  | Time Expired     |
+| 5  | Flag Set         |
+
+### Supported Trigger Action Types
+
+| ID | Name           |
+| -- | -------------- |
+| 0  | Invalid        |
+| 1  | Unlock Door    |
+| 2  | Set Tile State |
+| 3  | Play Animation |
+| 4  | Spawn Entity   |
+| 5  | Toggle Light   |
+
+### Supported Trigger Target Types
+
+| ID | Name   |
+| -- | ------ |
+| 0  | None   |
+| 1  | Tile   |
+| 2  | Entity |
+| 3  | Object |
+
+The editor should present these options using dropdown lists in the Trigger properties panel. The region for triggers is created using the **Trigger Tool** via click-and-drag rectangle selection in the scene view.
+
+## 18. Future Extensions
+
+Potential future capabilities include:
+
+* Undo/redo system
+* Gizmos for transform editing
+* Tile painting tools
+* Navigation mesh editing
+
+This specification may evolve as the editor implementation progresses.
+
+Potential future capabilities include:
+
+* Undo/redo system
+* Gizmos for transform editing
+* Tile painting tools
+* Navigation mesh editing
+
+This specification may evolve as the editor implementation progresses.
+
+Potential future capabilities include:
+
+* Undo/redo system
+* Gizmos for transform editing
+* Tile painting tools
+* Navigation mesh editing
+
+This specification may evolve as the editor implementation progresses.
+
+Potential future capabilities include:
+
+* Undo/redo system
+* Gizmos for transform editing
+* Tile painting tools
+* Navigation mesh editing
+
+This specification may evolve as the editor implementation progresses.

@@ -47,7 +47,7 @@ public:
 			return;
 		}
 
-		const auto resolution = dny::resolve_aabb_vs_polyline( player_bounds, terrain_, 0.75f );
+		const auto resolution = dny::resolve_aabb_vs_polyline( player_bounds, terrain_, 0.25f );
 		if( resolution.y != 0.f && !jumped_this_frame ){
 			position.y += resolution.y;
 			velocity.y = 0.f;
