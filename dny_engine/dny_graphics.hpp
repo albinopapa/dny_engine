@@ -165,4 +165,14 @@ namespace dny{
 		}
 	}
 
+	template<typename ColorT>
+	void draw_text(
+		std::string text_,
+		vector2<std::int32_t> position_,
+		Font const& font_,
+		ColorT color_,
+		surface<ColorT>& canvas_ ){
+		draw( std::move( text_ ), position_, font_, color_, canvas_ );
+	}
+
 }
