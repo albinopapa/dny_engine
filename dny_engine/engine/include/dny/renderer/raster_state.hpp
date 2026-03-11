@@ -330,8 +330,34 @@ namespace dny{
 		static constexpr bool write_a = true;
 	};
 
+	// 2D rendering preset - alpha blending, no depth test, no culling
+	// Use this for drawing 2D primitives, sprites, and text over a 3D scene.
+	// Elements are drawn in submission order (last draw = on top).
+	struct raster_2d_state{
+		static constexpr bool blend_enabled = true;
+		static constexpr blend_factor src_color_factor = blend_factor::src_alpha;
+		static constexpr blend_factor dst_color_factor = blend_factor::inv_src_alpha;
+		static constexpr blend_op color_operation = blend_op::add;
+		static constexpr blend_factor src_alpha_factor = blend_factor::one;
+		static constexpr blend_factor dst_alpha_factor = blend_factor::zero;
+		static constexpr blend_op alpha_operation = blend_op::add;
+
+		static constexpr bool depth_test_enabled = false;
+		static constexpr bool depth_write_enabled = false;
+		static constexpr depth_func depth_function = depth_func::always;
+
+		static constexpr cull_mode culling_mode = cull_mode::none;
+		static constexpr front_face front_face_winding = front_face::cw;
+
+		static constexpr bool write_r = true;
+		static constexpr bool write_g = true;
+		static constexpr bool write_b = true;
+		static constexpr bool write_a = true;
+	};
+
 	static_assert( raster_state_policy<default_raster_state> );
 	static_assert( raster_state_policy<alpha_blend_raster_state> );
 	static_assert( raster_state_policy<additive_blend_raster_state> );
 	static_assert( raster_state_policy<no_depth_test_raster_state> );
+	static_assert( raster_state_policy<raster_2d_state> );
 }

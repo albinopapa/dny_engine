@@ -38,6 +38,7 @@
     <ClCompile Include="sandbox\src\game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp" />
     <ClInclude Include="sandbox\src\game.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
