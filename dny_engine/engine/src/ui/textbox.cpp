@@ -1,8 +1,9 @@
-#include "textbox.hpp"
-#include <utility>
+#include "ui/textbox.hpp"
 
-#include "../dny_colors.hpp"
-#include "../dny_graphics.hpp"
+#include "core/colors.hpp"
+#include "graphics/graphics.hpp"
+
+#include <utility>
 
 namespace dny::ui{
 	TextBox::TextBox( std::string id, std::string text, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept

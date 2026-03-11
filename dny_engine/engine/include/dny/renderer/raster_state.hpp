@@ -1,6 +1,7 @@
 #pragma once
 
-#include "dny_colors.hpp"
+#include "core/colors.hpp"
+
 #include <cstdint>
 #include <concepts>
 

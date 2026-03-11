@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_math.hpp"
-#include "dny_soft_renderer.hpp"
+#include "math/math.hpp"
+#include "soft_renderer.hpp"
 
 #include <algorithm>
 #include <cmath>

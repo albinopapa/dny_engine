@@ -1,12 +1,12 @@
 #pragma once
 
-#include "dny_colors.hpp"
-#include "dny_concepts.hpp"
-#include "dny_math.hpp"
-#include "dny_utilities.hpp"
-#include "dny_simd.hpp"
-#include "dny_surface.hpp"
-#include "dny_raster_state.hpp"
+#include "core/colors.hpp"
+#include "core/concepts.hpp"
+#include "core/surface.hpp"
+#include "core/utilities.hpp"
+#include "math/math.hpp"
+#include "math/simd.hpp"
+#include "raster_state.hpp"
 
 #include <algorithm>
 #include <cassert>

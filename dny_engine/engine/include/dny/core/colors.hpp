@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dny_type_traits.hpp"
+#include "core/type_traits.hpp"
 
 #include <algorithm>
 #include <cstdint>

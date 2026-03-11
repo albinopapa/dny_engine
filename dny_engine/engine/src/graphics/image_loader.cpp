@@ -1,10 +1,11 @@
-#include "dny_image_loader.hpp"
+#include "graphics/image_loader.hpp"
 
-#include "dny_wicsdk.hpp"
+#include "platform/wicsdk.hpp"
 
 namespace dny{
 	image_data load_image_data( std::filesystem::path const& filename ){
 		auto factory = wic::create_imaging_factory();
+		const auto cur_path = std::filesystem::current_path();
 		auto decoder = wic::create_bitmap_decoder( factory.Get(), filename );
 		auto bitmap_frame = wic::create_bitmap_frame( decoder.Get() );
 

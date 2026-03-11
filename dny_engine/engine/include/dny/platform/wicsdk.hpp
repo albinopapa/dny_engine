@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dny_win32sdk.hpp"
+#include "win32sdk.hpp"
 
 #include <cstdint>
 #include <filesystem>

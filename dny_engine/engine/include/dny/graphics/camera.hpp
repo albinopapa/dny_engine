@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_aabb.hpp"
-#include "dny_math.hpp"
+#include "physics/aabb.hpp"
+#include "math/math.hpp"
 
 class lock_on_camera{
 public:

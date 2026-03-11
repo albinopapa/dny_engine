@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_colors.hpp"
-#include "dny_math.hpp"
-#include "dny_d3d11sdk.hpp"
+#include "core/colors.hpp"
+#include "math/math.hpp"
+#include "d3d11sdk.hpp"
 
 #include <span>
 

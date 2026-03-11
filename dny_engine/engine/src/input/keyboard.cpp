@@ -1,5 +1,5 @@
-#include "keyboard.hpp"
-#include "dny_win32sdk.hpp"
+#include "input/keyboard.hpp"
+#include "platform/win32sdk.hpp"
 
 namespace dny{
 	void Keyboard::begin_frame() noexcept{

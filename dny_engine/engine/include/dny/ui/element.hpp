@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../dny_dims2.hpp"
-#include "../dny_font.hpp"
-#include "../dny_rectangle.hpp"
-#include "../dny_surface.hpp"
-#include "../dny_vector2.hpp"
-#include "../keyboard.hpp"
-#include "../mouse.hpp"
+#include "core/dims2.hpp"
+#include "core/rectangle.hpp"
+#include "core/surface.hpp"
+#include "graphics/font.hpp"
+#include "input/keyboard.hpp"
+#include "input/mouse.hpp"
+#include "math/vector2.hpp"
 
 #include <cstdint>
 #include <string>

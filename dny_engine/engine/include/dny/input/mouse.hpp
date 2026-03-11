@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dny_math.hpp"
+#include "math/math.hpp"
 
 #include <array>
 #include <cstdint>

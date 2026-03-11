@@ -1,5 +1,5 @@
-#include "mouse.hpp"
-#include "dny_win32sdk.hpp"
+#include "input/mouse.hpp"
+#include "platform/win32sdk.hpp"
 
 namespace dny{
 	void Mouse::begin_frame() noexcept{

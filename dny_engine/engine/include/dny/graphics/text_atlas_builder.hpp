@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_image_loader.hpp"
-#include "dny_rectangle.hpp"
+#include "image_loader.hpp"
+#include "core/rectangle.hpp"
 
 #include <cstdint>
 #include <string>

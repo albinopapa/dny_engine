@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_concepts.hpp"
-#include "dny_vector3.hpp"
+#include "core/concepts.hpp"
+#include "math/vector3.hpp"
 
 namespace dny{
 	template<math_scalar T>

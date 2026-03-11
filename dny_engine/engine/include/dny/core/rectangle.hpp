@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_dims.hpp"
-#include "dny_vector2.hpp"
+#include "dims2.hpp"
+#include "math/vector2.hpp"
 
 #include <algorithm>
 

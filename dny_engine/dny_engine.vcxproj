@@ -18,6 +18,28 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="apps\runtime\src\main.cpp" />
+    <ClCompile Include="engine\src\audio\audio.cpp" />
+    <ClCompile Include="engine\src\graphics\image_loader.cpp" />
+    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp" />
+    <ClCompile Include="engine\src\input\gamepad.cpp" />
+    <ClCompile Include="engine\src\input\input.cpp" />
+    <ClCompile Include="engine\src\input\keyboard.cpp" />
+    <ClCompile Include="engine\src\input\mouse.cpp" />
+    <ClCompile Include="engine\src\ui\button.cpp" />
+    <ClCompile Include="engine\src\ui\checkbox.cpp" />
+    <ClCompile Include="engine\src\ui\element.cpp" />
+    <ClCompile Include="engine\src\ui\input_textbox.cpp" />
+    <ClCompile Include="engine\src\ui\listbox.cpp" />
+    <ClCompile Include="engine\src\ui\panel.cpp" />
+    <ClCompile Include="engine\src\ui\radiobutton.cpp" />
+    <ClCompile Include="engine\src\ui\textbox.cpp" />
+    <ClCompile Include="sandbox\src\game.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sandbox\src\game.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -70,6 +92,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
+    <SourcePath>$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -134,90 +172,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="dny_audio.cpp" />
-    <ClCompile Include="dny_audio_test.cpp" />
-    <ClCompile Include="dny_image_loader.cpp" />
-    <ClCompile Include="dny_text_atlas_builder.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="gamepad.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="keyboard.cpp" />
-    <ClCompile Include="mouse.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="ui\button.cpp" />
-    <ClCompile Include="ui\checkbox.cpp" />
-    <ClCompile Include="ui\element.cpp" />
-    <ClCompile Include="ui\input_textbox.cpp" />
-    <ClCompile Include="ui\listbox.cpp" />
-    <ClCompile Include="ui\panel.cpp" />
-    <ClCompile Include="ui\radiobutton.cpp" />
-    <ClCompile Include="ui\textbox.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="dny_aabb.hpp" />
-    <ClInclude Include="dny_audio.hpp" />
-    <ClInclude Include="dny_audio_example.hpp" />
-    <ClInclude Include="dny_colors.hpp" />
-    <ClInclude Include="dny_concepts.hpp" />
-    <ClInclude Include="dny_d2dsdk.hpp" />
-    <ClInclude Include="dny_d3d11sdk.hpp" />
-    <ClInclude Include="dny_dims2.hpp" />
-    <ClInclude Include="dny_display.hpp" />
-    <ClInclude Include="dny_dwritesdk.hpp" />
-    <ClInclude Include="dny_font.hpp" />
-    <ClInclude Include="dny_frustum.hpp" />
-    <ClInclude Include="dny_graphics.hpp" />
-    <ClInclude Include="dny_image_loader.hpp" />
-    <ClInclude Include="dny_input.hpp" />
-    <ClInclude Include="dny_raster_state.hpp" />
-    <ClInclude Include="gamepad.hpp" />
-    <ClInclude Include="input.hpp" />
-    <ClInclude Include="keyboard.hpp" />
-    <ClInclude Include="mouse.hpp" />
-    <ClInclude Include="dny_math.hpp" />
-    <ClInclude Include="dny_math_constants.hpp" />
-    <ClInclude Include="dny_math_v2.hpp" />
-    <ClInclude Include="dny_matrix_3x2.hpp" />
-    <ClInclude Include="dny_matrix_3x3.hpp" />
-    <ClInclude Include="dny_matrix_4x4.hpp" />
-    <ClInclude Include="dny_physics.hpp" />
-    <ClInclude Include="dny_platform.hpp" />
-    <ClInclude Include="dny_primitive_generators.hpp" />
-    <ClInclude Include="dny_qtree.hpp" />
-    <ClInclude Include="dny_rectangle.hpp" />
-    <ClInclude Include="dny_simd.hpp" />
-    <ClInclude Include="dny_soft_renderer.hpp" />
-    <ClInclude Include="dny_surface.hpp" />
-    <ClInclude Include="dny_text_atlas_builder.hpp" />
-    <ClInclude Include="dny_timer.hpp" />
-    <ClInclude Include="dny_type_traits.hpp" />
-    <ClInclude Include="dny_utilities.hpp" />
-    <ClInclude Include="dny_vector2.hpp" />
-    <ClInclude Include="dny_vector3.hpp" />
-    <ClInclude Include="dny_vector4.hpp" />
-    <ClInclude Include="dny_wicsdk.hpp" />
-    <ClInclude Include="dny_win32sdk.hpp" />
-    <ClInclude Include="game.hpp" />
-    <ClInclude Include="game_camera.hpp" />
-    <ClInclude Include="game_effects.hpp" />
-    <ClInclude Include="game_player.hpp" />
-    <ClInclude Include="ui\button.hpp" />
-    <ClInclude Include="ui\checkbox.hpp" />
-    <ClInclude Include="ui\dny_ui.hpp" />
-    <ClInclude Include="ui\element.hpp" />
-    <ClInclude Include="ui\input_textbox.hpp" />
-    <ClInclude Include="ui\listbox.hpp" />
-    <ClInclude Include="ui\panel.hpp" />
-    <ClInclude Include="ui\radiobutton.hpp" />
-    <ClInclude Include="ui\textbox.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="AUDIO_BUILD_FIXES.md" />
-    <None Include="dny_audio_README.md" />
-    <None Include="Docs\raster_state_implementation_status.md" />
-    <None Include="Docs\soft_renderer_raster_state_design.md" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

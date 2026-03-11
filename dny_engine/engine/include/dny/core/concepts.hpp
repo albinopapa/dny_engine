@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_type_traits.hpp"
-#include "dny_colors.hpp"
-#include "dny_vector2.hpp"
+#include "type_traits.hpp"
+#include "colors.hpp"
+#include "math/vector2.hpp"
 
 namespace dny{
 	template<typename T> concept color_type = is_color<T>::value;

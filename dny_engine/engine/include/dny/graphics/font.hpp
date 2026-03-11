@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_rectangle.hpp"
-#include "dny_colors.hpp"
-#include "dny_text_atlas_builder.hpp"
+#include "core/rectangle.hpp"
+#include "core/colors.hpp"
+#include "text_atlas_builder.hpp"
 
 #include <cstdint>
 #include <span>

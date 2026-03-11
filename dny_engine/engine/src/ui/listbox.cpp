@@ -1,8 +1,8 @@
-#include "listbox.hpp"
-#include <utility>
+#include "ui/listbox.hpp"
+#include "core/colors.hpp"
+#include "graphics/graphics.hpp"
 
-#include "../dny_colors.hpp"
-#include "../dny_graphics.hpp"
+#include <utility>
 
 namespace dny::ui{
 	ListBox::ListBox( std::string id, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept

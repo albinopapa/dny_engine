@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_concepts.hpp"
-#include "dny_colors.hpp"
-#include "dny_math.hpp"
+#include "concepts.hpp"
+#include "colors.hpp"
+#include "math/math.hpp"
 
 #include <cassert>
 #include <cmath>

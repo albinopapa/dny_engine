@@ -1,10 +1,11 @@
 #pragma once
 
-#include "dny_vector2.hpp"
-#include "dny_vector3.hpp"
-#include "dny_vector4.hpp"
-#include "dny_colors.hpp"
-#include "dny_math_constants.hpp"
+#include "vector2.hpp"
+#include "vector3.hpp"
+#include "vector4.hpp"
+#include "math_constants.hpp"
+
+#include "core/colors.hpp"
 
 #if defined( _MSC_VER )
 #include <intrin.h>

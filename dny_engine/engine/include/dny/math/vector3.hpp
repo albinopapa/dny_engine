@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_type_traits.hpp"
-#include "dny_vector2.hpp"
+#include "core/type_traits.hpp"
+#include "vector2.hpp"
 
 #include <format>
 

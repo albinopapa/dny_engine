@@ -1,5 +1,5 @@
-#include "gamepad.hpp"
-#include "dny_win32sdk.hpp"
+#include "input/gamepad.hpp"
+#include "platform/win32sdk.hpp"
 
 #include <Xinput.h>
 

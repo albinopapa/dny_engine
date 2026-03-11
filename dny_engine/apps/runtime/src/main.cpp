@@ -1,6 +1,6 @@
-#include "game.hpp"
+#include "../../../sandbox/src/game.hpp"
 
-#include "dny_platform.hpp"
+#include "../dny/platform/platform.hpp"
 
 #include <cstdint>
 

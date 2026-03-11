@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dny_win32sdk.hpp"
+#include "win32sdk.hpp"
 
 #include <d2d1.h>
 #pragma comment(lib, "d2d1.lib")

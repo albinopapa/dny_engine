@@ -1,6 +1,7 @@
-#include "dny_audio.hpp"
+#include "audio/audio.hpp"
 
-#include <Windows.h>
+#include "platform/win32sdk.hpp"
+
 #include <mfapi.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>

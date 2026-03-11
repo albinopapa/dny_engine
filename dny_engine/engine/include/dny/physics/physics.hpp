@@ -1,9 +1,9 @@
 #pragma once
 
-#include "dny_aabb.hpp"
-#include "dny_concepts.hpp"
-#include "dny_rectangle.hpp"
-#include "dny_vector2.hpp"
+#include "aabb.hpp"
+#include "core/concepts.hpp"
+#include "core/rectangle.hpp"
+#include "math/vector2.hpp"
 
 #include <algorithm>
 #include <cmath>

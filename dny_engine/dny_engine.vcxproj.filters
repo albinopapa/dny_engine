@@ -13,77 +13,84 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{77d8523e-a89e-4cf6-b2d9-9bf2fe16056b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\audio">
+      <UniqueIdentifier>{33240bcf-eb34-4c56-971d-0b2dd4b771a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{362561a9-d240-494b-a746-370048301630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\platform">
+      <UniqueIdentifier>{db648a08-a7f6-4c6d-9e88-c8cf05716801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{84a55c15-4987-48cb-866f-7a7f171a21ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sandbox">
+      <UniqueIdentifier>{64e54fec-08ac-474b-8107-65f0e771b250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sandbox">
+      <UniqueIdentifier>{5bba617b-7756-4069-9d30-b9bc19e269da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dny_image_loader.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="dny_text_atlas_builder.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="gamepad.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="input.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="keyboard.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="mouse.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="Source.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\button.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\checkbox.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\element.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\input_textbox.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\listbox.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\panel.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\radiobutton.cpp"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="ui\textbox.cpp"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="engine\src\input\mouse.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\input\gamepad.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\input\input.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\input\keyboard.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="apps\runtime\src\main.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\audio\audio.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\graphics\image_loader.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\button.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\checkbox.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\element.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\input_textbox.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\listbox.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\panel.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\radiobutton.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\textbox.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="sandbox\src\game.cpp">
+      <Filter>Source Files\sandbox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dny_aabb.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_colors.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_concepts.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_d2dsdk.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_d3d11sdk.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_dims2.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_display.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_dwritesdk.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_font.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_frustum.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_graphics.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_image_loader.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_input.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_math.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_math_constants.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_math_v2.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_matrix_3x2.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_matrix_3x3.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_matrix_4x4.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_physics.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_platform.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_primitive_generators.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_qtree.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_rectangle.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_simd.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_soft_renderer.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_surface.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_text_atlas_builder.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_timer.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_type_traits.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_utilities.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_vector2.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_vector3.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_vector4.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_wicsdk.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="dny_win32sdk.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="gamepad.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="input.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="keyboard.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="mouse.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="game.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="game_camera.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="game_effects.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="game_player.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\button.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\checkbox.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\dny_ui.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\element.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\input_textbox.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\listbox.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\panel.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\radiobutton.hpp"><Filter>Header Files</Filter></ClInclude>
-    <ClInclude Include="ui\textbox.hpp"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="sandbox\src\game.hpp">
+      <Filter>Header Files\sandbox</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

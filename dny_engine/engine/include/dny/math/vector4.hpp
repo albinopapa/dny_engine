@@ -1,8 +1,7 @@
 #pragma once
 
-#include "dny_type_traits.hpp"
-#include "dny_vector2.hpp"
-#include "dny_vector3.hpp"
+#include "core/type_traits.hpp"
+#include "vector3.hpp"
 
 namespace dny{
 	template<typename ElementT>

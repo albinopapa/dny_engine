@@ -1,8 +1,8 @@
-#include "panel.hpp"
-#include <utility>
+#include "ui/panel.hpp"
+#include "core/colors.hpp"
+#include "graphics/graphics.hpp"
 
-#include "../dny_colors.hpp"
-#include "../dny_graphics.hpp"
+#include <utility>
 
 #include <unordered_map>
 

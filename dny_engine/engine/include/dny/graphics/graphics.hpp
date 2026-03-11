@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "dny_math.hpp"
-#include "dny_surface.hpp"
+#include "math/math.hpp"
+#include "core/surface.hpp"
 
 #include <algorithm>
 #include <cstdint>

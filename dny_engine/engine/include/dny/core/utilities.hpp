@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dny_simd.hpp"
-#include "dny_type_traits.hpp"
+#include "math/simd.hpp"
+#include "type_traits.hpp"
 
 #include <array>
 #include <tuple>

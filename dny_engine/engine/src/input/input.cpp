@@ -1,4 +1,4 @@
-#include "input.hpp"
+#include "input/input.hpp"
 
 namespace dny{
 	Input::Input( Keyboard const& keyboard, Mouse const& mouse, Gamepad const& gamepad ) noexcept

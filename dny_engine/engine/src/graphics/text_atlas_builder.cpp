@@ -1,8 +1,8 @@
-#include "dny_text_atlas_builder.hpp"
-#include "dny_colors.hpp"
-#include "dny_d2dsdk.hpp"
-#include "dny_dwritesdk.hpp"
-#include "dny_wicsdk.hpp"
+#include "graphics/text_atlas_builder.hpp"
+#include "core/colors.hpp"
+#include "platform/d2dsdk.hpp"
+#include "platform/dwritesdk.hpp"
+#include "platform/wicsdk.hpp"
 
 namespace dny::internal{
 	static constexpr std::int32_t max_chars_per_row = 32;

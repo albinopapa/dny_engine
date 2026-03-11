@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_display.hpp"
-#include "dny_math.hpp"
-#include "dny_input.hpp"
+#include "display.hpp"
+#include "math/math.hpp"
+#include "input/input.hpp"
 
 #include <cstdint>
 #include <span>

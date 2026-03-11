@@ -1,16 +1,16 @@
 #pragma once
 
-#include "game_camera.hpp"
-#include "game_effects.hpp"
-#include "game_player.hpp"
+#include "../dny/graphics/camera.hpp"
+#include "../dny/renderer/effects.hpp"
+#include "../../apps/runtime/include/player.hpp"
 
-#include "dny_audio.hpp"
-#include "dny_font.hpp"
-#include "dny_graphics.hpp"
-#include "dny_image_loader.hpp"
-#include "dny_math.hpp"
-#include "dny_platform.hpp"
-#include "dny_timer.hpp"
+//#include "dny_audio.hpp"
+#include "../dny/graphics/font.hpp"
+#include "../dny/graphics/graphics.hpp"
+#include "../dny/graphics/image_loader.hpp"
+#include "../dny/math/math.hpp"
+#include "../dny/platform/platform.hpp"
+#include "../dny/core/timer.hpp"
 
 #include <filesystem>
 #include <format>
@@ -180,12 +180,12 @@ private:
 	}
 	void init_textures(){
 		girl_step = image_data_to_texture(
-			std::filesystem::path{ "Assets/Textures/girl_step_ini.png" }
+			std::filesystem::path{ "assets/textures/n_girl/girl_step_ini.png" }
 		);
 
 		for( auto i = 0; i < 30; ++i ){
 			const auto filename = std::filesystem::path{
-				std::format( "Assets/Textures/girl_walking{:02}.png", i )
+				std::format( "assets/textures/n_girl/girl_walking{:02}.png", i )
 			};
 			girl_walking_frames.emplace_back(
 				image_data_to_texture( filename )
@@ -194,7 +194,7 @@ private:
 
 		// Load terrain texture
 		terrain_texture = image_data_to_texture(
-			std::filesystem::path{ "Assets/Textures/test.png" }
+			std::filesystem::path{ "assets/textures/test/test.png" }
 		);
 	}
 private:

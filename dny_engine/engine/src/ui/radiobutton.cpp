@@ -1,8 +1,8 @@
-#include "radiobutton.hpp"
-#include <utility>
+#include "ui/radiobutton.hpp"
+#include "core/colors.hpp"
+#include "graphics/graphics.hpp"
 
-#include "../dny_colors.hpp"
-#include "../dny_graphics.hpp"
+#include <utility>
 
 namespace dny::ui{
 	RadioButton::RadioButton( std::string id, std::string group, std::string label, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept

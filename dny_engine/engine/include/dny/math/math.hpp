@@ -1,14 +1,15 @@
 #pragma once
 
-#include "dny_concepts.hpp"
-#include "dny_dims2.hpp"
-#include "dny_math_constants.hpp"
-#include "dny_vector2.hpp"
-#include "dny_vector3.hpp"
-#include "dny_vector4.hpp"
-#include "dny_matrix_3x3.hpp"
-#include "dny_matrix_4x4.hpp"
-#include "dny_rectangle.hpp"
+#include "core/concepts.hpp"
+#include "core/dims2.hpp"
+#include "core/rectangle.hpp"
+
+#include "math_constants.hpp"
+#include "vector2.hpp"
+#include "vector3.hpp"
+#include "vector4.hpp"
+#include "matrix_3x3.hpp"
+#include "matrix_4x4.hpp"
 
 #include <array>
 #include <cassert>

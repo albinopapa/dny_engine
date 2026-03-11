@@ -1,8 +1,10 @@
 #pragma once
 
-#include "dny_math_constants.hpp"
-#include "dny_physics.hpp"
-#include "dny_primitive_generators.hpp"
+#include "math/math_constants.hpp"
+#include "physics/physics.hpp"
+#include "primitive_generators.hpp"
+#include "soft_renderer.hpp"
+
 #include <optional>
 
 using vertex_in = dny::primitives::pnu_vertex;

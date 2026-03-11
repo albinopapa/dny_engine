@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_input.hpp"
-#include "dny_math.hpp"
-#include "dny_physics.hpp"
+#include "input/input.hpp"
+#include "math/math.hpp"
+#include "physics/physics.hpp"
 
 static constexpr float action_plane_z = -1.f;
 

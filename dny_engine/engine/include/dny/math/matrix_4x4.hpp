@@ -1,8 +1,8 @@
 #pragma once
 
-#include "dny_math_constants.hpp"
-#include "dny_matrix_3x3.hpp"
-#include "dny_vector4.hpp"
+#include "math_constants.hpp"
+#include "matrix_3x3.hpp"
+#include "vector4.hpp"
 
 #include <array>
 #include <cmath>
