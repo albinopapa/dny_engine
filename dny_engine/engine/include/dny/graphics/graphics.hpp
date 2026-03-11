@@ -154,23 +154,22 @@ namespace dny{
 			}
 		};
 
-		for( std::int32_t i = 0; auto const& ch : text_ ){
-			const auto char_rect = internal::get_char_rect(
-				ch,
-				font_.char_width(),
-				font_.char_height()
-			);
-			const auto new_x = position_.x + ( i * char_rect.width() );
-			++i;
-
+		auto pen_x = position_.x;
+		for( auto const& ch : text_ ){
+			const auto char_rect = font_.glyph_rect( ch );
 			const auto rect = Rect<std::int32_t>{
-				new_x, position_.y,
-				new_x + char_rect.width(), position_.y + char_rect.height()
+				pen_x,
+				position_.y,
+				pen_x + char_rect.width(),
+				position_.y + char_rect.height()
 			};
+
 			if( rect.right > canvas_bounds.left && rect.left < canvas_bounds.right &&
 				rect.bottom > canvas_bounds.top && rect.top < canvas_bounds.bottom ){
 				draw_char( { rect.left, rect.top }, char_rect );
 			}
+
+			pen_x += font_.glyph_advance( ch );
 		}
 	}
 
