@@ -145,6 +145,7 @@ namespace dny{
 		}
 	};
 
+	audio_clip::audio_clip() = default;
 	audio_clip::~audio_clip() = default;
 
 	audio_clip::audio_clip( audio_clip&& other ) noexcept

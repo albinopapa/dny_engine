@@ -5,9 +5,6 @@
 #include <memory>
 
 namespace dny{
-	class audio_clip;
-	class audio_engine;
-
 	enum class audio_state : std::uint8_t{
 		stopped,
 		playing,
@@ -16,7 +13,7 @@ namespace dny{
 
 	class audio_clip{
 	public:
-		audio_clip() = default;
+		audio_clip();
 		~audio_clip();
 
 		audio_clip( audio_clip const& ) = delete;
