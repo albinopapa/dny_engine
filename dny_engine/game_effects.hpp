@@ -1,7 +1,9 @@
 #pragma once
 
+#include "dny_math_constants.hpp"
 #include "dny_physics.hpp"
 #include "dny_primitive_generators.hpp"
+#include <optional>
 
 using vertex_in = dny::primitives::pnu_vertex;
 using vertex_out = dny::basic_vertex<
@@ -49,9 +51,13 @@ class pnu_pixel_shader : public dny::basic_pixel_shader<
 	dny::bilinear_sampler>{
 public:
 	static constexpr std::size_t Position_ID = 0;
-	dny::ColorF operator()( vertex_in const& vin )const noexcept{
+	std::optional<dny::ColorF> operator()( vertex_in const& vin )const noexcept{
 		auto uv = std::get<2>( vin.m_fields );
-		return sampler.sample( uv, texture[ 0 ] );
+		
+		auto color = sampler.sample( uv, texture[ 0 ] );
+		if( color.alpha() <= dny::epsilon ) return std::nullopt;
+
+		return color;
 	}
 };
 
@@ -83,7 +89,7 @@ class debug_pixel_shader : public dny::basic_pixel_shader<
 public:
 	static constexpr std::size_t Position_ID = 0;
 
-	dny::ColorF operator()( vertex_in const& vin )const noexcept{
+	std::optional<dny::ColorF> operator()( vertex_in const& vin )const noexcept{
 		return std::get<1>( vin.m_fields );
 	}
 };

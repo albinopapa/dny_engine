@@ -64,7 +64,7 @@ public:
 	}
 	dny::matrix_4x4<float> get_transform()const{
 		auto rotation = dny::matrix_4x4<float>::rotation_x( dny::to_radians( 90.f ) );
-		auto translation = dny::matrix_4x4<float>::translation( { position.x, position.y, action_plane_z } );
+		auto translation = dny::matrix_4x4<float>::translation( { position.x, position.y, 1.f } );
 		auto scaling = dny::matrix_4x4<float>::scaling( { size.width, size.height, 1.f } );
 		return rotation * scaling * translation;
 	}

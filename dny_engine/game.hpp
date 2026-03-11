@@ -69,31 +69,23 @@ private:
 	}
 	void render(){
 		view_matrix = camera.get_view_matrix();
-		auto cb = transform_constant_buffer{
-			player.get_transform(),
-			view_matrix,
-			projection_matrix
-		};
 
-		//renderer.set_pixel_shader_textures( 0, girl_walking_frames[ 0 ] );
-		renderer.set_pixel_shader_textures( 0, girl_step );
-		renderer.set_render_target( render_target );
-		renderer.set_depth_buffer( depth_buffer );
+		render_debug_colliders();
+		render_player();
+		render_terrain();
 
-		renderer.set_cbuffer( cb );
-		renderer.render( girl_vbuffer );
+		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
 
-		renderer.set_pixel_shader_textures( 0, terrain_texture );
-		for( const auto& pos : terrain_positions ){
-			auto terrain_cb = transform_constant_buffer{
-				dny::matrix_4x4<float>::translation( { pos.x, pos.y, action_plane_z } ),
-				view_matrix,
-				projection_matrix
-			};
-			renderer.set_cbuffer( terrain_cb );
-			renderer.render( terrain_vbuffer );
-		}
+		dny::draw_text(
+			std::format( "FPS: {:.2f}", frame_rate ),
+			text_pos,
+			consolas,
+			dny::Color32{ dny::Colors::white },
+			render_target
+		);
+	}
 
+	void render_debug_colliders(){
 		if( debug_draw_colliders && !debug_vertices.empty() ){
 			auto debug_cb = transform_constant_buffer{
 				dny::matrix_4x4<float>::identity(),
@@ -105,16 +97,41 @@ private:
 			debug_renderer.set_cbuffer( debug_cb );
 			debug_renderer.render( debug_vertices );
 		}
+	}
 
-		const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
+	void render_terrain(){
+		renderer.set_render_target( render_target );
+		renderer.set_depth_buffer( depth_buffer );
+		renderer.set_pixel_shader_textures( 0, terrain_texture );
 
-		dny::draw_text(
-			std::format( "FPS: {:.2f}", frame_rate ),
-			text_pos,
-			consolas,
-			dny::Color32{ dny::Colors::white },
-			render_target
-		);
+
+		for( const auto& pos : terrain_positions ){
+			auto world =
+				dny::matrix_4x4<float>::scaling( { 1.f, 1.f, 2.f } ) *
+				dny::matrix_4x4<float>::translation( { pos.x, pos.y, action_plane_z } );
+			auto terrain_cb = transform_constant_buffer{
+				.world      = world,
+				.view       = view_matrix,
+				.projection = projection_matrix
+			};
+			renderer.set_cbuffer( terrain_cb );
+			renderer.render( terrain_vbuffer );
+		}
+	}
+
+	void render_player(){
+		auto cb = transform_constant_buffer{
+			player.get_transform(),
+			view_matrix,
+			projection_matrix
+		};
+		//renderer.set_pixel_shader_textures( 0, girl_walking_frames[ 0 ] );
+		renderer.set_pixel_shader_textures( 0, girl_step );
+		renderer.set_render_target( render_target );
+		renderer.set_depth_buffer( depth_buffer );
+
+		renderer.set_cbuffer( cb );
+		renderer.render( girl_vbuffer );
 	}
 
 	void init_debug_vertices(){
@@ -224,11 +241,11 @@ private:
 		{ 8.f, 8.f, -10.f }
 	};
 	std::vector<dny::vector3<float>> terrain_positions{
-		{ -2.f, -2.f, action_plane_z },
-		{ -1.f, -2.f, action_plane_z },
-		{ 0.f, -2.f, action_plane_z },
-		{ 1.f, -2.f, action_plane_z },
-		{ 2.f, -2.f, action_plane_z }
+		{ -2.f, -2.f, 0.f },
+		{ -1.f, -2.f, 0.f },
+		{  0.f, -2.f, 0.f },
+		{  1.f, -2.f, 0.f },
+		{  2.f, -2.f, 0.f }
 	};
 	dny::polyline_collider<float> terrain_collider = dny::generate_polyline_collider<float>( {
 		{ -8.f, -4.f },

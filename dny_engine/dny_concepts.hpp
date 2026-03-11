@@ -21,7 +21,7 @@ namespace dny{
 	template<typename PS>
 	concept pixel_shader =
 		requires( PS ps, typename PS::vertex_in vin, ColorF color ){
-			{ ps( vin ) }->std::same_as<ColorF>;
+			{ ps( vin ) }->std::same_as<std::optional<ColorF>>;
 	};
 
 	template<typename S>
