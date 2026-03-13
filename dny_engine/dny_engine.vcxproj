@@ -38,7 +38,11 @@
     <ClCompile Include="sandbox\src\game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="engine\include\dny\renderer\effects.hpp" />
+    <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp" />
+    <ClInclude Include="engine\include\dny\renderer\raster_state.hpp" />
     <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp" />
+    <ClInclude Include="engine\include\dny\renderer\soft_renderer.hpp" />
     <ClInclude Include="sandbox\src\game.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -34,6 +34,9 @@
     <Filter Include="Header Files\sandbox">
       <UniqueIdentifier>{5bba617b-7756-4069-9d30-b9bc19e269da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Renderer">
+      <UniqueIdentifier>{810a802a-e105-4a4f-890f-0896f52c39e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\src\input\mouse.cpp">
@@ -91,6 +94,21 @@
   <ItemGroup>
     <ClInclude Include="sandbox\src\game.hpp">
       <Filter>Header Files\sandbox</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\effects.hpp">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\raster_state.hpp">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\soft_renderer.hpp">
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
