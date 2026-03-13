@@ -427,7 +427,7 @@ namespace dny{
 				const auto dy = simd::shuffle<1, 1, 1, 1>( dist );
 
 				const auto result =
-					( dy < zero ) || ( ( dy <= zero ) && ( dx > zero ) );
+					( dy < zero ) || ( ( dy == zero ) && ( dx > zero ) );
 				return simd::all( result );
 			};
 
@@ -454,6 +454,8 @@ namespace dny{
 				screen_transform( vc[ Position_ID ] * inv_wc );
 
 			const auto area = simd_signed_area( position_va, position_vb, position_vc );
+			const float area_scalar = simd::extract<0>( area );
+			const float sign = area_scalar < 0.f ? -1.f : 1.f;
 
 			// Backface culling test using compile-time policy
 			if constexpr( raster_state_type::culling_mode != cull_mode::none ){
@@ -517,18 +519,15 @@ namespace dny{
 					const auto w2_vec = simd_signed_area( position_va, position_vb, p );
 
 					{
-						const auto w0 = simd::extract<0>( w0_vec );
-						const auto w1 = simd::extract<0>( w1_vec );
-						const auto w2 = simd::extract<0>( w2_vec );
+						const float w0 = simd::extract<0>( w0_vec ) * sign;
+						const float w1 = simd::extract<0>( w1_vec ) * sign; 
+						const float w2 = simd::extract<0>( w2_vec ) * sign;
 
-						//if( w0 < 0.0f || w1 < 0.0f || w2 < 0.0f )continue;
-						//if( ( w0 < epsilon && !tl0 ) ||
-						//	( w1 < epsilon && !tl1 ) ||
-						//	( w2 < epsilon && !tl2 ) ) continue;
-						if( w0 > 0.0f || w1 > 0.0f || w2 > 0.0f )continue;
-						if( ( w0 > epsilon && !tl0 ) ||
-							( w1 > epsilon && !tl1 ) ||
-							( w2 > epsilon && !tl2 ) ) continue;
+						if( w0 < 0.f || w1 < 0.f || w2 < 0.f ) continue;
+
+						if( ( w0 == 0.f && !tl0 ) || 
+							( w1 == 0.f && !tl1 ) || 
+							( w2 == 0.f && !tl2 ) ) continue;
 					}
 
 					// ---- Standard interpolation
