@@ -9,6 +9,8 @@
 #include "../dny/math/math.hpp"
 #include "../dny/platform/platform.hpp"
 #include "../dny/core/timer.hpp"
+#include "../dny/renderer/renderer2d.hpp"
+#include "../dny/ui/panel.hpp"
 
 #include <filesystem>
 #include <vector>
@@ -46,6 +48,7 @@ private:
 
 	// The software renderer pipeline
 	pnu_pipeline_t renderer;
+	sprite_pipeline_t sprite_renderer;
 	debug_pipeline_t debug_renderer;
 	using pnu_vertex_buffer = std::vector<vertex_in>;
 
@@ -77,13 +80,14 @@ private:
 		{ -8.f, -4.f, -10.f },
 		{ 8.f, 8.f, -10.f }
 	};
-	std::vector<dny::vector3<float>> terrain_positions{
-		{ -2.f, -2.f, 0.f },
-		{ -1.f, -2.f, 0.f },
-		{  0.f, -2.f, 0.f },
-		{  1.f, -2.f, 0.f },
-		{  2.f, -2.f, 0.f }
-	};
+	dny::vector3<float> terrain_position = { 0.f, -2.f, action_plane_z };
+	//std::vector<dny::vector3<float>> terrain_positions{
+	//	{ -2.f, -2.f, action_plane_z },
+	//	{ -1.f, -2.f, action_plane_z },
+	//	{  0.f, -2.f, action_plane_z },
+	//	{  1.f, -2.f, action_plane_z },
+	//	{  2.f, -2.f, action_plane_z }
+	//};
 	dny::polyline_collider<float> terrain_collider = dny::generate_polyline_collider<float>( {
 		{ -8.f, -4.f },
 		{ -4.f, -4.f },
@@ -96,8 +100,9 @@ private:
 
 	dny::Timer timer;
 	std::size_t frame_count = 0;
-	std::array<float, 100> frame_times = {};
-	dny::Font consolas{ L"Consolas", 24 };
+	std::array<float, 30> frame_times = {};
+	dny::Font consolas{ L"Consolas", 12 };
+	dny::Font arial{ L"Arial", 12 };
 	float frame_rate = 0.f;
 
 	// Audio system - currently disabled due to incomplete type issues
@@ -105,4 +110,6 @@ private:
 	dny::audio_engine audio;
 	dny::audio_clip jump_sound;
 	dny::audio_clip background_music;
+	dny::renderer2d renderer2d;
+	dny::ui::Panel debug_panel;
 };

@@ -65,7 +65,8 @@ public:
 
 using pnu_effect = dny::basic_effect<pnu_vertex_shader, pnu_pixel_shader>;
 using pnu_pipeline_t = dny::pipeline<pnu_effect>;
-
+using sprite_effect = dny::basic_effect<pnu_vertex_shader, pnu_pixel_shader, dny::default_raster_state_no_cull>;
+using sprite_pipeline_t = dny::pipeline<sprite_effect>;
 using debug_vertex_in = dny::basic_vertex<dny::vector3<float>, dny::ColorF>;
 using debug_vertex_out = dny::basic_vertex<dny::vector4<float>, dny::ColorF>;
 
@@ -96,6 +97,11 @@ public:
 	}
 };
 
-using debug_effect = dny::basic_effect<debug_vertex_shader, debug_pixel_shader>;
+
+using debug_effect = dny::basic_effect<
+	debug_vertex_shader, 
+	debug_pixel_shader,
+	dny::default_raster_state_no_cull
+>;
 using debug_pipeline_t = dny::pipeline<debug_effect>;
 

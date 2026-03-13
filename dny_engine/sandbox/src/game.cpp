@@ -8,7 +8,9 @@
 
 Game::Game( dny::platform& platform_ )
 	:
-	platform( platform_ ){
+	platform( platform_ ),
+	debug_panel( "", "Debug", {}, { 500, 100 } )
+{
 	platform.set_title( L"DNY Engine - Software Renderer" );
 	auto& input = platform.get_input();
 	input.bind( "move_left", dny::Key::A );
@@ -16,6 +18,8 @@ Game::Game( dny::platform& platform_ )
 	input.bind( "jump", dny::Key::Space );
 	input.bind( "zoom_in", dny::Key::Q );
 	input.bind( "zoom_out", dny::Key::E );
+	input.bind( "move_ground_away", dny::Key::Up );
+	input.bind( "move_ground_closer", dny::Key::Down );
 	input.bind( "fire", dny::MouseButton::Left );
 	input.bind( "dash", dny::GamepadButton::A );
 	init_textures();
@@ -47,6 +51,12 @@ void Game::update(){
 	if( platform.get_input().is_held( "zoom_out" ) ){
 		camera.zoom_out( zoom_speed * dt );
 	}
+	if(platform.get_input().is_held( "move_ground_away" ) ){
+		terrain_position.z += .25f * zoom_speed * dt;
+	}
+	if( platform.get_input().is_held( "move_ground_closer" ) ){
+		terrain_position.z -= .25f * zoom_speed * dt;
+	}
 
 	camera.update( player.get_position(), world_bounds );
 	projection_matrix = dny::projection<dny::handedness_t::left>(
@@ -75,15 +85,33 @@ void Game::render(){
 	render_player();
 	render_terrain();
 
-	const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
-
-	dny::draw_text(
+	renderer2d.begin( render_target, depth_buffer );
+	auto text_pos = dny::vector2<float>{ 
+		10.f, 
+		static_cast<float>( consolas.char_height() )
+	};
+	debug_panel.draw( render_target, consolas );
+	renderer2d.draw_text(
 		std::format( "FPS: {:.2f}", frame_rate ),
 		text_pos,
-		consolas,
-		dny::Color32{ dny::Colors::white },
-		render_target
+		arial,
+		dny::Colors::white
 	);
+	text_pos.y += arial.char_height();
+	renderer2d.draw_text(
+		std::format( "Ground Z: {:.2f}", terrain_position.z ),
+		text_pos,
+		arial,
+		dny::Colors::white
+	);
+	//const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
+	//dny::draw_text(
+	//	std::format( "FPS: {:.2f}", frame_rate ),
+	//	text_pos,
+	//	consolas,
+	//	dny::Color32{ dny::Colors::white },
+	//	render_target
+	//);
 }
 
 void Game::render_debug_colliders(){
@@ -105,19 +133,29 @@ void Game::render_terrain(){
 	renderer.set_depth_buffer( depth_buffer );
 	renderer.set_pixel_shader_textures( 0, terrain_texture );
 
+	auto world =
+		dny::matrix_4x4<float>::scaling( { 4.f, 1.f, 4.f } ) *
+		dny::matrix_4x4<float>::translation( terrain_position );
+	auto terrain_cb = transform_constant_buffer{
+		.world      = world,
+		.view       = view_matrix,
+		.projection = projection_matrix
+	};
+	renderer.set_cbuffer( terrain_cb );
+	renderer.render( terrain_vbuffer );
 
-	for( const auto& pos : terrain_positions ){
-		auto world =
-			dny::matrix_4x4<float>::scaling( { 1.f, 1.f, 2.f } ) *
-			dny::matrix_4x4<float>::translation( { pos.x, pos.y, action_plane_z } );
-		auto terrain_cb = transform_constant_buffer{
-			.world      = world,
-			.view       = view_matrix,
-			.projection = projection_matrix
-		};
-		renderer.set_cbuffer( terrain_cb );
-		renderer.render( terrain_vbuffer );
-	}
+	//for( const auto& pos : terrain_positions ){
+	//	auto world =
+	//		dny::matrix_4x4<float>::scaling( { 1.f, 1.f, 2.f } ) *
+	//		dny::matrix_4x4<float>::translation( { pos.x, pos.y, pos.z } );
+	//	auto terrain_cb = transform_constant_buffer{
+	//		.world      = world,
+	//		.view       = view_matrix,
+	//		.projection = projection_matrix
+	//	};
+	//	renderer.set_cbuffer( terrain_cb );
+	//	renderer.render( terrain_vbuffer );
+	//}
 }
 
 void Game::render_player(){
@@ -127,12 +165,12 @@ void Game::render_player(){
 		projection_matrix
 	};
 	//renderer.set_pixel_shader_textures( 0, girl_walking_frames[ 0 ] );
-	renderer.set_pixel_shader_textures( 0, girl_step );
-	renderer.set_render_target( render_target );
-	renderer.set_depth_buffer( depth_buffer );
+	sprite_renderer.set_pixel_shader_textures( 0, girl_step );
+	sprite_renderer.set_render_target( render_target );
+	sprite_renderer.set_depth_buffer( depth_buffer );
 
-	renderer.set_cbuffer( cb );
-	renderer.render( girl_vbuffer );
+	sprite_renderer.set_cbuffer( cb );
+	sprite_renderer.render( girl_vbuffer );
 }
 
 void Game::init_debug_vertices(){
@@ -145,8 +183,8 @@ void Game::init_debug_vertices(){
 		const auto end = terrain_collider.points[ i + 1 ];
 
 		auto segment_vertices = dny::primitives::generate_debug_line_segment(
-			dny::vector3<float>{ start.x, start.y, 0.f },
-			dny::vector3<float>{ end.x, end.y, 0.f },
+			dny::vector3<float>{ start.x, start.y, 1.f },
+			dny::vector3<float>{ end.x,   end.y,   1.f },
 			debug_line_thickness,
 			debug_color
 		);
