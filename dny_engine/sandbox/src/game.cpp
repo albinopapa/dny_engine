@@ -104,14 +104,6 @@ void Game::render(){
 		arial,
 		dny::Colors::white
 	);
-	//const auto text_pos = dny::vector2<std::int32_t>{ 10, 10 };
-	//dny::draw_text(
-	//	std::format( "FPS: {:.2f}", frame_rate ),
-	//	text_pos,
-	//	consolas,
-	//	dny::Color32{ dny::Colors::white },
-	//	render_target
-	//);
 }
 
 void Game::render_debug_colliders(){
@@ -220,6 +212,7 @@ texture2d Game::image_data_to_texture( std::filesystem::path filename_ ){
 }
 
 void Game::init_textures(){
+	auto cur_path = std::filesystem::current_path();
 	girl_step = image_data_to_texture(
 		std::filesystem::path{ "assets/textures/n_girl/girl_step_ini.png" }
 	);

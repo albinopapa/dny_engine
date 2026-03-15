@@ -33,6 +33,10 @@ namespace dny{
 		bool is_released( std::string_view action ) const;
 
 		bool is_key_down( std::uint8_t key_code ) const noexcept;
+
+		Mouse const& mouse() const noexcept;
+		Keyboard const& keyboard()const noexcept;
+		Gamepad const& gamepad() const noexcept;
 	private:
 		template<typename Query>
 		bool query_binding( std::string_view action, Query&& query ) const{

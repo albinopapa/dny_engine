@@ -60,4 +60,17 @@ namespace dny{
 	bool Input::is_key_down( std::uint8_t key_code ) const noexcept{
 		return m_keyboard->is_held( m_keyboard->win32_key_code_to_key( key_code ) );
 	}
+
+	Mouse const& Input::mouse() const noexcept{
+		return *m_mouse;
+	}
+
+	Keyboard const& Input::keyboard()const noexcept{
+		return *m_keyboard;
+	}
+
+	Gamepad const& Input::gamepad() const noexcept{
+		return *m_gamepad;
+	}
+
 }

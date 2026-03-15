@@ -201,6 +201,10 @@ namespace dny{
 		return ( dny::PI / 180.f ) * degrees;
 	}
 
+	constexpr float to_degrees( float radians )noexcept{
+		return ( 180.f / dny::PI ) * radians;
+	}
+
 	constexpr auto dot( dny::vector_type auto const& lhs, dny::vector_type auto const& rhs )noexcept{
 		using type = std::decay_t<decltype( lhs )>;
 		static_assert(

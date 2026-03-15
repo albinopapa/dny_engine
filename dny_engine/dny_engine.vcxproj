@@ -38,11 +38,34 @@
     <ClCompile Include="sandbox\src\game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="apps\editor\include\dny_Definitions.hpp" />
+    <ClInclude Include="apps\editor\include\dny_EditorMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_Filesystem.hpp" />
+    <ClInclude Include="apps\editor\include\dny_IMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_Level.hpp" />
+    <ClInclude Include="apps\editor\include\dny_LevelEditor.hpp" />
+    <ClInclude Include="apps\editor\include\dny_LoadMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_ResizeMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_SaveBeforeExitMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_SaveMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_TextureSelectMode.hpp" />
+    <ClInclude Include="apps\editor\include\dny_TileCategory.hpp" />
+    <ClInclude Include="apps\editor\include\dny_TriggerCategory.hpp" />
+    <ClInclude Include="apps\editor\include\dny_Utils.hpp" />
     <ClInclude Include="engine\include\dny\renderer\effects.hpp" />
     <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp" />
     <ClInclude Include="engine\include\dny\renderer\raster_state.hpp" />
     <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp" />
     <ClInclude Include="engine\include\dny\renderer\soft_renderer.hpp" />
+    <ClInclude Include="engine\include\dny\ui\button.hpp" />
+    <ClInclude Include="engine\include\dny\ui\checkbox.hpp" />
+    <ClInclude Include="engine\include\dny\ui\dny_ui.hpp" />
+    <ClInclude Include="engine\include\dny\ui\element.hpp" />
+    <ClInclude Include="engine\include\dny\ui\input_textbox.hpp" />
+    <ClInclude Include="engine\include\dny\ui\listbox.hpp" />
+    <ClInclude Include="engine\include\dny\ui\panel.hpp" />
+    <ClInclude Include="engine\include\dny\ui\radiobutton.hpp" />
+    <ClInclude Include="engine\include\dny\ui\textbox.hpp" />
     <ClInclude Include="sandbox\src\game.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -154,6 +177,8 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,6 +196,7 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

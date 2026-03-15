@@ -50,7 +50,10 @@ float4 main( float4 pos : SV_Position, float2 uv : TEXCOORD0 ) : SV_Target
 		using native_handle = void*;
 	public:
 		template<typename Handler>
-		display( std::int32_t width_, std::int32_t height_, Handler& handler_ )
+		display( 
+			std::int32_t width_, 
+			std::int32_t height_, 
+			Handler& handler_ )
 			: m_width( width_ ), m_height( height_ ){
 
 			init_window( width_, height_, handler_ );

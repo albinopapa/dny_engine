@@ -5,7 +5,7 @@
 #include <cstdint>
 
 std::int32_t main() {
-	auto platform = dny::platform{};
+	auto platform = dny::platform{ "Sandbox" };
 	auto game = Game{ platform };
 	
 	while( !platform.is_done() ){
