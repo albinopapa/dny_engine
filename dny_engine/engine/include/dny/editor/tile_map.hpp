@@ -29,7 +29,7 @@ namespace dny{
 		std::int32_t platform_id = 0;
 		std::int32_t entity_id = 0;
 		std::int32_t trigger_id = 0;
-		static constexpr auto size = 16;
+		static constexpr auto size = 32;
 	};
 
 	// ------------------------------------------------------------------//

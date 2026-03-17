@@ -1,6 +1,8 @@
 #include "editor/tile_palette_mode.hpp"
 #include "editor/editor_mode.hpp"
 
+#include "editor/tile_map.hpp"
+#include "graphics/colors.hpp"
 #include "input/input.hpp"
 #include "graphics/font.hpp"
 
@@ -17,55 +19,119 @@ namespace dny{
 	}
 
 	void LevelEditor::TilePaletteMode::render( renderer2d& renderer_, Font const& font_ ) const{
-		// TODO: Use renderer2d to draw dialog background
-		// Draw dialog outline
-		// Graphics::instance().draw_rectangle( m_dialog_rect, Colors::White );
+		const auto panel_rect = m_dialog_panel.bounds();
+		const auto title_pos = panel_rect.top_left() + vector2<std::int32_t>{ 8, 6 };
+		const auto visible_count = 5ui64;
 
-		// Draw title
-		// TODO: Add title rendering
+		renderer_.fill_rect( panel_rect, ColorF{ 0.10f, 0.10f, 0.12f, 0.94f } );
+		renderer_.draw_rect( panel_rect, to_color32( Colors::white ), 2.f );
+		renderer_.draw_text( m_dialog_panel.title(), title_pos, font_, to_color32( Colors::white ) );
 
-		// Calculate visible area for tiles
-		const auto padding = ( m_dialog_panel.bounds().width() - m_tile_size ) / 2;
+		const auto padding = ( panel_rect.width() - m_tile_size ) / 2;
 		const auto cell_height = m_tile_spacing + m_tile_size;
-		auto y_offset = m_dialog_panel.bounds().top + 40; // Leave space for title
+		auto y_offset = panel_rect.top + 40;
 
-		// Draw tile grid
 		for( std::size_t i = m_scroll_offset; i < m_tileset.size(); ++i ){
-			if( y_offset + m_tile_size > m_dialog_panel.bounds().bottom - 10 ){
-				break; // Stop if we've reached the bottom
+			if( y_offset + m_tile_size > panel_rect.bottom - 10 ){
+				break;
 			}
 
 			const Rect<std::int32_t> tile_rect{
-				m_dialog_panel.bounds().left + padding,
+				panel_rect.left + padding,
 				y_offset,
-				m_dialog_panel.bounds().left + padding + m_tile_size,
+				panel_rect.left + padding + m_tile_size,
 				y_offset + m_tile_size
 			};
 
-			// Highlight if hovered
-			if( m_has_hover && i == m_hovered_index ){
-				// TODO: Draw highlight
-				// Graphics::fill_rectangle( tile_rect, Colors::Yellow );
-			}
-
-			// Highlight if selected
-			if( i == static_cast< std::size_t >( m_parent.m_active_tile_index ) ){
-				// TODO: Draw selection border
-				// Graphics::draw_rectangle( tile_rect, Colors::Green );
-			}
-
-			// TODO: Draw tile sprite or colored rectangle based on tile type
 			const auto tile_id = m_tileset[ i ];
-			// const auto& tile_def = g_tile_defs[ tile_id ];
+			const auto& tile_def = g_tile_defs[ static_cast< std::size_t >( tile_id ) ];
 
-			// Graphics::draw_sprite or Graphics::fill_rectangle based on tile type
+			Color32 fallback_fill = to_color32( Colors::gray );
+			switch( tile_def.category ){
+				case TileCategory::Empty:
+					fallback_fill = Color32{ 35, 35, 35, 255 };
+					break;
+				case TileCategory::Solid:
+					fallback_fill = Color32{ 125, 88, 55, 255 };
+					break;
+				case TileCategory::Platform:
+					fallback_fill = Color32{ 140, 140, 140, 255 };
+					break;
+				case TileCategory::Liquid:
+					fallback_fill = ( tile_def.name == "Lava" )
+						? Color32{ 220, 90, 25, 255 }
+						: Color32{ 35, 115, 220, 255 };
+					break;
+				case TileCategory::Spawner:
+					fallback_fill = Color32{ 90, 180, 90, 255 };
+					break;
+				case TileCategory::Trigger:
+					fallback_fill = Color32{ 180, 70, 180, 255 };
+					break;
+				case TileCategory::Decoration:
+					fallback_fill = Color32{ 180, 180, 80, 255 };
+					break;
+			}
+
+			renderer_.fill_rect( tile_rect, fallback_fill );
+
+			if( !tile_def.texture_name.empty() ){
+				if( const auto texture_it = m_parent.m_textures.find( std::string{ tile_def.name } ); texture_it != m_parent.m_textures.end() ){
+					renderer_.draw_sprite( tile_rect, texture_it->second );
+				}
+			}
+
+			renderer_.draw_rect( tile_rect, Color32{ 25, 25, 25, 255 }, 1.f );
+
+			if( m_has_hover && i == m_hovered_index ){
+				renderer_.draw_rect( tile_rect, to_color32( Colors::yellow ), 2.f );
+			}
+
+			if( i == static_cast< std::size_t >( m_parent.m_active_tile_index ) ){
+				const auto selected_rect = Rect<std::int32_t>{
+					tile_rect.left - 2,
+					tile_rect.top - 2,
+					tile_rect.right + 2,
+					tile_rect.bottom + 2
+				};
+				renderer_.draw_rect( selected_rect, to_color32( Colors::green ), 2.f );
+			}
 
 			y_offset += cell_height;
 		}
 
-		// TODO: Draw scroll indicator if needed
-		if( m_scroll_offset > 0 || m_scroll_offset + 5 < m_tileset.size() ){
-			// Draw scroll arrows
+		if( m_scroll_offset > 0 ){
+			const auto up_center = vector2<std::int32_t>{ panel_rect.right - 16, panel_rect.top + 20 };
+			renderer_.fill_circle( up_center, 6, Color32{ 220, 220, 220, 255 } );
+			renderer_.draw_line(
+				up_center + vector2<std::int32_t>{ -4, 2 },
+				up_center + vector2<std::int32_t>{ 0, -3 },
+				Color32{ 25, 25, 25, 255 },
+				1.f
+			);
+			renderer_.draw_line(
+				up_center + vector2<std::int32_t>{ 0, -3 },
+				up_center + vector2<std::int32_t>{ 4, 2 },
+				Color32{ 25, 25, 25, 255 },
+				1.f
+			);
+		}
+
+		if( m_scroll_offset + visible_count < m_tileset.size() ){
+			const auto down_center = vector2<std::int32_t>{ panel_rect.right - 16, panel_rect.bottom - 16 };
+			renderer_.fill_circle( down_center, 6, Color32{ 220, 220, 220, 255 } );
+			renderer_.draw_line(
+				down_center + vector2<std::int32_t>{ -4, -2 },
+				down_center + vector2<std::int32_t>{ 0, 3 },
+				Color32{ 25, 25, 25, 255 },
+				1.f
+			);
+			renderer_.draw_line(
+				down_center + vector2<std::int32_t>{ 0, 3 },
+				down_center + vector2<std::int32_t>{ 4, -2 },
+				Color32{ 25, 25, 25, 255 },
+				1.f
+			);
 		}
 	}
 

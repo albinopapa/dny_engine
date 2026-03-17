@@ -61,14 +61,15 @@ namespace dny{
 		const auto data = dny::load_image_data( filename_ );
 		auto result = surface<ColorT>{ data.width, data.height };
 
-		static constexpr auto max_channel_value = std::is_same_v<ColorT, dny::ColorF> ? 1.f : 255ui8;
+		using max_channel_type = std::conditional_t<std::is_same_v<ColorT, dny::ColorF>, float, std::uint8_t>;
+		static constexpr max_channel_type max_channel_value = std::is_same_v<ColorT, dny::ColorF> ? 1.f : 255ui8;
 		auto make_color = [ & ]( std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a ) -> ColorT{
 			if constexpr( std::is_same_v<ColorT, dny::ColorF> ){
 				return ColorT{
-					static_cast< float >( r ) / max_channel_value,
-					static_cast< float >( g ) / max_channel_value,
-					static_cast< float >( b ) / max_channel_value,
-					static_cast< float >( a ) / max_channel_value
+					static_cast< float >( r ) / 255.f,
+					static_cast< float >( g ) / 255.f,
+					static_cast< float >( b ) / 255.f,
+					static_cast< float >( a ) / 255.f
 				};
 			}
 			else{

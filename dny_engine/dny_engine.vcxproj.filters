@@ -67,6 +67,12 @@
     <Filter Include="Source Files\ui">
       <UniqueIdentifier>{b72508a6-469c-46c3-b35b-56237daf30aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\editor\modals">
+      <UniqueIdentifier>{ef99db21-d5f9-486a-8038-009d9ffbe7df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor\modals">
+      <UniqueIdentifier>{7e08fc0e-9874-415d-b6e2-e27a4274f142}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\include\dny\audio\audio.hpp">
@@ -102,16 +108,10 @@
     <ClInclude Include="engine\include\dny\editor\definitions.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
     <ClInclude Include="engine\include\dny\editor\file_system.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\dny\editor\iapp_state.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\imode.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\dny\editor\level_serializer.hpp">
@@ -120,28 +120,10 @@
     <ClInclude Include="engine\include\dny\editor\level_editor.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\load_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\resize_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\save_before_exit_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\save_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\texture_select_mode.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
     <ClInclude Include="engine\include\dny\editor\tile_category.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\dny\editor\tile_map.hpp">
-      <Filter>Header Files\editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
     <ClInclude Include="engine\include\dny\editor\trigger_category.hpp">
@@ -285,11 +267,32 @@
     <ClInclude Include="engine\include\dny\physics\qtree.hpp">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\imode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\load_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\resize_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\save_before_exit_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\save_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\texture_select_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="engine\src\editor\editor_mode.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
     <ClCompile Include="engine\src\editor\file_system.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
@@ -302,22 +305,7 @@
     <ClCompile Include="engine\src\editor\load_mode.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
-    <ClCompile Include="engine\src\editor\resize_mode.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\editor\save_before_exit_mode.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\editor\save_mode.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\editor\texture_select_mode.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
     <ClCompile Include="engine\src\editor\tile_map.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\editor\tile_palette_mode.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\editor\tilemap_view.cpp">
@@ -367,6 +355,24 @@
     </ClCompile>
     <ClCompile Include="engine\src\ui\textbox.cpp">
       <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\editor_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\resize_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\save_before_exit_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\save_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\texture_select_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\tile_palette_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
