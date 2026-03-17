@@ -1,7 +1,7 @@
 #include "input/input.hpp"
 
 namespace dny{
-	Input::Input( Keyboard const& keyboard, Mouse const& mouse, Gamepad const& gamepad ) noexcept
+	Input::Input( Keyboard& keyboard, Mouse& mouse, Gamepad& gamepad ) noexcept
 		: m_keyboard( &keyboard ), m_mouse( &mouse ), m_gamepad( &gamepad ){
 	}
 
@@ -66,6 +66,10 @@ namespace dny{
 	}
 
 	Keyboard const& Input::keyboard()const noexcept{
+		return *m_keyboard;
+	}
+
+	Keyboard& Input::keyboard()noexcept{
 		return *m_keyboard;
 	}
 

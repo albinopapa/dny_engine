@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,39 +19,60 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="apps\runtime\src\main.cpp" />
-    <ClCompile Include="engine\src\audio\audio.cpp" />
-    <ClCompile Include="engine\src\graphics\image_loader.cpp" />
-    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp" />
-    <ClCompile Include="engine\src\input\gamepad.cpp" />
-    <ClCompile Include="engine\src\input\input.cpp" />
-    <ClCompile Include="engine\src\input\keyboard.cpp" />
-    <ClCompile Include="engine\src\input\mouse.cpp" />
-    <ClCompile Include="engine\src\ui\button.cpp" />
-    <ClCompile Include="engine\src\ui\checkbox.cpp" />
-    <ClCompile Include="engine\src\ui\element.cpp" />
-    <ClCompile Include="engine\src\ui\input_textbox.cpp" />
-    <ClCompile Include="engine\src\ui\listbox.cpp" />
-    <ClCompile Include="engine\src\ui\panel.cpp" />
-    <ClCompile Include="engine\src\ui\radiobutton.cpp" />
-    <ClCompile Include="engine\src\ui\textbox.cpp" />
-    <ClCompile Include="sandbox\src\game.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="apps\editor\include\dny_Definitions.hpp" />
-    <ClInclude Include="apps\editor\include\dny_EditorMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_Filesystem.hpp" />
-    <ClInclude Include="apps\editor\include\dny_IMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_Level.hpp" />
-    <ClInclude Include="apps\editor\include\dny_LevelEditor.hpp" />
-    <ClInclude Include="apps\editor\include\dny_LoadMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_ResizeMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_SaveBeforeExitMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_SaveMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_TextureSelectMode.hpp" />
-    <ClInclude Include="apps\editor\include\dny_TileCategory.hpp" />
-    <ClInclude Include="apps\editor\include\dny_TriggerCategory.hpp" />
-    <ClInclude Include="apps\editor\include\dny_Utils.hpp" />
+    <ClInclude Include="engine\include\dny\audio\audio.hpp" />
+    <ClInclude Include="engine\include\dny\core\concepts.hpp" />
+    <ClInclude Include="engine\include\dny\core\type_traits.hpp" />
+    <ClInclude Include="engine\include\dny\editor\definitions.hpp" />
+    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\file_system.hpp" />
+    <ClInclude Include="engine\include\dny\editor\iapp_state.hpp" />
+    <ClInclude Include="engine\include\dny\editor\imode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\level_serializer.hpp" />
+    <ClInclude Include="engine\include\dny\editor\level_editor.hpp" />
+    <ClInclude Include="engine\include\dny\editor\load_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\resize_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\save_before_exit_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\save_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\texture_select_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\tile_category.hpp" />
+    <ClInclude Include="engine\include\dny\editor\tile_map.hpp" />
+    <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\trigger_category.hpp" />
+    <ClInclude Include="engine\include\dny\editor\utilities.hpp" />
+    <ClInclude Include="engine\include\dny\editor\level_document.hpp" />
+    <ClInclude Include="engine\include\dny\editor\tilemap_view.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\camera.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\colors.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\font.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\graphics.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\image_loader.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\surface.hpp" />
+    <ClInclude Include="engine\include\dny\graphics\text_atlas_builder.hpp" />
+    <ClInclude Include="engine\include\dny\input\dny_input.hpp" />
+    <ClInclude Include="engine\include\dny\input\gamepad.hpp" />
+    <ClInclude Include="engine\include\dny\input\input.hpp" />
+    <ClInclude Include="engine\include\dny\input\keyboard.hpp" />
+    <ClInclude Include="engine\include\dny\input\mouse.hpp" />
+    <ClInclude Include="engine\include\dny\math\frustum.hpp" />
+    <ClInclude Include="engine\include\dny\math\math.hpp" />
+    <ClInclude Include="engine\include\dny\math\math_constants.hpp" />
+    <ClInclude Include="engine\include\dny\math\matrix_3x2.hpp" />
+    <ClInclude Include="engine\include\dny\math\matrix_3x3.hpp" />
+    <ClInclude Include="engine\include\dny\math\matrix_4x4.hpp" />
+    <ClInclude Include="engine\include\dny\math\simd.hpp" />
+    <ClInclude Include="engine\include\dny\math\vector2.hpp" />
+    <ClInclude Include="engine\include\dny\math\vector3.hpp" />
+    <ClInclude Include="engine\include\dny\math\vector4.hpp" />
+    <ClInclude Include="engine\include\dny\physics\aabb.hpp" />
+    <ClInclude Include="engine\include\dny\physics\physics.hpp" />
+    <ClInclude Include="engine\include\dny\physics\qtree.hpp" />
+    <ClInclude Include="engine\include\dny\platform\d2dsdk.hpp" />
+    <ClInclude Include="engine\include\dny\platform\d3d11sdk.hpp" />
+    <ClInclude Include="engine\include\dny\platform\display.hpp" />
+    <ClInclude Include="engine\include\dny\platform\dwritesdk.hpp" />
+    <ClInclude Include="engine\include\dny\platform\platform.hpp" />
+    <ClInclude Include="engine\include\dny\platform\wicsdk.hpp" />
+    <ClInclude Include="engine\include\dny\platform\win32sdk.hpp" />
     <ClInclude Include="engine\include\dny\renderer\effects.hpp" />
     <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp" />
     <ClInclude Include="engine\include\dny\renderer\raster_state.hpp" />
@@ -66,7 +87,39 @@
     <ClInclude Include="engine\include\dny\ui\panel.hpp" />
     <ClInclude Include="engine\include\dny\ui\radiobutton.hpp" />
     <ClInclude Include="engine\include\dny\ui\textbox.hpp" />
-    <ClInclude Include="sandbox\src\game.hpp" />
+    <ClInclude Include="engine\include\dny\utilities\dims2.hpp" />
+    <ClInclude Include="engine\include\dny\utilities\rectangle.hpp" />
+    <ClInclude Include="engine\include\dny\utilities\timer.hpp" />
+    <ClInclude Include="engine\include\dny\utilities\utilities.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine\src\audio\audio.cpp" />
+    <ClCompile Include="engine\src\editor\editor_mode.cpp" />
+    <ClCompile Include="engine\src\editor\file_system.cpp" />
+    <ClCompile Include="engine\src\editor\level_serializer.cpp" />
+    <ClCompile Include="engine\src\editor\level_editor.cpp" />
+    <ClCompile Include="engine\src\editor\load_mode.cpp" />
+    <ClCompile Include="engine\src\editor\resize_mode.cpp" />
+    <ClCompile Include="engine\src\editor\save_before_exit_mode.cpp" />
+    <ClCompile Include="engine\src\editor\save_mode.cpp" />
+    <ClCompile Include="engine\src\editor\texture_select_mode.cpp" />
+    <ClCompile Include="engine\src\editor\tile_map.cpp" />
+    <ClCompile Include="engine\src\editor\tile_palette_mode.cpp" />
+    <ClCompile Include="engine\src\editor\tilemap_view.cpp" />
+    <ClCompile Include="engine\src\graphics\image_loader.cpp" />
+    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp" />
+    <ClCompile Include="engine\src\input\gamepad.cpp" />
+    <ClCompile Include="engine\src\input\input.cpp" />
+    <ClCompile Include="engine\src\input\keyboard.cpp" />
+    <ClCompile Include="engine\src\input\mouse.cpp" />
+    <ClCompile Include="engine\src\ui\button.cpp" />
+    <ClCompile Include="engine\src\ui\checkbox.cpp" />
+    <ClCompile Include="engine\src\ui\element.cpp" />
+    <ClCompile Include="engine\src\ui\input_textbox.cpp" />
+    <ClCompile Include="engine\src\ui\listbox.cpp" />
+    <ClCompile Include="engine\src\ui\panel.cpp" />
+    <ClCompile Include="engine\src\ui\radiobutton.cpp" />
+    <ClCompile Include="engine\src\ui\textbox.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -77,26 +130,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -122,19 +175,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
-    <SourcePath>$(SourcePath)</SourcePath>
+    <SourcePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\apps\editor\src</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
-    <SourcePath>$(SourcePath)</SourcePath>
+    <SourcePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\apps\editor\src</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
-    <SourcePath>$(SourcePath)</SourcePath>
+    <SourcePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\apps\editor\src</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\engine\include\dny;$(IncludePath)</IncludePath>
-    <SourcePath>$(SourcePath)</SourcePath>
+    <SourcePath>F:\Users\rvpjo\source\repos\dny_engine\dny_engine\apps\editor\src</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

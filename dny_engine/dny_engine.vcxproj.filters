@@ -13,43 +13,324 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\input">
-      <UniqueIdentifier>{77d8523e-a89e-4cf6-b2d9-9bf2fe16056b}</UniqueIdentifier>
+    <Filter Include="Header Files\editor">
+      <UniqueIdentifier>{5360a830-7cc7-4192-b843-076a24c3fd26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\audio">
+      <UniqueIdentifier>{3071828b-b195-4c10-9484-7cb857a4dcb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{c3c6bc2a-071c-40d9-88ed-b1f002e9f8b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graphics">
+      <UniqueIdentifier>{3cae49b6-83a6-4a1f-8c25-7b43cc1ae273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{931f14eb-d113-47d1-921e-34b909a337f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{f5d0faa0-0b87-4a36-800c-06ac6689e046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physics">
+      <UniqueIdentifier>{c401bb40-aa6a-4932-8cb6-8a4b57b4179b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\platform">
+      <UniqueIdentifier>{69af2a20-02c2-4894-bfad-d38f082ab682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\renderer">
+      <UniqueIdentifier>{91fee68b-ef4e-4bd9-be0e-f215e328efc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ui">
+      <UniqueIdentifier>{41464bbe-f460-40a6-85b7-e2682e1764a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{ec1dc80d-3457-4fe5-8707-17086bd5ac77}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\audio">
-      <UniqueIdentifier>{33240bcf-eb34-4c56-971d-0b2dd4b771a7}</UniqueIdentifier>
+      <UniqueIdentifier>{01ddd003-3101-4bf7-962e-97f47548716c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{c8fccb15-713e-4975-b0a9-1bd5c90447c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor">
+      <UniqueIdentifier>{e849af7d-3918-4258-a654-2d4fe32877e9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\graphics">
-      <UniqueIdentifier>{362561a9-d240-494b-a746-370048301630}</UniqueIdentifier>
+      <UniqueIdentifier>{86256fac-7995-4699-8c53-85f914d2b63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{549d6348-8e67-4f72-a7db-8b67cbcc3db0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\platform">
-      <UniqueIdentifier>{db648a08-a7f6-4c6d-9e88-c8cf05716801}</UniqueIdentifier>
+      <UniqueIdentifier>{afecd681-776d-4314-a69b-69cf275ce295}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\ui">
-      <UniqueIdentifier>{84a55c15-4987-48cb-866f-7a7f171a21ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\sandbox">
-      <UniqueIdentifier>{64e54fec-08ac-474b-8107-65f0e771b250}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\sandbox">
-      <UniqueIdentifier>{5bba617b-7756-4069-9d30-b9bc19e269da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Renderer">
-      <UniqueIdentifier>{810a802a-e105-4a4f-890f-0896f52c39e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Editor">
-      <UniqueIdentifier>{a53c57b2-a3bc-40ac-af5c-76812c672286}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Editor">
-      <UniqueIdentifier>{8596f97e-0d9a-4b1c-915e-1d95f90b84d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\UI">
-      <UniqueIdentifier>{1d01a3a6-5f07-40c5-9306-9d6e20d4d228}</UniqueIdentifier>
+      <UniqueIdentifier>{b72508a6-469c-46c3-b35b-56237daf30aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="engine\src\input\mouse.cpp">
-      <Filter>Source Files\input</Filter>
+    <ClInclude Include="engine\include\dny\audio\audio.hpp">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\core\concepts.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\core\type_traits.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\camera.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\colors.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\font.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\graphics.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\image_loader.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\surface.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\graphics\text_atlas_builder.hpp">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\definitions.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\file_system.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\iapp_state.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\imode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\level_serializer.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\level_editor.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\load_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\resize_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\save_before_exit_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\save_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\texture_select_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tile_category.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tile_map.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\trigger_category.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\utilities.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\level_document.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tilemap_view.hpp">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\input\dny_input.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\input\gamepad.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\input\input.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\input\keyboard.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\input\mouse.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\frustum.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\math.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\math_constants.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\matrix_3x2.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\matrix_3x3.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\matrix_4x4.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\simd.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\vector2.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\vector3.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\math\vector4.hpp">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\utilities\dims2.hpp">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\utilities\rectangle.hpp">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\utilities\timer.hpp">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\utilities\utilities.hpp">
+      <Filter>Header Files\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\button.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\checkbox.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\dny_ui.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\element.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\input_textbox.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\listbox.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\panel.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\radiobutton.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\textbox.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\effects.hpp">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\raster_state.hpp">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\renderer\soft_renderer.hpp">
+      <Filter>Header Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\d2dsdk.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\d3d11sdk.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\display.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\dwritesdk.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\platform.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\wicsdk.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\platform\win32sdk.hpp">
+      <Filter>Header Files\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\physics\aabb.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\physics\physics.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\physics\qtree.hpp">
+      <Filter>Header Files\physics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="engine\src\editor\editor_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\file_system.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\level_serializer.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\level_editor.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\load_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\resize_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\save_before_exit_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\save_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\texture_select_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\tile_map.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\tile_palette_mode.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\tilemap_view.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\audio\audio.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\graphics\image_loader.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\input\gamepad.cpp">
       <Filter>Source Files\input</Filter>
@@ -60,11 +341,8 @@
     <ClCompile Include="engine\src\input\keyboard.cpp">
       <Filter>Source Files\input</Filter>
     </ClCompile>
-    <ClCompile Include="apps\runtime\src\main.cpp">
+    <ClCompile Include="engine\src\input\mouse.cpp">
       <Filter>Source Files\input</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\audio\audio.cpp">
-      <Filter>Source Files\audio</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\ui\button.cpp">
       <Filter>Source Files\ui</Filter>
@@ -90,103 +368,5 @@
     <ClCompile Include="engine\src\ui\textbox.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="sandbox\src\game.cpp">
-      <Filter>Source Files\sandbox</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\graphics\image_loader.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\graphics\text_atlas_builder.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="sandbox\src\game.hpp">
-      <Filter>Header Files\sandbox</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\renderer\effects.hpp">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\renderer\primitive_generators.hpp">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\renderer\raster_state.hpp">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\renderer\renderer2d.hpp">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\renderer\soft_renderer.hpp">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_EditorMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_IMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_LevelEditor.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_LoadMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_ResizeMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_SaveBeforeExitMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_SaveMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_TextureSelectMode.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_Level.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_TriggerCategory.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_TileCategory.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_Filesystem.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_Utils.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="apps\editor\include\dny_Definitions.hpp">
-      <Filter>Header Files\Editor</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\button.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\checkbox.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\dny_ui.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\element.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\input_textbox.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\listbox.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\panel.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\radiobutton.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\textbox.hpp">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

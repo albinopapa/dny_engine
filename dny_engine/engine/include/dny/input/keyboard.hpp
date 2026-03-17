@@ -7,8 +7,7 @@ namespace dny{
 	enum class Key : std::uint16_t{
 		Space,
 		_1, _2, _3, _4, _5, _6, _7, _8, _9, _0,
-		A, B, C, D, E,
-		Q,
+		A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z,		
 		Escape,
 		Left,
 		Right,
@@ -20,7 +19,9 @@ namespace dny{
 		F4,
 		Control,
 		Shift,
-		Enter
+		Enter,
+		Tab,
+		Backspace,
 	};
 
 	class Keyboard{

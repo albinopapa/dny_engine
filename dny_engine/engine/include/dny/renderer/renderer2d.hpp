@@ -161,6 +161,19 @@ public:
 		flush_color( verts );
 	}
 
+	void draw_line(
+		vector2<std::int32_t> p1,
+		vector2<std::int32_t> p2,
+		Color32         color,
+		float          thickness = 1.f ){
+		draw_line(
+			vector2<float>{ static_cast<float>( p1.x ), static_cast<float>( p1.y ) },
+			vector2<float>{ static_cast<float>( p2.x ), static_cast<float>( p2.y ) },
+			to_colorf( color ),
+			thickness
+		);
+	}
+
 	// Draw a rectangle outline.
 	void draw_rect( Rect<float> const& rect, ColorF color, float thickness = 1.f ){
 		std::vector<color_vtx> verts;
@@ -180,6 +193,18 @@ public:
 		append( { rect.left,  rect.bottom }, { rect.left,  rect.top    } );
 		flush_color( verts );
 	}
+	void draw_rect( Rect<std::int32_t> const& rect, Color32 color, float thickness = 1.f ){
+		draw_rect(
+			Rect<float>{
+				static_cast<float>( rect.left ),
+				static_cast<float>( rect.top ),
+				static_cast<float>( rect.right ),
+				static_cast<float>( rect.bottom )
+			},
+			to_colorf( color ),
+			thickness
+		);
+	}
 
 	// Draw a solid filled rectangle.
 	void fill_rect( Rect<float> const& rect, ColorF color ){
@@ -195,6 +220,13 @@ public:
 			mv( rect.left,  rect.bottom )
 		};
 		flush_color( verts );
+	}
+	void fill_rect( Rect<std::int32_t> const& rect, Color32 color ){
+		// Overload for integer rects and colours - just converts to float and forwards to the main function.
+		fill_rect(
+			Rect<float>{ static_cast<float>( rect.left ), static_cast<float>( rect.top ), static_cast<float>( rect.right ), static_cast<float>( rect.bottom ) },
+			to_colorf( color )
+		);
 	}
 
 	// Draw a solid filled circle approximated by a triangle fan.
@@ -229,6 +261,19 @@ public:
 		}
 		flush_color( verts );
 	}
+	void fill_circle(
+		vector2<std::int32_t> center,
+		std::int32_t                  radius,
+		Color32         color,
+		std::uint32_t  segments = 32 )
+	{
+		fill_circle(
+			vector2<float>{ static_cast<float>( center.x ), static_cast<float>( center.y ) },
+			static_cast<float>( radius ),
+			to_colorf( color ),
+			segments
+		);
+	}
 
 	// ----------------------------------------------------------------
 	// Sprites - position + texture coordinates
@@ -237,6 +282,18 @@ public:
 	// Draw a textured quad filling dest using the full texture [0,0]-[1,1].
 	void draw_sprite( Rect<float> const& dest, surface<ColorF> const& texture ){
 		draw_sprite( dest, texture, Rect<float>{ 0.f, 0.f, 1.f, 1.f } );
+	}
+	void draw_sprite( Rect<std::int32_t> const& dest, surface<ColorF> const& texture ){
+		draw_sprite(
+			Rect<float>{
+				static_cast<float>( dest.left ),
+				static_cast<float>( dest.top ),
+				static_cast<float>( dest.right ),
+				static_cast<float>( dest.bottom )
+			},
+			texture,
+			Rect<float>{ 0.f, 0.f, 1.f, 1.f }
+		);
 	}
 
 	// Draw a textured quad filling dest using the UV sub-rectangle uv.
@@ -260,6 +317,26 @@ public:
 			mv( dest.left,  dest.bottom, uv.left,  uv.bottom )
 		};
 		flush_sprite( verts, texture );
+	}
+	void draw_sprite(
+		Rect<std::int32_t> const& dest,
+		surface<ColorF> const& texture,
+		Rect<std::int32_t> const& uv ){
+		draw_sprite(
+			Rect<float>{
+				static_cast<float>( dest.left ),
+				static_cast<float>( dest.top ),
+				static_cast<float>( dest.right ),
+				static_cast<float>( dest.bottom )
+			},
+			texture,
+			Rect<float>{
+				static_cast<float>( uv.left  ) / static_cast<float>( texture.width() ),
+				static_cast<float>( uv.top ) / static_cast<float>( texture.height() ),
+				static_cast<float>( uv.right ) / static_cast<float>( texture.width() ),
+				static_cast<float>( uv.bottom ) / static_cast<float>( texture.height() )
+			}
+		);
 	}
 
 	// ----------------------------------------------------------------
@@ -317,6 +394,20 @@ public:
 		}
 
 		flush_font( verts, atlas, color );
+	}
+
+	void draw_text(
+		std::string_view text,
+		vector2<std::int32_t> position,
+		Font const&           font,
+		Color32               color )
+	{
+		draw_text(
+			text,
+			vector2<float>{ static_cast<float>( position.x ), static_cast<float>( position.y ) },
+			font,
+			to_colorf( color )
+		);
 	}
 
 private:

@@ -103,7 +103,27 @@ namespace dny{
 			case Key::C: return 'C';
 			case Key::D: return 'D';
 			case Key::E: return 'E';
+			case Key::F: return 'F';
+			case Key::G: return 'G';
+			case Key::H: return 'H';
+			case Key::I: return 'I';
+			case Key::J: return 'J';
+			case Key::K: return 'K';
+			case Key::L: return 'L';
+			case Key::M: return 'M';
+			case Key::N: return 'N';
+			case Key::O: return 'O';
+			case Key::P: return 'P';
 			case Key::Q: return 'Q';
+			case Key::R: return 'R';
+			case Key::S: return 'S';
+			case Key::T: return 'T';
+			case Key::U: return 'U';
+			case Key::V: return 'V';
+			case Key::W: return 'W';
+			case Key::X: return 'X';
+			case Key::Y: return 'Y';
+			case Key::Z: return 'Z';
 			case Key::Escape: return VK_ESCAPE;
 			case Key::Left: return VK_LEFT;
 			case Key::Right: return VK_RIGHT;
@@ -116,42 +136,13 @@ namespace dny{
 			case Key::Control: return VK_CONTROL;
 			case Key::Shift: return VK_SHIFT;
 			case Key::Enter: return VK_RETURN;
-
+			case Key::Tab: return VK_TAB;
+			case Key::Backspace: return VK_BACK;
 			default: return 0;
 		}
 	}
 
 	Key Keyboard::win32_key_code_to_key( std::uint32_t key_code ) const noexcept{
-		/*
-		Space,
-		_1,
-		_2,
-		_3,
-		_4,
-		_5,
-		_6,
-		_7,
-		_8,
-		_9,
-		_0,
-		A,
-		B,
-		C,
-		D,
-		E,
-		Q,
-		Escape,
-		Left,
-		Right,
-		Up,
-		Down,
-		F1,
-		F2,
-		F3,
-		F4,
-		Control,
-		Shift,
-		Enter		*/
 		switch( key_code ){
 			case VK_RETURN: return Key::Enter;
 			case '1': return Key::_1;
@@ -170,12 +161,40 @@ namespace dny{
 			case 'C': return Key::C;
 			case 'D': return Key::D;
 			case 'E': return Key::E;
+			case 'F': return Key::F;
+			case 'G': return Key::G;
+			case 'H': return Key::H;
+			case 'I': return Key::I;
+			case 'J': return Key::J;
+			case 'K': return Key::K;
+			case 'L': return Key::L;
+			case 'M': return Key::M;
+			case 'N': return Key::N;
+			case 'O': return Key::O;
+			case 'P': return Key::P;
 			case 'Q': return Key::Q;
+			case 'R': return Key::R;
+			case 'S': return Key::S;
+			case 'T': return Key::T;
+			case 'U': return Key::U;
+			case 'V': return Key::V;
+			case 'W': return Key::W;
+			case 'X': return Key::X;
+			case 'Y': return Key::Y;
+			case 'Z': return Key::Z;
 			case VK_ESCAPE: return Key::Escape;
 			case VK_LEFT: return Key::Left;
 			case VK_RIGHT: return Key::Right;
 			case VK_UP: return Key::Up;
 			case VK_DOWN: return Key::Down;
+			case VK_F1: return Key::F1;
+			case VK_F2: return Key::F2;
+			case VK_F3: return Key::F3;
+			case VK_F4: return Key::F4;
+			case VK_CONTROL: return Key::Control;
+			case VK_SHIFT: return Key::Shift;
+			case VK_TAB: return Key::Tab;
+			case VK_BACK: return Key::Backspace;
 			default: return static_cast< Key >( 0 );
 		}
 	}

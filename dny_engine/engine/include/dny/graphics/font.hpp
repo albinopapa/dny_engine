@@ -1,13 +1,16 @@
 #pragma once
 
-#include "core/rectangle.hpp"
-#include "core/colors.hpp"
+#include "utilities/dims2.hpp"
+#include "utilities/rectangle.hpp"
+#include "graphics/colors.hpp"
 #include "text_atlas_builder.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <span>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace dny{
@@ -32,6 +35,33 @@ namespace dny{
 
 			m_pixels.resize( img_data.size() );
 			std::copy( img_data.begin(), img_data.end(), m_pixels.begin() );
+		}
+
+		static dims2<std::int32_t> measure_text( std::string_view text, Font const& font ) noexcept{
+			if( text.empty() ){
+				return { 0, 0 };
+			}
+
+			auto current_line_width = std::int32_t{ 0 };
+			auto max_line_width = std::int32_t{ 0 };
+			auto line_count = std::int32_t{ 1 };
+
+			for( const auto ch : text ){
+				if( ch == '\n' ){
+					max_line_width = std::max( max_line_width, current_line_width );
+					current_line_width = 0;
+					++line_count;
+					continue;
+				}
+
+				current_line_width += font.glyph_advance( ch );
+			}
+
+			max_line_width = std::max( max_line_width, current_line_width );
+			return {
+				max_line_width,
+				line_count * font.char_height()
+			};
 		}
 
 		std::int32_t char_width()const{ return m_char_width; }

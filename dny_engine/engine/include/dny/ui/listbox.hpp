@@ -9,6 +9,7 @@ namespace dny::ui{
 	public:
 		ListBox( std::string id, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept;
 
+		void set_selected_item( std::string_view item ) noexcept;
 		void set_items( std::vector<std::string> items );
 		void add_item( std::string item );
 		void clear_items();
@@ -19,7 +20,7 @@ namespace dny::ui{
 		bool selection_changed() const noexcept;
 
 		void update( Mouse const& mouse, Keyboard& keyboard ) override;
-		void draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const override;
+		void draw( dny::renderer2d& renderer, dny::Font const& font ) const override;
 
 	private:
 		static constexpr std::int32_t item_height = 18;

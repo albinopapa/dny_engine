@@ -52,7 +52,7 @@ namespace dny{
 	}
 
 	dny::vector2<std::int32_t> Mouse::position() const noexcept{
-		return m_position;
+		return m_position / 2;
 	}
 
 	dny::vector2<std::int32_t> Mouse::delta() const noexcept{

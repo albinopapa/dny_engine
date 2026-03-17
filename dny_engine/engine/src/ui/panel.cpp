@@ -1,5 +1,5 @@
 #include "ui/panel.hpp"
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -53,19 +53,19 @@ namespace dny::ui{
 		resolve_radio_groups();
 	}
 
-	void Panel::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void Panel::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
-		dny::fill_rect( rect, dny::Color32{ 30, 30, 30 }, canvas );
-		dny::draw_rect( rect, dny::Color32{ dny::Colors::gray }, canvas );
-		dny::draw_text( std::string{ m_title }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white }, canvas );
+		renderer.fill_rect( rect, dny::ColorF{ .12f, .12f, .12f, 1.0f } );
+		renderer.draw_rect( rect, dny::ColorF{ dny::Colors::gray } );
+		renderer.draw_text( std::string{ m_title }, vector2<std::int32_t>{ rect.left + 4, rect.top + 4 }, font, to_color32( dny::Colors::white ) );
 
 		for( auto const& child : m_children ){
 			if( child ){
-				child->draw( canvas, font );
+				child->draw( renderer, font );
 			}
 		}
 	}

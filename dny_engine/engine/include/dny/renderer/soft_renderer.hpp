@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core/colors.hpp"
 #include "core/concepts.hpp"
-#include "core/surface.hpp"
-#include "core/utilities.hpp"
+#include "graphics/colors.hpp"
+#include "graphics/surface.hpp"
 #include "math/math.hpp"
 #include "math/simd.hpp"
 #include "raster_state.hpp"
+#include "utilities/utilities.hpp"
 
 #include <algorithm>
 #include <cassert>

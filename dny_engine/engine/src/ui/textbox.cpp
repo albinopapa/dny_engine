@@ -1,6 +1,6 @@
 #include "ui/textbox.hpp"
 
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -17,14 +17,14 @@ namespace dny::ui{
 
 	void TextBox::update( Mouse const&, Keyboard& ){}
 
-	void TextBox::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void TextBox::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
-		dny::fill_rect( rect, dny::Color32{ 20, 20, 20 }, canvas );
-		dny::draw_rect( rect, dny::Color32{ dny::Colors::white }, canvas );
-		dny::draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white }, canvas );
+		renderer.fill_rect( rect, dny::Color32{ 20, 20, 20 } );
+		renderer.draw_rect( rect, dny::Color32{ dny::Colors::white } );
+		renderer.draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white } );
 	}
 }

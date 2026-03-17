@@ -5,7 +5,7 @@
 #include "vector4.hpp"
 #include "math_constants.hpp"
 
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 
 #if defined( _MSC_VER )
 #include <intrin.h>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "type_traits.hpp"
-#include "colors.hpp"
+#include "graphics/colors.hpp"
 #include "math/vector2.hpp"
 
 namespace dny{

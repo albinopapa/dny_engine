@@ -16,7 +16,7 @@ namespace dny{
 	public:
 		using Binding = std::variant<Key, MouseButton, GamepadButton>;
 
-		Input( Keyboard const& keyboard, Mouse const& mouse, Gamepad const& gamepad ) noexcept;
+		Input( Keyboard& keyboard, Mouse& mouse, Gamepad& gamepad ) noexcept;
 		Input( Input const& ) = delete;
 		Input( Input&& ) = default;
 
@@ -36,6 +36,7 @@ namespace dny{
 
 		Mouse const& mouse() const noexcept;
 		Keyboard const& keyboard()const noexcept;
+		Keyboard& keyboard()noexcept;
 		Gamepad const& gamepad() const noexcept;
 	private:
 		template<typename Query>
@@ -47,7 +48,7 @@ namespace dny{
 			return std::visit( std::forward<Query>( query ), iter->second );
 		}
 
-		Keyboard const* m_keyboard = nullptr;
+		Keyboard* m_keyboard = nullptr;
 		Mouse const* m_mouse = nullptr;
 		Gamepad const* m_gamepad = nullptr;
 		std::unordered_map<std::string, Binding, std::hash<std::string>, std::equal_to<>> m_bindings;
