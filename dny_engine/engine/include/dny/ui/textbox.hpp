@@ -11,7 +11,7 @@ namespace dny::ui{
 		std::string_view text() const noexcept;
 
 		void update( Mouse const& mouse, Keyboard& keyboard ) override;
-		void draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const override;
+		void draw( dny::renderer2d& renderer, dny::Font const& font ) const override;
 
 	private:
 		std::string m_text;

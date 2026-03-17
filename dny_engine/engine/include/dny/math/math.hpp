@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/concepts.hpp"
-#include "core/dims2.hpp"
-#include "core/rectangle.hpp"
+#include "utilities/dims2.hpp"
+#include "utilities/rectangle.hpp"
 
 #include "math_constants.hpp"
 #include "vector2.hpp"

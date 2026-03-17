@@ -17,7 +17,12 @@ namespace dny::ui{
 	std::string_view Element::id() const noexcept{ return m_id; }
 
 	dny::Rect<std::int32_t> Element::bounds() const noexcept{
-		return dny::Rect<std::int32_t>{ m_position, m_size };
+		return dny::Rect<std::int32_t>{ 
+			m_position.x, 
+				m_position.y, 
+				m_position.x + m_size.width, 
+				m_position.y + m_size.height 
+		};
 	}
 
 	bool Element::contains( dny::vector2<std::int32_t> point ) const noexcept{

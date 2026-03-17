@@ -1,7 +1,7 @@
 #pragma once
 
 #include "image_loader.hpp"
-#include "core/rectangle.hpp"
+#include "utilities/rectangle.hpp"
 
 #include <array>
 #include <cstddef>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "math/math.hpp"
 #include "d3d11sdk.hpp"
 

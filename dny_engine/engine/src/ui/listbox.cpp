@@ -1,5 +1,4 @@
 #include "ui/listbox.hpp"
-#include "core/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -7,6 +6,16 @@
 namespace dny::ui{
 	ListBox::ListBox( std::string id, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept
 		: Element( std::move( id ), position, size ){}
+
+	void ListBox::set_selected_item( std::string_view item ) noexcept{
+		for( std::int32_t i = 0; i < static_cast<std::int32_t>( m_items.size() ); ++i ){
+			if( m_items[i] == item ){
+				m_selected = i;
+				return;
+			}
+		}
+		m_selected = -1;
+	}
 
 	void ListBox::set_items( std::vector<std::string> items ){
 		m_items = std::move( items );
@@ -60,14 +69,14 @@ namespace dny::ui{
 		}
 	}
 
-	void ListBox::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void ListBox::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
-		dny::fill_rect( rect, dny::Color32{ 15, 15, 15 }, canvas );
-		dny::draw_rect( rect, dny::Color32{ dny::Colors::white }, canvas );
+		renderer.fill_rect( rect, dny::Color32{ 15, 15, 15 } );
+		renderer.draw_rect( rect, dny::Color32{ dny::Colors::white } );
 
 		for( std::int32_t i = 0; i < static_cast<std::int32_t>( m_items.size() ); ++i ){
 			const auto item_rect = dny::Rect<std::int32_t>{
@@ -80,9 +89,9 @@ namespace dny::ui{
 				break;
 			}
 			if( i == m_selected ){
-				dny::fill_rect( item_rect, dny::Color32{ 45, 70, 120 }, canvas );
+				renderer.fill_rect( item_rect, dny::Color32{ 45, 70, 120 } );
 			}
-			dny::draw_text( m_items[ i ], { item_rect.left + 4, item_rect.top + 2 }, font, dny::Color32{ dny::Colors::white }, canvas );
+			renderer.draw_text( m_items[ i ], { item_rect.left + 4, item_rect.top + 2 }, font, dny::Color32{ dny::Colors::white } );
 		}
 	}
 }

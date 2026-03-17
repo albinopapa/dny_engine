@@ -1,6 +1,6 @@
 #include "ui/input_textbox.hpp"
 
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -50,14 +50,14 @@ namespace dny::ui{
 		}
 	}
 
-	void InputTextBox::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void InputTextBox::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
-		dny::fill_rect( rect, dny::Color32{ 15, 15, 15 }, canvas );
-		dny::draw_rect( rect, dny::Color32{ m_focused ? dny::Colors::yellow : dny::Colors::white }, canvas );
-		dny::draw_text( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white }, canvas );
+		renderer.fill_rect( rect, dny::Color32{ 16, 16, 16 } );
+		renderer.draw_rect( rect, m_focused ? dny::Color32( dny::Colors::yellow ) : dny::Color32( dny::Colors::white ) );
+		renderer.draw_text( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white } );
 	}
 }

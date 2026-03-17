@@ -1,5 +1,5 @@
 #include "ui/checkbox.hpp"
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -25,26 +25,27 @@ namespace dny::ui{
 		}
 	}
 
-	void CheckBox::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void CheckBox::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
-		const auto box_rect = dny::Rect<std::int32_t>{
-			rect.left,
-			rect.top,
-			rect.left + rect.height(),
-			rect.bottom
-		};
 
 		static constexpr auto white = dny::Color32{ dny::Colors::white };
 		static constexpr auto green = dny::Color32{ dny::Colors::green };
-		dny::fill_rect( box_rect, dny::Color32{ 20, 20, 20 }, canvas );
-		dny::draw_rect( box_rect, white, canvas );
+		static constexpr auto background = dny::Color32{ 20, 20, 20 };
+		renderer.fill_rect( rect, background );
+		renderer.draw_rect( rect, white );
 		if( m_checked ){
-			dny::fill_rect( dny::Rect<std::int32_t>{ box_rect.left + 4, box_rect.top + 4, box_rect.right - 4, box_rect.bottom - 4 }, green, canvas );
+			const auto expanded_rect = dny::Rect<std::int32_t>{
+				rect.left + 4,
+				rect.top + 4,
+				rect.right - 4,
+				rect.bottom - 4 
+			};
+			renderer.fill_rect( expanded_rect, green );
 		}
-		dny::draw_text( std::string{ m_text }, { box_rect.right + 6, rect.top + 2 }, font, white, canvas );
+		renderer.draw_text( std::string{ m_text }, { rect.right + 6, rect.top + 2 }, font, white );
 	}
 }

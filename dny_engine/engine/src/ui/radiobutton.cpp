@@ -1,5 +1,5 @@
 #include "ui/radiobutton.hpp"
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -29,19 +29,19 @@ namespace dny::ui{
 		}
 	}
 
-	void RadioButton::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void RadioButton::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
 		const auto rect = bounds();
 		const auto radius = rect.height() / 2;
-		const auto center = dny::vector2<std::int32_t>{ rect.left + radius, rect.top + radius };
-		dny::fill_circle( center, radius, dny::Color32{ 20, 20, 20 }, canvas );
-		dny::fill_circle( center, radius - 1, dny::Color32{ 20, 20, 20 }, canvas );
+		const auto center = dny::vector2{ rect.left + radius, rect.top + radius };
+		renderer.fill_circle( center, radius, dny::Color32{ 20, 20, 20} );
+		renderer.fill_circle( center, radius - 1, dny::Color32{ 51, 51, 51 } );
 		if( m_selected ){
-			dny::fill_circle( center, radius / 2, dny::Color32{ dny::Colors::green }, canvas );
+			renderer.fill_circle( center, radius / 2, dny::Color32{ 0, 255, 0 } );
 		}
-		dny::draw_text( std::string{ m_text }, { rect.left + rect.height() + 6, rect.top + 2 }, font, dny::Color32{ dny::Colors::white }, canvas );
+		renderer.draw_text( m_text, { rect.left + rect.height() + 6, rect.top + 2 }, font, dny::Color32{ 255, 255, 255 } );
 	}
 }

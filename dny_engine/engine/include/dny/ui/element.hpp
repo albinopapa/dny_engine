@@ -1,12 +1,13 @@
 #pragma once
 
-#include "core/dims2.hpp"
-#include "core/rectangle.hpp"
-#include "core/surface.hpp"
+#include "utilities/dims2.hpp"
+#include "utilities/rectangle.hpp"
+#include "graphics/surface.hpp"
 #include "graphics/font.hpp"
 #include "input/keyboard.hpp"
 #include "input/mouse.hpp"
 #include "math/vector2.hpp"
+#include <renderer/renderer2d.hpp>
 
 #include <cstdint>
 #include <string>
@@ -38,7 +39,7 @@ namespace dny::ui{
 		bool contains( dny::vector2<std::int32_t> point ) const noexcept;
 
 		virtual void update( Mouse const& mouse, Keyboard& keyboard ) = 0;
-		virtual void draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const = 0;
+		virtual void draw( dny::renderer2d& renderer, dny::Font const& font ) const = 0;
 
 	private:
 		std::string m_id;

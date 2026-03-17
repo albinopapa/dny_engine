@@ -1,5 +1,5 @@
 #include "ui/button.hpp"
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "graphics/graphics.hpp"
 
 #include <utility>
@@ -25,16 +25,17 @@ namespace dny::ui{
 		}
 	}
 
-	void Button::draw( dny::surface<dny::Color32>& canvas, dny::Font const& font ) const{
+	void Button::draw( dny::renderer2d& renderer, dny::Font const& font ) const{
 		if( !visible() ){
 			return;
 		}
 
-		static constexpr auto white = dny::Color32{ dny::Colors::white };
+		static constexpr auto enabled_color = Color32{ 61, 61, 61 };
+		static constexpr auto disabled_color = Color32{ 36, 36, 36 };
 		const auto rect = bounds();
-		const auto fill = enabled() ? dny::Color32{ 60, 60, 60 } : dny::Color32{ 35, 35, 35 };
-		dny::fill_rect( rect, fill, canvas );
-		dny::draw_rect( rect, white, canvas );
-		dny::draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, white, canvas );
+		const auto fill = enabled() ? enabled_color : disabled_color;
+		renderer.fill_rect( rect, fill );
+		renderer.draw_rect( rect, to_color32( dny::Colors::white ) );
+		renderer.draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, to_color32( dny::Colors::white ) );
 	}
 }

@@ -1,5 +1,5 @@
 #include "graphics/text_atlas_builder.hpp"
-#include "core/colors.hpp"
+#include "graphics/colors.hpp"
 #include "platform/d2dsdk.hpp"
 #include "platform/dwritesdk.hpp"
 #include "platform/wicsdk.hpp"

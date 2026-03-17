@@ -2,7 +2,7 @@
 
 #include "aabb.hpp"
 #include "core/concepts.hpp"
-#include "core/rectangle.hpp"
+#include "utilities/rectangle.hpp"
 #include "math/vector2.hpp"
 
 #include <algorithm>
