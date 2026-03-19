@@ -11,8 +11,8 @@ namespace dny{
 	bool Mouse::handle_message( std::uint32_t msg, std::uintptr_t wparam, std::intptr_t lparam ) noexcept{
 		switch( msg ){
 			case WM_MOUSEMOVE:{
-				const auto x = static_cast< std::int32_t >( GET_X_LPARAM( lparam ) );
-				const auto y = static_cast< std::int32_t >( GET_Y_LPARAM( lparam ) );
+				const auto x = static_cast< std::int32_t >( GET_X_LPARAM( lparam ) ) / 2;
+				const auto y = static_cast< std::int32_t >( GET_Y_LPARAM( lparam ) ) / 2;
 				m_delta.x += ( x - m_position.x );
 				m_delta.y += ( y - m_position.y );
 				m_position = { x, y };
@@ -52,7 +52,7 @@ namespace dny{
 	}
 
 	dny::vector2<std::int32_t> Mouse::position() const noexcept{
-		return m_position / 2;
+		return m_position;
 	}
 
 	dny::vector2<std::int32_t> Mouse::delta() const noexcept{

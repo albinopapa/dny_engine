@@ -7,7 +7,7 @@
 #include "math/math.hpp"
 #include "ui/input_textbox.hpp"
 #include "ui/button.hpp"
-#include "ui/listbox.hpp"
+#include "ui/dropdown.hpp"
 
 #include <string_view>
 
@@ -28,8 +28,7 @@ namespace dny
 		std::shared_ptr<ui::Button> m_load;
 		std::shared_ptr<ui::Button> m_cancel;
 		std::shared_ptr<ui::InputTextBox> m_filename_input_box;
-		std::shared_ptr<ui::ListBox> m_list_box;
-		std::shared_ptr<ui::VScrollBar> m_list_scroll_bar;
+		std::shared_ptr<ui::Dropdown> m_dropdown;
 
 		LevelEditor& m_parent;
 

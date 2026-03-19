@@ -25,23 +25,6 @@
 namespace dny{
 	struct EditorCamera{
 		// ---------------------------------------------------------------------
-		// Camera state
-		// ---------------------------------------------------------------------
-
-		Rect<float> viewport{};        // screen-space viewport
-		vector3<float> position{ 0.f, 0.f, -10.f };
-		// Camera position in world
-		// Must be < 0 so it looks toward +Z
-
-		float ortho_scale = 1.f;
-
-		static constexpr float min_scale = 0.25f;
-		static constexpr float max_scale = 8.f;
-
-		// Forward = +Z (positive Z away from camera)
-		static constexpr vector3<float> forward{ 0.f, 0.f, 1.f };
-
-		// ---------------------------------------------------------------------
 		// Screen -> world on Z = 0 plane
 		// ---------------------------------------------------------------------
 		vector3<float> screen_to_plane( vector2<float> const& screen_pos ) const noexcept{
@@ -116,17 +99,8 @@ namespace dny{
 		// Pan in screen space
 		// ---------------------------------------------------------------------
 		void pan( vector2<float> const& delta_screen ) noexcept{
-			const float width =
-				( viewport.right - viewport.left ) * ortho_scale;
-
-			const float height =
-				( viewport.bottom - viewport.top ) * ortho_scale;
-
-			position.x -=
-				delta_screen.x / ( viewport.right - viewport.left ) * width;
-
-			position.y -=
-				delta_screen.y / ( viewport.bottom - viewport.top ) * height;
+			position.x -= delta_screen.x * ortho_scale;
+			position.y -= delta_screen.y * ortho_scale;
 		}
 
 		// ---------------------------------------------------------------------
@@ -143,6 +117,24 @@ namespace dny{
 				( viewport.bottom - viewport.top ) *
 				ortho_scale;
 		}
+
+		// ---------------------------------------------------------------------
+		// Camera state
+		// ---------------------------------------------------------------------
+
+		Rect<float> viewport{};        // screen-space viewport
+		vector3<float> position{ 0.f, 0.f, -10.f };
+		// Camera position in world
+		// Must be < 0 so it looks toward +Z
+
+		float ortho_scale = 1.f;
+
+		static constexpr float min_scale = 0.25f;
+		static constexpr float max_scale = 8.f;
+
+		// Forward = +Z (positive Z away from camera)
+		static constexpr vector3<float> forward{ 0.f, 0.f, 1.f };
+
 	};
 
 	enum class EditorTools{
@@ -218,6 +210,7 @@ namespace dny{
 		// View related state
 		EditorCamera m_camera{};
 		TileMapView m_tilemap_view;
+		Rect<std::int32_t> m_screen_rect{};
 		Rect<std::int32_t> m_viewport{};
 		Font const& m_font;
 		ui::Panel m_layout;
@@ -229,6 +222,11 @@ namespace dny{
 		std::shared_ptr<ui::Button> m_tools_button;
 
 		dny::vector2<std::int32_t> m_mouse_position;
+
+		static constexpr std::int32_t m_fps_sample_size = 60;
+		std::int32_t m_frame_count = 0;
+		float m_time_accumulator = 0.f;
+		float m_fps = 0.f;
 		bool m_dirty = false;
 	};
 

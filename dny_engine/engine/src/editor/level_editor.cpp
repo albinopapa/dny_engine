@@ -16,13 +16,12 @@
 #include "editor/file_menu_mode.hpp"
 
 namespace dny{
-
 	// ---------- LevelEditor ----------
 	LevelEditor::LevelEditor( Rect<std::int32_t> const& viewport, LevelDocument& document_, Font const& font_ )
 		:
 		m_document( document_ ),
-		m_viewport( viewport ),
-		m_tilemap_view( m_document.tilemap, viewport ),
+		m_screen_rect( viewport ),
+		m_tilemap_view( document_ ),
 		m_font( font_ ),
 		m_layout{ "editor_layout", "", { 0, 0 }, { 0, 0 } }{
 		init_buttons();
@@ -33,9 +32,34 @@ namespace dny{
 		m_layout.add_child( m_tools_button );
 		m_layout.add_child( m_exit_button );
 		load_tileset_sprites();
+
+		const auto view_start_x = static_cast< float >( m_layout.bounds().right );
+		const auto cam_rect = Rect<float>{
+			view_start_x, 0.f,
+			static_cast< float >( viewport.width() ),
+			static_cast< float >( viewport.height() )
+		};
+		m_camera = { .viewport = cam_rect };
+
+		const auto int_view_start_x = m_layout.bounds().right;
+		m_viewport = Rect<std::int32_t>{
+			static_cast< std::int32_t >( int_view_start_x ),
+			viewport.top,
+			viewport.right,
+			viewport.bottom
+		};
+		m_tilemap_view.set_area( m_viewport );
 	}
 
 	void LevelEditor::update( Input& input_, float dt ){
+		++m_frame_count;
+		m_time_accumulator += dt;
+		if( m_time_accumulator >= 1.f ){
+			m_fps = static_cast< float >( m_frame_count ) / m_time_accumulator;
+			m_frame_count = 0;
+			m_time_accumulator = 0.f;
+		}
+
 		m_mouse_position = input_.mouse().position();
 		m_layout.update( input_.mouse(), input_.keyboard() );
 
@@ -64,6 +88,12 @@ namespace dny{
 		const auto pos_string = std::format( "X: {}, Y: {}", m_mouse_position.x, m_mouse_position.y );
 		const auto string_pos = m_viewport.bottom_left() + vector2{ 5, -m_font.char_height() };
 		renderer_.draw_text( pos_string, string_pos, m_font, to_color32( Colors::yellow ) );
+
+		// FPS display
+		const auto fps_string = std::format( "FPS: {:.2f}", m_fps );
+		const auto offset = Font::measure_text( pos_string, m_font );
+		const auto fps_pos = string_pos + vector2{ offset.width + 10, 0 };
+		renderer_.draw_text( fps_string, fps_pos, m_font, to_color32( Colors::yellow ) );
 	}
 
 	void LevelEditor::handle_mouse( Mouse const& mouse ){
@@ -109,11 +139,14 @@ namespace dny{
 			handle_mouse_wheel( mouse );
 
 			// Middle-mouse panning
-			if( mouse.is_pressed( MouseButton::Middle ) ){
+			if( mouse.is_held( MouseButton::Middle ) ){
 				const auto mouse_delta = vector2{
 					static_cast< float >( mouse.delta().x ),
 					static_cast< float >( mouse.delta().y )
 				};
+				if( mouse_delta.x == 0.f && mouse_delta.y == 0.f ){
+					return; // No movement, skip
+				}
 				// Move opposite so dragging feels natural
 				m_camera.pan( mouse_delta );
 			}
@@ -185,11 +218,46 @@ namespace dny{
 
 	void LevelEditor::clamp_camera() noexcept{
 		const auto size = m_document.tilemap.size();
-		const float world_width = static_cast< float >( size.width * Tile::size ) - m_camera.viewport.width();
-		const float world_height = static_cast< float >( size.height * Tile::size ) - m_camera.viewport.height();
 
-		m_camera.position.x = std::clamp( m_camera.position.x, 0.0f, world_width );
-		m_camera.position.y = std::clamp( m_camera.position.y, 0.0f, world_height );
+		if( size.width == 0 || size.height == 0 ){
+			m_camera.position = { 0.f, 0.f, m_camera.position.z };
+			return;
+		}
+
+		const float world_width =
+			static_cast< float >( size.width * Tile::size );
+
+		const float world_height =
+			static_cast< float >( size.height * Tile::size );
+
+		const float visible_width =
+			m_camera.viewport.width() * m_camera.ortho_scale;
+
+		const float visible_height =
+			m_camera.viewport.height() * m_camera.ortho_scale;
+
+		const float half_visible_w = visible_width * 0.5f;
+		const float half_visible_h = visible_height * 0.5f;
+
+		// If viewport larger than world → center
+		if( visible_width >= world_width ||
+			visible_height >= world_height ){
+			m_camera.position.x = world_width * 0.5f;
+			m_camera.position.y = world_height * 0.5f;
+			return;
+		}
+
+		const float min_x = half_visible_w;
+		const float max_x = world_width - half_visible_w;
+
+		const float min_y = half_visible_h;
+		const float max_y = world_height - half_visible_h;
+
+		m_camera.position.x =
+			std::clamp( m_camera.position.x, min_x, max_x );
+
+		m_camera.position.y =
+			std::clamp( m_camera.position.y, min_y, max_y );
 	}
 
 	void LevelEditor::resize_tilemap( dims2<std::int32_t> const& new_size ){
@@ -257,7 +325,7 @@ namespace dny{
 
 	void LevelEditor::init_buttons(){
 		const auto button_dims = dims2<std::int32_t>{ 80, 30 };
-		m_layout.set_size( { button_dims.width, m_viewport.height() } );
+		m_layout.set_size( { button_dims.width + 3, m_screen_rect.height() } );
 
 		auto offset = vector2<std::int32_t>{ 0, 0 };
 		auto padding = 10;

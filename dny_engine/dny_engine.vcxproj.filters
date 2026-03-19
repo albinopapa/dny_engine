@@ -291,9 +291,6 @@
     <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp">
       <Filter>Header Files\editor\modals</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\dny\ui\vscrollbar.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine\include\dny\editor\file_menu_mode.hpp">
       <Filter>Header Files\editor\modals</Filter>
     </ClInclude>
@@ -305,6 +302,12 @@
     </ClInclude>
     <ClInclude Include="engine\include\dny\editor\tile_attributes_mode.hpp">
       <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\dropdown.hpp">
+      <Filter>Header Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\vscrollbar.hpp">
+      <Filter>Header Files\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +399,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\include\dny\editor\tile_attributes_mode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\include\dny\ui\dropdown.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
