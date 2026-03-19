@@ -267,9 +267,6 @@
     <ClInclude Include="engine\include\dny\physics\qtree.hpp">
       <Filter>Header Files\physics</Filter>
     </ClInclude>
-    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp">
-      <Filter>Header Files\editor\modals</Filter>
-    </ClInclude>
     <ClInclude Include="engine\include\dny\editor\imode.hpp">
       <Filter>Header Files\editor\modals</Filter>
     </ClInclude>
@@ -291,6 +288,12 @@
     <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp">
       <Filter>Header Files\editor\modals</Filter>
     </ClInclude>
+    <ClInclude Include="engine\include\dny\ui\vscrollbar.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\file_menu_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\src\editor\file_system.cpp">
@@ -300,9 +303,6 @@
       <Filter>Source Files\editor</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\editor\level_editor.cpp">
-      <Filter>Source Files\editor</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\src\editor\load_mode.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\editor\tile_map.cpp">
@@ -356,9 +356,6 @@
     <ClCompile Include="engine\src\ui\textbox.cpp">
       <Filter>Source Files\ui</Filter>
     </ClCompile>
-    <ClCompile Include="engine\src\editor\editor_mode.cpp">
-      <Filter>Source Files\editor\modals</Filter>
-    </ClCompile>
     <ClCompile Include="engine\src\editor\resize_mode.cpp">
       <Filter>Source Files\editor\modals</Filter>
     </ClCompile>
@@ -372,6 +369,15 @@
       <Filter>Source Files\editor\modals</Filter>
     </ClCompile>
     <ClCompile Include="engine\src\editor\tile_palette_mode.cpp">
+      <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\ui\vscrollbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\include\dny\editor\file_menu_mode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\src\editor\load_mode.cpp">
       <Filter>Source Files\editor\modals</Filter>
     </ClCompile>
   </ItemGroup>

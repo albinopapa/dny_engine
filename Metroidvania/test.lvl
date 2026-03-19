@@ -1,0 +1,7 @@
+LevelFileVersion = 0.00.001
+TilemapFile = test.map
+TileDefFile = test.def
+PlatformDefFile = test.pfm
+TriggerDefFile = test.trg
+EntityDefFile = test.ety
+PolylineFile = test.pln

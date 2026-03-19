@@ -7,3 +7,4 @@
 #include "panel.hpp"
 #include "radiobutton.hpp"
 #include "textbox.hpp"
+#include "vscrollbar.hpp"

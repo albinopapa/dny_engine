@@ -8,13 +8,12 @@
 
 namespace dny
 {
-	class LevelEditor::ResizeMode : public IMode{
+	class LevelEditor::ResizeMode : public basic_mode{
 	public:
 		ResizeMode( LevelEditor& parent, Rect<std::int32_t> const& dialog_rect );
 
-		void update( Mouse const& mouse, Keyboard& keyboard );
-		void render( renderer2d& renderer_, Font const& font_ )const override;
-
+		void update( Mouse const& mouse, Keyboard& keyboard )override;
+		void render( renderer2d& renderer_ )const override;
 	private:
 		void handle_mouse( Mouse const& mouse );
 		void handle_keyboard( Keyboard& keyboard );
@@ -26,7 +25,6 @@ namespace dny
 		std::shared_ptr<ui::InputTextBox> m_height_input_box;
 		std::shared_ptr<ui::Button> m_okay;
 		std::shared_ptr<ui::Button> m_cancel;
-		ui::Panel m_dialog_panel;
 		LevelEditor& m_parent;
 		Focus m_focus = Focus::None;
 	};

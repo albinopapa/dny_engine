@@ -10,12 +10,12 @@
 
 namespace dny
 {
-	class LevelEditor::TextureSelectMode : public IMode{
+	class LevelEditor::TextureSelectMode : public basic_mode{
 	public:
 		TextureSelectMode( LevelEditor& editor, std::size_t active_idx, Rect<std::int32_t> const& dialog_rect );
 
-		void update( Mouse const& mouse, Keyboard& keyboard );
-		void render( renderer2d& renderer, dny::Font const& font )const override;
+		void update( Mouse const& mouse, Keyboard& keyboard )override;
+		void render( renderer2d& renderer )const override;
 
 	protected:
 		void handle_mouse( Mouse const& mouse );
@@ -24,7 +24,7 @@ namespace dny
 	protected:		
 		LevelEditor& m_parent;
 		std::size_t m_active_index = {};
-		ui::Panel m_dialog_panel;
+
 		std::string m_selected;
 		std::shared_ptr<ui::ListBox> m_list_box;
 		std::shared_ptr<ui::Button> m_accept;

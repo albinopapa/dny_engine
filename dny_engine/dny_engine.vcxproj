@@ -23,7 +23,7 @@
     <ClInclude Include="engine\include\dny\core\concepts.hpp" />
     <ClInclude Include="engine\include\dny\core\type_traits.hpp" />
     <ClInclude Include="engine\include\dny\editor\definitions.hpp" />
-    <ClInclude Include="engine\include\dny\editor\editor_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\file_menu_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\file_system.hpp" />
     <ClInclude Include="engine\include\dny\editor\iapp_state.hpp" />
     <ClInclude Include="engine\include\dny\editor\imode.hpp" />
@@ -87,14 +87,15 @@
     <ClInclude Include="engine\include\dny\ui\panel.hpp" />
     <ClInclude Include="engine\include\dny\ui\radiobutton.hpp" />
     <ClInclude Include="engine\include\dny\ui\textbox.hpp" />
+    <ClInclude Include="engine\include\dny\ui\vscrollbar.hpp" />
     <ClInclude Include="engine\include\dny\utilities\dims2.hpp" />
     <ClInclude Include="engine\include\dny\utilities\rectangle.hpp" />
     <ClInclude Include="engine\include\dny\utilities\timer.hpp" />
     <ClInclude Include="engine\include\dny\utilities\utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="engine\include\dny\editor\file_menu_mode.cpp" />
     <ClCompile Include="engine\src\audio\audio.cpp" />
-    <ClCompile Include="engine\src\editor\editor_mode.cpp" />
     <ClCompile Include="engine\src\editor\file_system.cpp" />
     <ClCompile Include="engine\src\editor\level_serializer.cpp" />
     <ClCompile Include="engine\src\editor\level_editor.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="engine\src\ui\panel.cpp" />
     <ClCompile Include="engine\src\ui\radiobutton.cpp" />
     <ClCompile Include="engine\src\ui\textbox.cpp" />
+    <ClCompile Include="engine\src\ui\vscrollbar.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -1,5 +1,4 @@
 #include "editor/load_mode.hpp"
-#include "editor/editor_mode.hpp"
 
 #include "input/input.hpp"
 
@@ -10,38 +9,55 @@ namespace dny{
 	// ---------- LevelEditor::LoadMode ----------
 	LevelEditor::LoadMode::LoadMode( LevelEditor& parent, Rect<std::int32_t> const& dialog_rect_ )
 		:
-		m_parent{ parent }, m_dialog_panel{ "dialog_panel", "Load Level", dialog_rect_.top_left(), dialog_rect_.size() }{
-		const auto offset = vector2<std::int32_t>{ 10, 10 };
+		basic_mode{ "load_mode", "Load Level", dialog_rect_ },
+		m_parent{ parent } {
+		const auto& font = m_parent.m_font;
+		auto offset = vector2<std::int32_t>{ 10, 10 };
 		const auto lb_width = dialog_rect_.width() - 20;
-		const auto lb_height = 30;
+		const auto lb_height = font.char_height();
+		const auto padding = 5;
+		const auto str_dims = Font::measure_text( " Cancel ", font );
+
 		m_list_box = std::make_shared<ui::ListBox>(
 			"file_list",
 			dialog_rect_.top_left() + offset,
 			dims2<std::int32_t>{ lb_width, lb_height }
 		);
+
+		offset.y += lb_height + padding;
 		m_filename_input_box = std::make_shared<ui::InputTextBox>(
 			"filename_input",
 			"Filename: ",
-			dialog_rect_.top_left() + offset + vector2{ 0, lb_height + 5 },
+			dialog_rect_.top_left() + offset,
 			dims2<std::int32_t>{ lb_width, lb_height }
 		);
+
+		offset.y += lb_height + padding;
 		m_load = std::make_shared<ui::Button>(
 			"load_button",
 			" Load ",
-			dialog_rect_.top_left() + offset + vector2{ 0, lb_height * 2 + 10 },
-			dims2<std::int32_t>{ 75, 30 }
+			dialog_rect_.top_left() + offset,
+			str_dims
 		);
+
+		offset.x += str_dims.width + padding;
 		m_cancel = std::make_shared<ui::Button>(
 			"cancel_button",
 			" Cancel ",
-			dialog_rect_.top_left() + offset + vector2{ 150, lb_height * 2 + 10 },
-			dims2<std::int32_t>{ 75, 30 }
+			dialog_rect_.top_left() + offset,
+			str_dims
+		);
+		m_list_scroll_bar = std::make_shared<ui::VScrollBar>(
+			"list_scroll_bar",
+			dialog_rect_.top_right() + vector2{ -30, 10 },
+			dims2<std::int32_t>{ 20, lb_height }
 		);
 
-		m_dialog_panel.add_child( m_list_box );
-		m_dialog_panel.add_child( m_filename_input_box );
-		m_dialog_panel.add_child( m_load );
-		m_dialog_panel.add_child( m_cancel );
+		m_panel.add_child( m_list_box );
+		m_panel.add_child( m_filename_input_box );
+		m_panel.add_child( m_load );
+		m_panel.add_child( m_cancel );
+		m_panel.add_child( m_list_scroll_bar );
 
 		namespace fs = std::filesystem;
 
@@ -66,43 +82,87 @@ namespace dny{
 				}
 			}
 		}
+
+		static constexpr std::int32_t visible_items = 5;
+		m_list_scroll_bar->set_page_size( visible_items );
+		m_list_scroll_bar->set_range( 0, std::max( 0, static_cast< std::int32_t >( m_list_box->items().size() ) - visible_items ) );
+		m_list_scroll_bar->set_value( 0 );
 	}
 
 	void LevelEditor::LoadMode::update( Mouse const& mouse, Keyboard& keyboard ){
-		m_dialog_panel.update( mouse, keyboard );
+		if(m_list_box->items().empty() ){
+			m_filename_input_box->set_text( "No .lvl files found" );
+			m_filename_input_box->set_enabled( false );
+			m_load->set_enabled( false );
+			m_list_scroll_bar->set_visible( false );
+		}
+		else{
+			m_filename_input_box->set_enabled( true );
+			m_load->set_enabled( true );
+			m_list_scroll_bar->set_visible( m_list_box->items().size() > 5 );
+		}
+		m_panel.update( mouse, keyboard );
+		handle_mouse( mouse );
+		handle_keyboard( keyboard );
 	}
 
-	void LevelEditor::LoadMode::render( renderer2d& renderer_, Font const& font_ ) const{
-		m_dialog_panel.draw( renderer_, font_ );
+	void LevelEditor::LoadMode::render( renderer2d& renderer_ )const{
+		m_panel.draw( renderer_, m_parent.m_font );
+
+		// Draw the list box items with scrolling
+		const auto& items = m_list_box->items();
+		const auto scroll_value = m_list_scroll_bar->value();
+		const auto char_height = m_parent.m_font.char_height();
+		const auto padding = 2;
+		for( std::size_t i = 0; i < items.size(); ++i ){
+			const auto record_pos = static_cast< std::int32_t >( i ) * char_height;
+			const auto item_pos = m_list_box->position() + vector2{ padding, padding + record_pos - scroll_value * char_height };
+			if( item_pos.y + char_height < m_list_box->bounds().top || item_pos.y > m_list_box->bounds().bottom ){
+				continue; // Skip items outside the visible area
+			}
+			renderer_.draw_text(items[ i ], item_pos, m_parent.m_font, Color32{ 255, 255, 255, 255 } );
+		}
 	}
+
 
 	void LevelEditor::LoadMode::handle_mouse( Mouse const& mouse_ ){
 		if( mouse_.is_pressed( MouseButton::Left ) ){
 			handle_listbox( mouse_ );
-			if( m_load->contains( m_parent.m_mouse_position ) ){
+			if( m_load->was_clicked() ){
+				if(!m_load->enabled() ) return;
+
 				// Load the file
-				// TODO: Implement TileMapSerializer
-				//LevelSerializer::load( m_parent.m_document.tilemap, m_filename_input_box.get_text() );
-				// m_parent.m_current_filename = m_filename_input_box.get_text();
-				m_parent.transition_mode( std::make_unique<EditorMode>( m_parent, m_parent.m_viewport ) );
+				m_parent.m_document.basename = m_filename_input_box->text();
+				LevelSerializer::load( m_parent.m_document );
+				m_state = State::Done;
 			}
-			else if( m_cancel->contains( m_parent.m_mouse_position ) ){
-				m_parent.transition_mode( std::make_unique<EditorMode>( m_parent, m_parent.m_viewport ) );
+			else if( m_cancel->was_clicked() ){
+				m_state = State::Done;
 			}
 		}
 
 	}
 
 	void LevelEditor::LoadMode::handle_keyboard( Keyboard& keyboard ){
+		if(keyboard.is_pressed( Key::Tab ) ){
+			if(keyboard.is_pressed( Key::Shift ) ){
+				--m_focus_index;
+			}
+			else{
+				++m_focus_index;
+			}
+			wrap_focus();
+			m_filename_input_box->set_focused( m_focus_index == 1 );
+		}
+		
 		if( keyboard.is_pressed( Key::Enter ) ){
 			// Load the file
-			// TODO: Implement TileMapSerializer
-			// TileMapSerializer::load( m_parent->m_document.tilemap, m_filename_input_box.get_text() );
-			// m_parent->m_current_filename = m_filename_input_box.get_text();
-			m_parent.transition_mode( std::make_unique<EditorMode>( m_parent, m_parent.m_viewport ) );
+			m_parent.m_document.basename = m_filename_input_box->text();
+			LevelSerializer::load( m_parent.m_document );
+			m_state = State::Done;
 		}
 		else if( keyboard.is_pressed( Key::Escape ) ){
-			m_parent.transition_mode( std::make_unique<EditorMode>( m_parent, m_parent.m_viewport ) );
+			m_state = State::Done;
 		}
 	}
 
@@ -111,19 +171,16 @@ namespace dny{
 			return;
 		}
 
-		// TODO: Handle mouse wheel for scrolling the listbox
-		if( mouse_.wheel_delta() > 0 ){
-			//m_list_box.scroll_up();
-			return;
-		}
-		else if( mouse_.wheel_delta() < 0 ){
-			//m_list_box.scroll_down();
-			return;
-		}
-
 		auto str = m_list_box->selected_item();
 		if( str.empty() ) return;
 
 		m_filename_input_box->set_text( std::string{ str } );
+	}
+	
+	void LevelEditor::LoadMode::wrap_focus() noexcept{
+		if( m_focus_index < 0 ){
+			m_focus_index = 3;
+		}
+		m_focus_index %= 4;
 	}
 }

@@ -58,32 +58,29 @@ namespace dny{
 
 	template<color_type ColorT>
 	surface<ColorT> load_surface_from_file( std::filesystem::path filename_ ){
-		const auto data = dny::load_image_data( filename_ );
-		auto result = surface<ColorT>{ data.width, data.height };
-
 		using max_channel_type = std::conditional_t<std::is_same_v<ColorT, dny::ColorF>, float, std::uint8_t>;
-		static constexpr max_channel_type max_channel_value = std::is_same_v<ColorT, dny::ColorF> ? 1.f : 255ui8;
-		auto make_color = [ & ]( std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a ) -> ColorT{
+		auto decide_value = []( std::uint8_t value ) -> max_channel_type{
 			if constexpr( std::is_same_v<ColorT, dny::ColorF> ){
-				return ColorT{
-					static_cast< float >( r ) / 255.f,
-					static_cast< float >( g ) / 255.f,
-					static_cast< float >( b ) / 255.f,
-					static_cast< float >( a ) / 255.f
-				};
+				return static_cast< float >( value ) / 255.f;
 			}
 			else{
-				return ColorT{ r, g, b, a };
+				return value;
 			}
 		};
+
+		const auto data = dny::load_image_data( filename_ );
+		assert( data.channels_per_pixel == 4 ); // We expect RGBA data from the loader
+
+		auto result = surface<ColorT>{ data.width, data.height };
+
 		for( std::size_t j = 0; j < data.width * data.height; ++j ){
 			const auto chanel_offset = j * data.channels_per_pixel;
-			result.pixels()[ j ] = make_color( 
-				data.pixels[ chanel_offset + 2 ], 
-				data.pixels[ chanel_offset + 1 ], 
-				data.pixels[ chanel_offset + 0 ], 
-				( data.channels_per_pixel >= 4 ) ?
-				data.pixels[ chanel_offset + 3 ] : max_channel_value
+
+			result.pixels()[ j ] = ColorT( 
+				decide_value( data.pixels[ chanel_offset + 2 ] ), 
+				decide_value( data.pixels[ chanel_offset + 1 ] ), 
+				decide_value( data.pixels[ chanel_offset + 0 ] ), 
+				decide_value( data.pixels[ chanel_offset + 3 ] )
 			);
 		}
 
