@@ -27,7 +27,7 @@ namespace dny{
 				if( ch == '.' ){
 					++x;
 					key = parse_key( line, x );
-					x += key.length();
+					x += static_cast< std::int32_t >( key.length() );
 				}
 				else if( ch == '=' ){
 					++x;
@@ -36,7 +36,7 @@ namespace dny{
 					}
 
 					value = parse_value( line, x );
-					x += value.length();
+					x += static_cast< std::int32_t >( value.length() );
 				}
 			}
 

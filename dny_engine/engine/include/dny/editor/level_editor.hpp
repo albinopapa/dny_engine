@@ -2,6 +2,7 @@
 
 #include "iapp_state.hpp"
 #include "imode.hpp"
+#include "basic_tool.hpp"
 #include "level_serializer.hpp"
 #include "tilemap_view.hpp"
 #include "utilities.hpp"
@@ -171,6 +172,10 @@ namespace dny{
 		class TextureSelectMode;
 		class TilePaletteMode;
 		class FileMenuMode;
+		class TileAttributesMode;
+
+		class PaintTool;
+		class SelectTool;
 
 	private:
 		friend class TileMapView;
@@ -198,8 +203,15 @@ namespace dny{
 		// We can have multiple modes layered (e.g. LoadMode ) on top of main editor
 		std::vector<std::unique_ptr<basic_mode>> m_mode_stack;
 
+		// Will be used to pair textures with tile definitions in the future 
+		// when we have a TileAttributesMode.
 		std::string m_selected_texture_name;
 
+		// The index of the active tile definition in the palette, used for placement.
+		std::int32_t m_active_definition = 0;
+
+		// Don't recall why I needed both of these, but for now they are separate.
+		// TODO: Check usage before removing one or the other.
 		std::int32_t m_selection_index = 0;
 		std::int32_t m_active_tile_index = 0;
 

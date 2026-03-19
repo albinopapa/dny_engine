@@ -36,12 +36,12 @@ dny::LevelEditor::FileMenuMode::FileMenuMode( LevelEditor& parent_, Rect<std::in
 }
 
 void dny::LevelEditor::FileMenuMode::update( Mouse const& mouse, Keyboard& keyboard ){
-	if( !m_parent.m_dirty ){
+	/*if( !m_parent.m_dirty ){
 		m_save->set_enabled( false );
 	}
 	else{
 		m_save->set_enabled( true );
-	}
+	}*/
 	m_panel.update( mouse, keyboard );
 	handle_mouse( mouse );
 	handle_keyboard( keyboard );

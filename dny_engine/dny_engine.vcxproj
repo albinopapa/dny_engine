@@ -22,6 +22,7 @@
     <ClInclude Include="engine\include\dny\audio\audio.hpp" />
     <ClInclude Include="engine\include\dny\core\concepts.hpp" />
     <ClInclude Include="engine\include\dny\core\type_traits.hpp" />
+    <ClInclude Include="engine\include\dny\editor\basic_tool.hpp" />
     <ClInclude Include="engine\include\dny\editor\definitions.hpp" />
     <ClInclude Include="engine\include\dny\editor\file_menu_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\file_system.hpp" />
@@ -30,10 +31,12 @@
     <ClInclude Include="engine\include\dny\editor\level_serializer.hpp" />
     <ClInclude Include="engine\include\dny\editor\level_editor.hpp" />
     <ClInclude Include="engine\include\dny\editor\load_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\paint_tool.hpp" />
     <ClInclude Include="engine\include\dny\editor\resize_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\save_before_exit_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\save_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\texture_select_mode.hpp" />
+    <ClInclude Include="engine\include\dny\editor\tile_attributes_mode.hpp" />
     <ClInclude Include="engine\include\dny\editor\tile_category.hpp" />
     <ClInclude Include="engine\include\dny\editor\tile_map.hpp" />
     <ClInclude Include="engine\include\dny\editor\tile_palette_mode.hpp" />
@@ -95,6 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\include\dny\editor\file_menu_mode.cpp" />
+    <ClCompile Include="engine\include\dny\editor\paint_tool.cpp" />
+    <ClCompile Include="engine\include\dny\editor\tile_attributes_mode.cpp" />
     <ClCompile Include="engine\src\audio\audio.cpp" />
     <ClCompile Include="engine\src\editor\file_system.cpp" />
     <ClCompile Include="engine\src\editor\level_serializer.cpp" />

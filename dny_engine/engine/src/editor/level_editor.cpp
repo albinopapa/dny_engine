@@ -66,7 +66,6 @@ namespace dny{
 		renderer_.draw_text( pos_string, string_pos, m_font, to_color32( Colors::yellow ) );
 	}
 
-	// ---------- Controller ----------
 	void LevelEditor::handle_mouse( Mouse const& mouse ){
 		const auto workspace_center = m_viewport.center();
 		const auto dialog_rect = Rect<std::int32_t>{
@@ -206,19 +205,23 @@ namespace dny{
 
 		// TODO: relative path is baked into the global tile definitions for now, 
 		// but eventually this should come from the LevelDocument
-		const auto images_dir = fs::current_path();
+		const auto images_dir = fs::current_path() / "assets/textures/test";
 
 		if( !fs::exists( images_dir ) || !fs::is_directory( images_dir ) ){
 			// No images folder, nothing to load
 			return;
 		}
 
-		// TODO: Implement sprite loading for tileset
-		// Build a map: filename_without_extension → full path
-		// Loop through tile definitions and load corresponding sprites
-		// We'll use the global g_tile_defs for now, but eventually this 
-		// should come from the LevelDocument
-		for( auto& tile_def : g_tile_defs ){
+		// If no level is loaded, fill document with global tile defs 
+		// so we can at least see something in the palette and place tiles with textures
+		// during testing. If a level is loaded, it should have its own tile defs 
+		// that we will load textures for.
+
+		if( m_document.basename.empty() ){
+			m_document.tile_defs = std::vector<TileDef>( g_tile_defs.begin(), g_tile_defs.end() );
+		}
+
+		for( auto& tile_def : m_document.tile_defs ){
 			if( tile_def.texture_name.empty() ){
 				continue; // No texture for this tile
 			}
@@ -236,18 +239,19 @@ namespace dny{
 		if( !tile_index.has_value() )
 			return;
 
+		const auto& index = *tile_index;
 		// Create tile with active tile index
 		Tile tile;
-		tile.definition_id = m_active_tile_index;
+		tile.definition_id = m_active_definition;
 		const auto size = m_document.tilemap.size();
 
-		if( ( *tile_index ).x < 0 || ( *tile_index ).y < 0 ||
-			( *tile_index ).x >= size.width ||
-			( *tile_index ).y >= size.height ){
+		if( index.x < 0 || index.y < 0 ||
+			index.x >= size.width ||
+			index.y >= size.height ){
 			return;
 		}
 
-		m_document.tilemap.get_tile( *tile_index ) = tile;
+		m_document.tilemap.get_tile( index ) = tile;
 		m_dirty = true;
 	}
 

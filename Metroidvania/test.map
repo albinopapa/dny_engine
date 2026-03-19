@@ -1,2 +1,702 @@
 0.00.001
-(0, 0)
+(10, 10)
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}
+Tile{
+	.id = 0
+	.orientatio_index = 0
+	.platform_id = 0
+	.entity_id = 0
+	.trigger_id = 0
+}

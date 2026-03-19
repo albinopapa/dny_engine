@@ -73,6 +73,9 @@
     <Filter Include="Source Files\editor\modals">
       <UniqueIdentifier>{7e08fc0e-9874-415d-b6e2-e27a4274f142}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\editor\tools">
+      <UniqueIdentifier>{40b09b39-545c-4040-a5c4-a3f180b08c4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\include\dny\audio\audio.hpp">
@@ -294,6 +297,15 @@
     <ClInclude Include="engine\include\dny\editor\file_menu_mode.hpp">
       <Filter>Header Files\editor\modals</Filter>
     </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\paint_tool.hpp">
+      <Filter>Header Files\editor\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\basic_tool.hpp">
+      <Filter>Header Files\editor\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\include\dny\editor\tile_attributes_mode.hpp">
+      <Filter>Header Files\editor\modals</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\src\editor\file_system.cpp">
@@ -379,6 +391,12 @@
     </ClCompile>
     <ClCompile Include="engine\src\editor\load_mode.cpp">
       <Filter>Source Files\editor\modals</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\include\dny\editor\paint_tool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\include\dny\editor\tile_attributes_mode.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

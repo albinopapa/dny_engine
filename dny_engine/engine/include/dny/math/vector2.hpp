@@ -30,6 +30,13 @@ namespace dny{
 			return *this;
 		}
 
+		constexpr bool operator==( vector2 const& other )const noexcept{
+			return x == other.x && y == other.y;
+		}
+		constexpr bool operator!=( vector2 const& other )const noexcept{
+			return !( *this == other );
+		}
+
 		ElementT x = {};
 		ElementT y = {};
 	};

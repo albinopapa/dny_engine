@@ -50,13 +50,13 @@ namespace dny{
 	// Name, texture, category, friction, damage
 	constexpr std::array<TileDef, 8> g_tile_defs = {
 		TileDef{ "Empty", "", TileCategory::Empty, 0.f, 0.f },
-		TileDef{ "Dirt", "assets/textures/test/dirt.png", TileCategory::Solid, 0.8f, 0.f },
-		TileDef{ "Platform", "assets/textures/test/platform.png", TileCategory::Platform, 0.5f, 0.f },
+		TileDef{ "Dirt", "dirt.png", TileCategory::Solid, 0.8f, 0.f },
+		TileDef{ "Platform", "platform.png", TileCategory::Platform, 0.5f, 0.f },
 		TileDef{ "Water", "", TileCategory::Liquid, 0.f, 0.f },
 		TileDef{ "Lava", "", TileCategory::Liquid, 0.f, 10.f },
-		TileDef{ "PlayerSpawn", "assets/textures/test/player.png", TileCategory::Spawner, 0.f, 0.f },
-		TileDef{ "HopperSpawn", "assets/textures/test/hopper.png", TileCategory::Spawner, 0.f, 0.f },
-		TileDef{ "FireBallSpawn", "assets/textures/test/fireball.png", TileCategory::Spawner, 0.f, 0.f }
+		TileDef{ "PlayerSpawn", "player.png", TileCategory::Spawner, 0.f, 0.f },
+		TileDef{ "HopperSpawn", "hopper.png", TileCategory::Spawner, 0.f, 0.f },
+		TileDef{ "FireBallSpawn", "fireball.png", TileCategory::Spawner, 0.f, 0.f }
 	};
 
 
