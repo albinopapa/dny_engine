@@ -30,7 +30,7 @@ private:
 	void update();
 	void render();
 	void handle_transition_state();
-	void transition_state( std::unique_ptr<dny::IAppState> );
+
 private:
 	static constexpr dny::dims2<std::uint32_t> screen_dims{ 640, 360 };
 	dny::renderer2d m_renderer;

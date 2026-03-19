@@ -11,25 +11,23 @@
 
 namespace dny
 {
-	class LevelEditor::SaveMode : public IMode{
+	class LevelEditor::SaveMode : public basic_mode{
 	public:
 		SaveMode( LevelEditor& parent_, Rect<std::int32_t> const& dialog_rect_ );
 
 		void update( Mouse const& mouse, Keyboard& keyboard ) override;
-		void render( renderer2d& renderer_, Font const& font_ )const override;
+		void render( renderer2d& renderer_ )const override;
 
 	private:
 		void handle_mouse( Mouse const& mouse );
 		void handle_keyboard( Keyboard& keyboard );
-
+		void on_save();
+		void on_cancel();
 	private:
-		// TODO: this should be a panel with the buttons and input box as children
-		// Left in for reminder of UI refactor
-		
-		ui::Panel m_dialog_panel;
 		std::shared_ptr<ui::Button> m_save;
 		std::shared_ptr<ui::Button> m_cancel;
 		std::shared_ptr<ui::InputTextBox> m_filename_input_box;
+
 		LevelEditor& m_parent;
 	};
 }

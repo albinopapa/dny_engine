@@ -12,6 +12,7 @@
 #include "math/math.hpp"
 #include "ui/dny_ui.hpp"
 
+
 #include <array>
 #include <cassert>
 #include <optional>
@@ -150,52 +151,73 @@ namespace dny{
 		Polyline,
 	};
 
+	class LevelEditor;
+
 
 	class LevelEditor : public IAppState{
 	public:
-		LevelEditor( Rect<std::int32_t> const& viewport, LevelDocument& document_ );
+		LevelEditor( Rect<std::int32_t> const& viewport, LevelDocument& document_, Font const& font_ );
 		LevelEditor( LevelEditor const& ) = delete;
 		LevelEditor& operator=( LevelEditor const& ) = delete;
 
 		void update( Input& input_, float dt )override;
-		void render( renderer2d& renderer_, Font const& font_ ) const override;
+		void render( renderer2d& renderer_ ) const override;
 
 	private:
-		class EditorMode;
 		class LoadMode;
 		class ResizeMode;
 		class SaveMode;
 		class SaveBeforeExitMode;
 		class TextureSelectMode;
 		class TilePaletteMode;
+		class FileMenuMode;
 
 	private:
-		//void handle_mouse( Input const& input_ );
-		//void handle_keyboard( Input const& input_ );
-		void clamp_camera() noexcept;
-
-		void resize_tilemap( dims2<std::int32_t> const& new_size );
-		void transition_mode( std::unique_ptr<IMode> next_mode );
-		void load_tileset_sprites();
-		void place_tile( Mouse const& mouse );
-		
 		friend class TileMapView;
 		friend struct LevelSerializer;
 
+		void handle_mouse( Mouse const& mouse );
+		void handle_keyboard( Keyboard& keyboard );
+		void handle_mouse_wheel( Mouse const& mouse );
+		void clamp_camera() noexcept;
+
+		void resize_tilemap( dims2<std::int32_t> const& new_size );
+		void transition_mode( std::unique_ptr<basic_mode> next_mode );
+		void load_tileset_sprites();
+		void place_tile( Mouse const& mouse );
+
+		void init_buttons();
+
 	private:
+		// Controller related state
 		LevelDocument& m_document;
+
+		std::unordered_map<std::string, surface<ColorF>> m_textures;
+
+		// Mode stack, back is active. 
+		// We can have multiple modes layered (e.g. LoadMode ) on top of main editor
+		std::vector<std::unique_ptr<basic_mode>> m_mode_stack;
+
+		std::string m_selected_texture_name;
+
+		std::int32_t m_selection_index = 0;
+		std::int32_t m_active_tile_index = 0;
+
+		// View related state
 		EditorCamera m_camera{};
 		TileMapView m_tilemap_view;
 		Rect<std::int32_t> m_viewport{};
-		std::unordered_map<std::string, surface<ColorF>> m_textures;
-		std::string m_current_filename;
-		std::string m_selected_texture_name;
-		std::unique_ptr<IMode> m_mode;
-		std::unique_ptr<IMode> m_next_mode;
-		std::int32_t m_selection_index = 0;
-		vector2<std::int32_t> m_mouse_position{};
-		std::int32_t m_active_tile_index = 0;
-		// Later, EditorView
-		// EditorView m_editor_view;
+		Font const& m_font;
+		ui::Panel m_layout;
+		std::shared_ptr<ui::Button> m_file_button;
+		std::shared_ptr<ui::Button> m_resize_button;
+		std::shared_ptr<ui::Button> m_texture_button;
+		std::shared_ptr<ui::Button> m_tile_palette_button;
+		std::shared_ptr<ui::Button> m_exit_button;
+		std::shared_ptr<ui::Button> m_tools_button;
+
+		dny::vector2<std::int32_t> m_mouse_position;
+		bool m_dirty = false;
 	};
+
 }

@@ -11,6 +11,8 @@ namespace dny::ui{
 
 		void set_text( std::string text );
 		std::string_view text() const noexcept;
+		void set_placeholder( std::string text ) noexcept;
+		std::string_view placeholder() const noexcept;
 		void set_focused( bool value ) noexcept;
 		bool focused() const noexcept;
 		void set_max_length( std::size_t value ) noexcept;
@@ -21,7 +23,8 @@ namespace dny::ui{
 
 	private:
 		std::string m_text;
-		bool m_focused = false;
+		std::string m_placeholder;
 		std::size_t m_max_length = 64;
+		bool m_focused = false;
 	};
 }

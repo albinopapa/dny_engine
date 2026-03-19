@@ -19,7 +19,7 @@ namespace dny
 		virtual ~IAppState() = default;
 
 		virtual void update( Input& input_, float dt ) = 0;
-		virtual void render( renderer2d& renderer_, Font const& font_ )const = 0;
+		virtual void render( renderer2d& renderer_ )const = 0;
 
 		app_state_request request()const{ return m_request; }
 

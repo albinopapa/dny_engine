@@ -8,7 +8,11 @@ namespace dny::ui{
 	Button::Button( std::string id, std::string label, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept
 		: Element( std::move( id ), position, size ), m_text( std::move( label ) ){}
 
-	void Button::set_text( std::string text ){
+    void Button::set_hovered( bool value ) noexcept{
+		m_hovered = value;
+	}
+
+    void Button::set_text( std::string text ){
 		m_text = std::move( text );
 	}
 
@@ -20,8 +24,14 @@ namespace dny::ui{
 		if( !visible() || !enabled() ){
 			return;
 		}
-		if( mouse.is_pressed( MouseButton::Left ) && contains( mouse.position() ) ){
-			m_clicked = true;
+		if( contains( mouse.position() ) ){
+			m_hovered = true;
+			if( mouse.is_pressed( MouseButton::Left ) ){
+				m_clicked = true;
+			}
+		}
+		else{
+			m_hovered = false;
 		}
 	}
 
@@ -30,12 +40,15 @@ namespace dny::ui{
 			return;
 		}
 
-		static constexpr auto enabled_color = Color32{ 61, 61, 61 };
-		static constexpr auto disabled_color = Color32{ 36, 36, 36 };
 		const auto rect = bounds();
-		const auto fill = enabled() ? enabled_color : disabled_color;
+		const auto str_dims = Font::measure_text( m_text, font );
+		const auto text_pos = vector2<std::int32_t>{
+			rect.left + ( rect.width() - str_dims.width ) / 2,
+			rect.top + ( rect.height() - str_dims.height ) / 2
+		};
+		const auto fill = enabled() ? ( m_hovered ? hover_color : enabled_color ) : disabled_color;
 		renderer.fill_rect( rect, fill );
 		renderer.draw_rect( rect, to_color32( dny::Colors::white ) );
-		renderer.draw_text( m_text, { rect.left + 4, rect.top + 4 }, font, to_color32( dny::Colors::white ) );
+		renderer.draw_text( m_text, text_pos, font, to_color32( dny::Colors::white ) );
 	}
 }

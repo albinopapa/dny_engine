@@ -62,7 +62,7 @@ using font_2d_vertex_out = basic_vertex<vector4<float>, vector3<float>, vector2<
 class font_2d_pixel_shader : public basic_pixel_shader<
 	font_2d_vertex_out,
 	font_2d_ps_cbuffer,
-	bilinear_sampler>{
+	point_sampler>{
 public:
 	static constexpr std::size_t Position_ID = 0;
 
@@ -208,16 +208,16 @@ public:
 
 	// Draw a solid filled rectangle.
 	void fill_rect( Rect<float> const& rect, ColorF color ){
-		auto mv = [ & ]( float x, float y ) -> color_vtx{
-			return color_vtx{ { vector3<float>{ x, y, 0.f }, color } };
+		auto mv = [ & ]( vector2<float> const& pos ) -> color_vtx{
+			return color_vtx{ { vector3<float>{ pos.x, pos.y, 0.f }, color } };
 		};
 		const std::vector<color_vtx> verts{
-			mv( rect.left,  rect.top    ),
-			mv( rect.right, rect.top    ),
-			mv( rect.right, rect.bottom ),
-			mv( rect.left,  rect.top    ),
-			mv( rect.right, rect.bottom ),
-			mv( rect.left,  rect.bottom )
+			mv( rect.top_left() ),
+			mv( rect.top_right() ),
+			mv( rect.bottom_right() ),
+			mv( rect.top_left() ),
+			mv( rect.bottom_right() ),
+			mv( rect.bottom_left() )
 		};
 		flush_color( verts );
 	}

@@ -43,7 +43,7 @@ void Metroidvania::update( ){
 }
 
 void Metroidvania::render(){
-	m_app_state->render( m_renderer, m_consolas );
+	m_app_state->render( m_renderer );
 }
 
 void Metroidvania::handle_transition_state(){
@@ -52,12 +52,12 @@ void Metroidvania::handle_transition_state(){
 		case dny::app_state_request::Editor:
 			m_app_state = std::make_unique<dny::LevelEditor>( dny::Rect<std::int32_t>{
 				0, 0, screen_dims.width, screen_dims.height
-			}, m_document );
+			}, m_document, m_consolas );
 			break;
 		case dny::app_state_request::Game:
 			m_app_state = std::make_unique<Game>( dny::Rect<std::int32_t>{
 				0, 0, screen_dims.width, screen_dims.height
-			}, m_document );
+			}, m_document, m_ariel );
 			break;
 		case dny::app_state_request::Menu:
 			m_app_state = std::make_unique<dny::Menu>();
@@ -66,8 +66,4 @@ void Metroidvania::handle_transition_state(){
 			m_platform.shutdown();
 			break;
 	}
-}
-
-void Metroidvania::transition_state( std::unique_ptr<dny::IAppState> next_state_ ){
-	m_next_state = std::move(next_state_);
 }

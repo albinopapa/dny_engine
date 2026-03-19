@@ -34,6 +34,7 @@ namespace dny::ui{
 	}
 
 	std::vector<std::string> const& ListBox::items() const noexcept{ return m_items; }
+	
 	void ListBox::set_selected_index( std::int32_t index ) noexcept{
 		if( index >= 0 && index < static_cast<std::int32_t>( m_items.size() ) ){
 			m_selected = index;
@@ -42,13 +43,16 @@ namespace dny::ui{
 			m_selected = -1;
 		}
 	}
+	
 	std::int32_t ListBox::selected_index() const noexcept{ return m_selected; }
+	
 	std::string_view ListBox::selected_item() const noexcept{
 		if( m_selected < 0 || m_selected >= static_cast<std::int32_t>( m_items.size() ) ){
 			return {};
 		}
 		return m_items[m_selected];
 	}
+	
 	bool ListBox::selection_changed() const noexcept{ return m_selection_changed; }
 
 	void ListBox::update( Mouse const& mouse, Keyboard& ){

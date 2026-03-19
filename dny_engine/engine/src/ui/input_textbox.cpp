@@ -7,13 +7,15 @@
 
 namespace dny::ui{
 	InputTextBox::InputTextBox( std::string id, std::string text, dny::vector2<std::int32_t> position, dny::dims2<std::int32_t> size ) noexcept
-		: Element( std::move( id ), position, size ), m_text( std::move( text ) ){}
+		: Element( std::move( id ), position, size ), m_placeholder( std::move( text ) ){}
 
 	void InputTextBox::set_text( std::string text ){
 		m_text = std::move( text );
 	}
 
 	std::string_view InputTextBox::text() const noexcept{ return m_text; }
+    void InputTextBox::set_placeholder( std::string text ) noexcept{ m_placeholder = std::move( text ); }
+	std::string_view InputTextBox::placeholder() const noexcept{ return m_placeholder; }
 	void InputTextBox::set_focused( bool value ) noexcept{ m_focused = value; }
 	bool InputTextBox::focused() const noexcept{ return m_focused; }
 	void InputTextBox::set_max_length( std::size_t value ) noexcept{ m_max_length = value; }
@@ -41,7 +43,9 @@ namespace dny::ui{
 				}
 				continue;
 			}
-			if( ch == '\r' || ch == '\n' ){
+			// Ignore control characters - we only want to allow printable characters 
+			// in the text box.
+			if( ch == '\r' || ch == '\n' || ch == '\t' ){
 				continue;
 			}
 			if( m_text.size() < m_max_length ){
@@ -55,9 +59,10 @@ namespace dny::ui{
 			return;
 		}
 
+		const auto& visible_text = m_text.empty() ? m_placeholder : m_text;
 		const auto rect = bounds();
 		renderer.fill_rect( rect, dny::Color32{ 16, 16, 16 } );
 		renderer.draw_rect( rect, m_focused ? dny::Color32( dny::Colors::yellow ) : dny::Color32( dny::Colors::white ) );
-		renderer.draw_text( std::string{ m_text }, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white } );
+		renderer.draw_text( visible_text, { rect.left + 4, rect.top + 4 }, font, dny::Color32{ dny::Colors::white } );
 	}
 }

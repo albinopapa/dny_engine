@@ -5,20 +5,18 @@
 namespace dny
 {
 	void Menu::update( Input& input_, float dt ){
+		if(m_panel.children().empty()){
+			for( auto& option : m_options ){
+				m_panel.add_child( option );
+			}
+		}
+		m_panel.update( input_.mouse(), input_.keyboard() );
 		handle_keyboard( input_.keyboard() );
 		handle_mouse( input_.mouse() );
 	}
 
-	void Menu::render( renderer2d& renderer_, Font const& font_ ) const{
-		for( std::size_t i = 0; i < m_options.size(); ++i ){
-			const auto y = m_start_pos.y + static_cast< float >( i ) * m_spacing;
-			const auto selected = ( static_cast< int >( i ) == m_selected_index );
-
-			const auto color = selected ? m_selected_color : m_unselected_color;
-
-			const auto position = vector2<float>{ m_start_pos.x, y };
-			renderer_.draw_text( m_options[ i ], position, font_, color );
-		}
+	void Menu::render( renderer2d& renderer_ ) const{
+		m_panel.draw( renderer_, m_font );
 	}
 
 	void Menu::move_selection_up(){
@@ -51,24 +49,15 @@ namespace dny
 	}
 
 	void Menu::handle_mouse( Mouse const& mouse ){
-		const auto mouse_pos = mouse.position();
-		const auto mouse_pos_f = vector2<float>{
-			static_cast< float >( mouse_pos.x ),
-			static_cast< float >( mouse_pos.y )
-		};
-
-		for( std::size_t i = 0; i < m_options.size(); ++i ){
-			const auto y = m_start_pos.y + static_cast< float >( i ) * m_spacing;
-			const auto button_translated = m_button_rect + vector2<float>{ m_start_pos.x, y };
-
-			if( !contains( button_translated, mouse_pos_f ) ){
+		for( std::int32_t i = 0; auto& option : m_options ){
+			if( !option->was_clicked() ){
+				++i;
 				continue;
 			}
 
-			m_selected_index = static_cast< std::int32_t >( i );
-			if( mouse.is_pressed( MouseButton::Left ) ){
-				select_current();
-			}
+			m_selected_index = i;
+			select_current();
+			break;
 		}
 	}
 }
