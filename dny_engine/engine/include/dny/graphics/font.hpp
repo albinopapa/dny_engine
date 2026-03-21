@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "utilities/dims2.hpp"
 #include "utilities/rectangle.hpp"
@@ -16,16 +16,20 @@
 namespace dny{
 	class Font{
 	public:
-		Font( std::wstring const& font_name, std::uint32_t font_height ){
+		Font( std::wstring const& font_name,
+			std::uint32_t font_height,
+			std::int32_t scale = 1 ){
+			m_scale = scale;
+
 			const auto atlas = internal::make_atlas(
 				font_name,
-				font_height
+				font_height * scale   // ← render bigger
 			);
 
 			m_atlas_width = static_cast< std::int32_t >( atlas.image.width );
 			m_atlas_height = static_cast< std::int32_t >( atlas.image.height );
-			m_char_width = atlas.max_glyph_width;
-			m_char_height = atlas.line_height;
+			m_char_width = atlas.max_glyph_width / scale;
+			m_char_height = atlas.line_height / scale;
 			m_glyphs = atlas.glyphs;
 
 			const auto img_data = std::span<const Color32>{
@@ -46,6 +50,7 @@ namespace dny{
 			auto max_line_width = std::int32_t{ 0 };
 			auto line_count = std::int32_t{ 1 };
 
+			const auto scale = font.scale();
 			for( const auto ch : text ){
 				if( ch == '\n' ){
 					max_line_width = std::max( max_line_width, current_line_width );
@@ -54,7 +59,7 @@ namespace dny{
 					continue;
 				}
 
-				current_line_width += font.glyph_advance( ch );
+				current_line_width += font.glyph_advance( ch ) / scale;
 			}
 
 			max_line_width = std::max( max_line_width, current_line_width );
@@ -83,7 +88,7 @@ namespace dny{
 		}
 		Color32 const* pixels()const noexcept{ return m_pixels.data(); }
 		std::vector<Color32> const& pixel_data()const noexcept{ return m_pixels; }
-
+		std::int32_t scale() const{ return m_scale; }
 	private:
 		std::vector<dny::Color32> m_pixels;
 		std::array<internal::glyph_metrics, internal::glyph_count> m_glyphs{};
@@ -91,5 +96,6 @@ namespace dny{
 		std::int32_t m_atlas_height = {};
 		std::int32_t m_char_width = {};
 		std::int32_t m_char_height = {};
+		std::int32_t m_scale = 1;
 	};
 }

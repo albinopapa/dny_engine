@@ -62,7 +62,7 @@ using font_2d_vertex_out = basic_vertex<vector4<float>, vector3<float>, vector2<
 class font_2d_pixel_shader : public basic_pixel_shader<
 	font_2d_vertex_out,
 	font_2d_ps_cbuffer,
-	point_sampler>{
+	bilinear_sampler>{
 public:
 	static constexpr std::size_t Position_ID = 0;
 
@@ -357,15 +357,26 @@ public:
 		const auto  ah    = static_cast<float>( font.atlas_height() );
 		const auto  n     = vector3<float>{ 0.f, 0.f, -1.f };
 
+		auto mv = [ & ]( float x, float y, float u, float v ) -> texture_vtx{
+			return texture_vtx{ { 
+					vector3<float>{ x, y, 0.f }, 
+					n, 
+					vector2<float>{ u, v } 
+				} 
+			};
+		};
+
 		std::vector<texture_vtx> verts;
 		verts.reserve( text.size() * 6 );
 
 		auto pen_x = position.x;
 		for( char ch : text ){
+			const float scale = 1.0f / static_cast< float >( font.scale() );
+
 			const auto gr  = font.glyph_rect( ch );
-			const auto gw  = static_cast<float>( gr.width()  );
-			const auto gh  = static_cast<float>( gr.height() );
-			const auto adv = static_cast<float>( font.glyph_advance( ch ) );
+			const auto gw = static_cast< float >( gr.width() ) * scale;
+			const auto gh = static_cast< float >( gr.height() ) * scale;
+			const auto adv = static_cast< float >( font.glyph_advance( ch ) ) * scale;
 
 			if( gw > 0.f && gh > 0.f ){
 				const auto u0 = gr.left   / aw;
@@ -377,10 +388,6 @@ public:
 				const auto y0 = position.y;
 				const auto x1 = pen_x + gw;
 				const auto y1 = position.y + gh;
-
-				auto mv = [ & ]( float x, float y, float u, float v ) -> texture_vtx{
-					return texture_vtx{ { vector3<float>{ x, y, 0.f }, n, vector2<float>{ u, v } } };
-				};
 
 				verts.push_back( mv( x0, y0, u0, v0 ) );
 				verts.push_back( mv( x1, y0, u1, v0 ) );
