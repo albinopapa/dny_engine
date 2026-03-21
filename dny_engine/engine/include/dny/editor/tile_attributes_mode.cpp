@@ -11,7 +11,7 @@ dny::LevelEditor::TileAttributesMode::TileAttributesMode( LevelEditor& parent, R
 	// Liquid - 
 	//  * Friction (0-1, default 0)
 	//  * Damage (0-inf, default 0)
-	// Solid - Texture (use TextureSelectMode to select, display thumbnail of selection)
+	// Solid - ( implies there's a collider, but no special behavior like moving platforms or triggers )
 	// Platform - 
 	// * Texture (use TextureSelectMode to select, display thumbnail of selection)
 	// * start/end positions (2 X/Y input boxes)

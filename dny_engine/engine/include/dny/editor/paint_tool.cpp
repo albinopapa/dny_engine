@@ -7,7 +7,10 @@ dny::LevelEditor::PaintTool::PaintTool( LevelEditor& parent_ ) noexcept
 {}
 
 void dny::LevelEditor::PaintTool::update( Mouse const& mouse_, Keyboard & keyboard_ ){
-	if( m_parent.clamp_camera(); mouse_.is_pressed( MouseButton::Left ) ){
+	if( m_parent.m_active_definition == -1 )
+		return; // No active tile definition, can't paint
+
+	if( mouse_.is_pressed( MouseButton::Left ) ){
 		m_start_tile = m_parent.m_tilemap_view.screen_to_tile_index(
 			mouse_.position(), m_parent.m_camera
 		);

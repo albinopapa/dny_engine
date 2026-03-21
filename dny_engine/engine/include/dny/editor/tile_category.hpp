@@ -11,7 +11,9 @@ namespace dny{
 		Spawner,
 		Liquid,
 		Decoration,
-		Solid,
+		// Solid tiles imply there's a collider, but no special behavior like 
+		// moving platforms or triggers
+		Solid,			
 	};
 
 	[[nodiscard]] constexpr TileCategory category_from_int( std::int32_t num )noexcept{

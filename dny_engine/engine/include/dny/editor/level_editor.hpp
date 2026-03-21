@@ -176,12 +176,17 @@ namespace dny{
 		void handle_mouse( Mouse const& mouse );
 		void handle_keyboard( Keyboard& keyboard );
 		void handle_mouse_wheel( Mouse const& mouse );
+
+		void handle_sidebar( Mouse const& mouse, Rect<std::int32_t> const& dialog_rect );
+		void handle_workspace( Mouse const& mouse );
+
 		void clamp_camera() noexcept;
 
 		void resize_tilemap( dims2<std::int32_t> const& new_size );
 		void transition_mode( std::unique_ptr<basic_mode> next_mode );
 		void load_tileset_sprites();
 		void place_tile( Mouse const& mouse );
+		void place_tile( vector2<std::int32_t> const& tile_index );
 
 		void init_buttons();
 
@@ -194,6 +199,8 @@ namespace dny{
 		// Mode stack, back is active. 
 		// We can have multiple modes layered (e.g. LoadMode ) on top of main editor
 		std::vector<std::unique_ptr<basic_mode>> m_mode_stack;
+
+		std::unique_ptr<basic_tool> m_active_tool;
 
 		// Will be used to pair textures with tile definitions in the future 
 		// when we have a TileAttributesMode.

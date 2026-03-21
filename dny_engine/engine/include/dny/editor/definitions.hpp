@@ -3,6 +3,7 @@
 #include "tile_category.hpp"
 #include "trigger_category.hpp"
 #include "math/math.hpp"
+#include "physics/physics.hpp"
 
 #include <cstdint>
 #include <string>
@@ -54,5 +55,23 @@ namespace dny{
 		TriggerAction action;
 		std::int32_t id = 0;       // unique trigger ID in the level
 		bool fire_once = true;
+	};
+
+	struct Polyline{
+		void add_point( vector2<float> const& point ){
+			collider.points.push_back( point );
+		}
+		void delete_last_point(){
+			if( !collider.points.empty() ){
+				collider.points.pop_back();
+			}
+		}
+		void delete_point(std::size_t index ){
+			if( index < collider.points.size() ){
+				collider.points.erase( collider.points.begin() + index );
+			}
+		}
+
+		polyline_collider<float> collider;
 	};
 }

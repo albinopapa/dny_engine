@@ -15,6 +15,8 @@
 #include "editor/tile_palette_mode.hpp"
 #include "editor/file_menu_mode.hpp"
 
+#include "editor/paint_tool.hpp"
+
 namespace dny{
 	// ---------- LevelEditor ----------
 	LevelEditor::LevelEditor( Rect<std::int32_t> const& viewport, LevelDocument& document_, Font const& font_ )
@@ -49,6 +51,7 @@ namespace dny{
 			viewport.bottom
 		};
 		m_tilemap_view.set_area( m_viewport );
+		m_active_tool = std::make_unique<PaintTool>( *this );
 	}
 
 	void LevelEditor::update( Input& input_, float dt ){
@@ -71,6 +74,9 @@ namespace dny{
 		if( !m_mode_stack.empty() ){
 			m_mode_stack.back()->update( input_.mouse(), input_.keyboard() );
 			return;
+		}
+		else if( m_active_tool ){
+			m_active_tool->update( input_.mouse(), input_.keyboard() );
 		}
 
 		handle_mouse( input_.mouse() );
@@ -97,62 +103,19 @@ namespace dny{
 	}
 
 	void LevelEditor::handle_mouse( Mouse const& mouse ){
-		const auto workspace_center = m_viewport.center();
-		const auto dialog_rect = Rect<std::int32_t>{
-			workspace_center.x - 200,
-			workspace_center.y - 100,
-			workspace_center.x + 200,
-			workspace_center.y + 100
-		};
 		if( m_layout.contains( mouse.position() ) ){
-			if( m_file_button->was_clicked() ){
-				transition_mode( std::make_unique<LevelEditor::FileMenuMode>( *this, dialog_rect ) );
-			}
-			else if( m_resize_button->was_clicked() ){
-				transition_mode( std::make_unique<LevelEditor::ResizeMode>( *this, dialog_rect ) );
-			}
-			else if( m_texture_button->was_clicked() ){
-				transition_mode(
-					std::make_unique<LevelEditor::TextureSelectMode>( *this, m_active_tile_index, dialog_rect )
-				);
-			}
-			else if( m_tile_palette_button->was_clicked() ){
-				transition_mode( std::make_unique<LevelEditor::TilePaletteMode>( *this, dialog_rect ) );
-			}
-			else if( m_exit_button->was_clicked() ){
-				if( m_dirty ){
-					// Prompt to save changes before exiting
-					transition_mode( std::make_unique<LevelEditor::SaveBeforeExitMode>( *this, dialog_rect ) );
-				}
-				else{
-					// No unsaved changes, exit immediately
-					m_request = app_state_request::Menu;
-				}
-			}
-			else if( m_tools_button->contains( mouse.position() ) ){
-				// TODO: Transition to tools menu mode
-			}
+			const auto workspace_center = m_viewport.center();
+			const auto dialog_rect = Rect<std::int32_t>{
+				workspace_center.x - 200,
+				workspace_center.y - 100,
+				workspace_center.x + 200,
+				workspace_center.y + 100
+			};
+			handle_sidebar( mouse, dialog_rect );
 		}
-		// Editor area: paint tiles and camera control
 		else if( contains( m_viewport, mouse.position() ) ){
-			// First, handle zoom via mouse wheel (consumes wheel events)
-			handle_mouse_wheel( mouse );
-
-			// Middle-mouse panning
-			if( mouse.is_held( MouseButton::Middle ) ){
-				const auto mouse_delta = vector2{
-					static_cast< float >( mouse.delta().x ),
-					static_cast< float >( mouse.delta().y )
-				};
-				if( mouse_delta.x == 0.f && mouse_delta.y == 0.f ){
-					return; // No movement, skip
-				}
-				// Move opposite so dragging feels natural
-				m_camera.pan( mouse_delta );
-			}
-			else if( mouse.is_pressed( MouseButton::Left ) ){
-				place_tile( mouse );
-			}
+			// Editor area: paint tiles and camera control
+			handle_workspace( mouse );
 		}
 	}
 
@@ -214,6 +177,57 @@ namespace dny{
 		}
 
 		clamp_camera();
+	}
+
+	void LevelEditor::handle_sidebar( Mouse const& mouse, Rect<std::int32_t> const& dialog_rect ){
+		if( m_file_button->was_clicked() ){
+			transition_mode( std::make_unique<LevelEditor::FileMenuMode>( *this, dialog_rect ) );
+		}
+		else if( m_resize_button->was_clicked() ){
+			transition_mode( std::make_unique<LevelEditor::ResizeMode>( *this, dialog_rect ) );
+		}
+		else if( m_texture_button->was_clicked() ){
+			transition_mode(
+				std::make_unique<LevelEditor::TextureSelectMode>( *this, m_active_tile_index, dialog_rect )
+			);
+		}
+		else if( m_tile_palette_button->was_clicked() ){
+			transition_mode( std::make_unique<LevelEditor::TilePaletteMode>( *this, dialog_rect ) );
+		}
+		else if( m_exit_button->was_clicked() ){
+			if( m_dirty ){
+				// Prompt to save changes before exiting
+				transition_mode( std::make_unique<LevelEditor::SaveBeforeExitMode>( *this, dialog_rect ) );
+			}
+			else{
+				// No unsaved changes, exit immediately
+				m_request = app_state_request::Menu;
+			}
+		}
+		else if( m_tools_button->contains( mouse.position() ) ){
+			// TODO: Transition to tools menu mode
+		}
+	}
+
+	void LevelEditor::handle_workspace( Mouse const& mouse ){
+		// First, handle zoom via mouse wheel (consumes wheel events)
+		handle_mouse_wheel( mouse );
+
+		// Middle-mouse panning
+		if( mouse.is_held( MouseButton::Middle ) ){
+			const auto mouse_delta = vector2{
+				static_cast< float >( mouse.delta().x ),
+				static_cast< float >( mouse.delta().y )
+			};
+			if( mouse_delta.x == 0.f && mouse_delta.y == 0.f ){
+				return; // No movement, skip
+			}
+			// Move opposite so dragging feels natural
+			m_camera.pan( mouse_delta );
+		}
+		else if( mouse.is_pressed( MouseButton::Left ) ){
+			place_tile( mouse );
+		}
 	}
 
 	void LevelEditor::clamp_camera() noexcept{
@@ -304,22 +318,49 @@ namespace dny{
 		const auto tile_index = m_tilemap_view.screen_to_tile_index(
 			mouse.position(), m_camera
 		);
+
 		if( !tile_index.has_value() )
 			return;
 
-		const auto& index = *tile_index;
-		// Create tile with active tile index
-		Tile tile;
-		tile.definition_id = m_active_definition;
-		const auto size = m_document.tilemap.size();
+		place_tile(*tile_index);
+	}
 
-		if( index.x < 0 || index.y < 0 ||
-			index.x >= size.width ||
-			index.y >= size.height ){
+	void LevelEditor::place_tile( vector2<std::int32_t> const& tile_index ){
+		// Create tile with active tile index
+		const auto size = m_document.tilemap.size();
+		if( tile_index.x < 0 || tile_index.y < 0 ||
+			tile_index.x >= size.width ||
+			tile_index.y >= size.height ){
 			return;
 		}
 
-		m_document.tilemap.get_tile( index ) = tile;
+		Tile tile;
+		tile.definition_id = m_active_definition;
+		switch( m_document.tile_defs[ m_active_definition ].category ){
+			case TileCategory::Empty:
+			// No additional data needed
+				break;
+			case TileCategory::Platform:
+				tile.platform_id = 1; // Placeholder platform ID
+				break;
+			case TileCategory::Trigger:
+				tile.trigger_id = 1; // Placeholder trigger ID
+				break;
+			case TileCategory::Spawner:
+				tile.entity_id = 1; // Placeholder entity ID
+				break;
+			case TileCategory::Liquid:
+				// Could set liquid properties here if needed
+				break;
+			case TileCategory::Decoration:
+				// Could set decoration properties here if needed
+				break;
+			case TileCategory::Solid:
+				// No additional data needed
+				break;
+
+		}
+		m_document.tilemap.get_tile( tile_index ) = tile;
 		m_dirty = true;
 	}
 
